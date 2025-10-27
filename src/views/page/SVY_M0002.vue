@@ -64,7 +64,7 @@
               <div class="pl-desc">
                 <v-select
                   class="pl-form "
-                  :items="USE_WT"
+                  :items="this.mixin_common_code_get(this.common_code, 'USE_WT', '전체')"
                   v-model="USE_YN"
                   placeholder="선택하세요"
                 ></v-select>
@@ -77,7 +77,7 @@
               <div class="pl-desc">
                 <v-select
                   class="pl-form "
-                  :items="USE_WT"
+                  :items="this.mixin_common_code_get(this.common_code, 'USE_WT', '전체')"
                   v-model="DEL_YN"
                   placeholder="선택하세요"
                 ></v-select>
@@ -218,8 +218,9 @@ export default {
 
       DEPT_LIST:[],
       DEPT_ID:'',
-      EXL_COND:'',
-      EXL_COND_TY:'', 
+      EXL_COND_SE_CD:'',
+      EXL_COND_CD:'', 
+      EXL_COND_CN:'',
       USE_YN:'Y',
       DEL_YN:'N',
 
@@ -242,14 +243,14 @@ export default {
 
       gridDataHeaders: [
           { text: '번호', value: 'ROW_NUMBER', align: 'center', width: '80px' },
-          { text: '제목', value: 'PST_TTL', align: 'left', width: '400px'},
-          { text: '첨부파일 개수', value: 'FILE_CNT', align: 'center', width: '120px'},
-          { text: '게시판 유형', value: 'PST_TYPE_CD_NM', align: 'left', width: '120px' },
-          { text: '등록자', value: 'USER_NAME', align: 'left', width: '120px'},
-          { text: '등록일', value: 'REG_DT', align: 'left', width: '120px'},
-          { text: '수정자', value: 'EDITOR_NAME', align: 'left', width: '120px'},
-          { text: '수정일', value: 'MDFCN_DT', align: 'left', width: '120px'},
-          { text: '조회수', value: 'INQ_CNT', align: 'center', width: '120px'},
+          { text: '부서', value: 'DEPT_NM', align: 'left', width: '120px'},
+          { text: '조건 구분', value: 'EXL_COND_SE_NM', align: 'center', width: '200px'},
+          { text: '조건', value: 'EXL_COND_NM', align: 'left', width: '200px' },
+          { text: '조건 값', value: 'EXL_COND_CN', align: 'left', width: '300px'},
+          { text: '등록자', value: 'RGTR_NM', align: 'left', width: '120px'},
+          { text: '등록일', value: 'REG_DT_F', align: 'left', width: '120px'},
+          { text: '수정자', value: 'MDFR_NM', align: 'left', width: '120px'},
+          { text: '수정일', value: 'MDFCN_DT_F', align: 'left', width: '120px'},
       ],
 
       dialogRegExlCond:false,
@@ -263,7 +264,11 @@ export default {
     
   },
 
-  created() {
+  async created() {
+    // 공통코드설정
+    let codeName = ['EXL_COND_TY', 'EXL_COND', 'USE_WT'];
+    this.common_code = await this.mixin_common_code_get_all(codeName);
+
     this.getDeptList();
     this.getGridList();
   },
