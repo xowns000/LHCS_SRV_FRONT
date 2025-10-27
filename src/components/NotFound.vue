@@ -1,0 +1,7 @@
+<template>
+  <html>
+  <head><title>404 Not Found</title></head>
+  <body>
+  </body>
+  </html>
+</template>

@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+[class*="pl-align"]{
+	display: flex;
+	box-sizing: border-box;
+}
+.pl-align{
+	&-left{
+		justify-content: flex-start;
+	}
+	&-right{
+		justify-content: flex-end;
+	}
+	&-center{
+		justify-content: center;
+	}
+	&-space{
+		justify-content: space-between;
+	}
+	&-top{
+		align-items: flex-start;
+	}
+	&-middle{
+		align-items: center;
+	}
+	&-bottom{
+		align-items: flex-end;
+	}
+}

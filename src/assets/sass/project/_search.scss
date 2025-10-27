@@ -1,0 +1,64 @@
+@charset "utf-8";
+
+.pl-search-form {
+	display: flex;
+	align-items: center;
+	padding-bottom: 14px;
+	.is-right {
+		margin-left: auto;
+	}
+}
+.pl-search-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 14px;
+	&-tit {
+		font-size: 16px;
+		font-weight: 700;
+	}
+	.is-right {
+		margin-left: auto;
+	}
+}
+
+.v-text-field.pl-main-search {
+	position: relative;
+	width: 100% !important;
+	border-radius: 30px !important;
+	.v-input__control {
+		position: relative;
+		height: 58px !important;
+		.v-input__slot {
+			padding-right: 16px;
+			padding-left: 48px;
+			background: #F5F8FF;
+		}
+
+		&::before {
+			content: '';
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			top: 50%;
+			left: 24px;
+			background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.76763 15.8314C12.5053 15.8314 15.5352 12.7351 15.5352 8.91569C15.5352 5.09626 12.5053 2 8.76763 2C5.02998 2 2 5.09626 2 8.91569C2 12.7351 5.02998 15.8314 8.76763 15.8314Z' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13.7087 13.6263L18.0004 17.9998' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+			z-index: 1;
+			transform: translateY(-50%);
+		}
+	}
+	.divider-l {
+		position: relative;
+		margin-left: 50px;
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -25px;
+			bottom: 0;
+			width: 1px;
+			background: $color-border;
+		}
+
+	}
+}

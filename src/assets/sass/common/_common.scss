@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+@import 'color';
+@import 'spacing';
+@import 'text';
+@import 'flex';
+@import 'icons';
+@import 'scrollbar';
+@import 'info';
+@import 'align';
+@import 'badge';
+@import 'transition';
+
+.is-hidden{display: none !important;}
+.is-border-all {
+  border: 1px solid $color-border;
+}
+.is-border-top {
+  border-top: 1px solid $color-border;
+}
+.is-border-bottom {
+  border-bottom: 1px solid $color-border;
+}

@@ -1,0 +1,257 @@
+@charset "utf-8";
+
+.pl-calendar {
+  width: 314px;
+  padding: 0;
+  border: 1px solid $color-border !important;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 10px !important;
+  .v-picker {
+    width: 100%;
+    .v-picker__title{
+      padding: 20px 16px;
+      border-bottom: 1px solid $color-border !important;
+      border-radius: 10px 10px 0 0 !important;
+      .v-date-picker-title {
+        font-weight: 700;
+        font-size: 20px;
+        .v-date-picker-title__year {
+          margin: 0;
+          padding: 0;
+          font-size: 14px;
+          color: #000;
+          opacity: 1;
+          order: 1;
+        }
+        .v-date-picker-title__date {
+          margin-bottom: 0;
+          font-weight: 700;
+          font-size: 20px;
+          color:  $color-main;
+        }
+      }
+    }
+    .v-picker__body{
+      & div {
+        .v-date-picker-header {
+          width: 244px;
+          padding: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          .v-btn {
+            width: 30px;
+            height: 30px;
+            color: $color-main;
+          }
+          .v-date-picker-header__value {
+            font-size: 14px;
+            font-weight: 700;
+            color: $color-font-focus;
+            button:hover{
+              color: $color-main;
+            }
+          }
+        }
+        .v-date-picker-table {
+          height: auto !important;
+          padding: 0 0 30px;
+          .v-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+            color: $color-font-focus;
+            &.v-date-picker-table__current {
+              color: $color-main !important;
+            }
+            &.v-btn--active{
+              border: 1px solid $color-main !important;
+              font-weight: 700;
+              color: $color-drop-focus;
+              &::before {
+                opacity: 0;
+              }
+            }
+            .v-btn__content {
+              margin-top: -2px;
+            }
+            &:hover {
+              &::before {
+                color: $color-main;
+              }
+            }
+          }
+        }
+
+      }
+
+    }
+    .theme--light.v-date-picker-table:not(.v-date-picker-table--month) {
+      th,
+      .v-date-picker-table--date__week {
+        color: $color-font-focus;
+        font-size: 14px;
+        &:first-child,
+        &:last-child {
+          color: $color-font-disable;
+        }
+      }
+      td {
+        &:first-child,
+        &:last-child {
+          .v-btn {
+            color: #F15151;
+            &.v-btn--active {
+            }
+          }
+        }
+      }
+    }
+    .v-time-picker-clock__ampm {
+      font-weight: bold;
+    }
+  }
+  &.dateTime {
+    width: 485px;
+    .v-picker--date{
+      flex: 0 0 346px;
+      .v-picker__title {
+        border-top-right-radius: 0 !important;
+      }
+    }
+  }
+  &.is-second {
+    width: 540px;
+  }
+  &.is-time {
+    width: 140px;
+  }
+  .v-date-picker-years {
+    li{
+      &.active {
+        color: $color-main !important;
+      }
+    }
+  }
+  //캘린더용
+  &.type-mini {
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+}
+
+.pl-schedule-form {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 6px rgba(#000, 0.2);
+  .v-picker__body {
+    flex: 1 1 auto;
+    min-height: auto;
+    max-height: auto;
+    height: auto;
+  }
+  .timeline-wrap {
+    flex: 1 1 auto;
+    max-height: 100%;
+    height: auto;
+    background-color: #e4ecf2;
+    border-radius: 0;
+    border-top: 1px solid $color-border;
+  }
+}
+.pl-schedule {
+  border-radius: 0;
+  .v-date-picker-title__date {
+    padding-bottom: 4px;
+    font-family: $font-title;
+    font-size: 26px;
+    word-spacing: -2px;
+  }
+  .v-picker__body {
+    padding-bottom: 20px;
+    // background-color: #737580;
+  }
+  .v-date-picker-table {
+    height: auto;
+    .v-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      .v-date-picker-table__events {
+        bottom: 10px;
+        > div {
+          width: 6px;
+          height: 6px;
+        }
+      }
+    }
+  }
+  .v-btn.v-date-picker-table__current {
+    border-color: transparent;
+    // background-color: rgba(#000, .4);
+    // font-weight: bold;
+    // &:hover{background-color: rgba(#000, .4);}
+  }
+}
+
+.pl-calendar-range-form {
+  display: flex;
+  .pl-unit {
+
+  }
+}
+
+.pl-calendar-time-wrap {
+  border-left: 1px solid $color-border;
+  .pl-calendar-time-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 82px;
+    font-size: 26px;
+    font-weight: 700;
+    color: $color-main;
+    background: #F4F5FF;
+    border-top: 0;
+  }
+  > div {
+    display: flex;
+    padding: 12px;
+    background: #FFF;
+    border-top: 1px solid $color-border;
+    .pl-calendar-time-picker{
+      overflow-y: scroll;
+      display: flex;
+      flex-direction: column;
+      height: 276px;
+      gap: 5px;
+      &.hours{
+
+      }
+      &.minutes{
+
+      }
+      &.ampm{
+        overflow: hidden !important;
+      }
+      .pl-timepicker-btn {
+        min-width: 50px;
+        height: 30px;
+        font-size: 13px;
+        font-weight: 700;
+        background: #FFF;
+        border: 0;
+        box-shadow: none;
+        &:hover{
+          background: $color-bg-drop-focus;
+        }
+        &.active {
+          background: $color-main;
+          color: #FFF;
+        }
+      }
+
+    }
+  }
+}

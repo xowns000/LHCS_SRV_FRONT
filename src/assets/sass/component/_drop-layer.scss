@@ -1,0 +1,148 @@
+@charset "utf-8";
+
+.pl-drop-layer {
+  position: fixed;
+  z-index: 10;
+  min-width: 200px;
+  padding: 14px;
+  width: auto;
+  background-color: #fff;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid #D8D8D8;
+  box-shadow: 1px 1px 6px 0px rgba(0,0,0,.25);
+  border-radius: 5px;
+  &-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 14px;
+    padding-left: 16px;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: $color-font-focus;
+    h2 {
+      // font-family: "";
+      font-size: 14px;
+    }
+    &.is-border {
+      padding-top: 6px;
+      border-top: 1px solid $color-border;
+    }
+    &.has-desc {
+      flex-wrap: wrap;
+      justify-content: start;
+    }
+  }
+  &-subdesc {
+    padding-top: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+    color: $color-font-sub;
+  }
+  &-body {
+    padding: 0 8px 0;
+  }
+  &-footer {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid $color-border;
+  }
+  &-list {
+    line-height: 30px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    li {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-weight: 400;
+      transition: all $easing-time ease;
+      border-radius: 5px ;
+      &:hover {
+        // background: #F0F4FF;
+        background: color-mix(in srgb,var(--primary-color),#fff 91%);
+        // color: #000F98;
+        color: var(--primary-color);
+        filter: saturate(120%);
+        cursor: pointer;
+      }
+      &.active {
+        // background: #F0F4FF;
+        background: color-mix(in srgb,var(--primary-color),#fff 91%);
+        // color: #000F98;
+        color: var(--primary-color);
+        filter: saturate(120%);
+        cursor: pointer;
+        border: 1px solid $color-main;
+      }
+    }
+  }
+  &.is-logo-company {
+    top: 40px
+  }
+  &.is-cti-move {
+    top: 40px
+  }
+  &.is-dateReserve {
+    top: 30px;
+    li {
+      cursor: pointer;
+      span:first-child{
+        width: 70px;
+      }
+    }
+  }
+  &.is-dateDrop {
+    top: 30px;
+  }
+  &.is-right {
+    transform: translateX(-180px);
+  }
+  &.is-viewToggle {
+    transform: translate(500px, 34px);
+  }
+  &.is-filter {
+    width: 320px;
+  }
+  &.is-mainchat-off {
+    bottom: 80px;
+    color: #000;
+  }
+  &.is-mainchat-slide {
+    position: absolute;
+    right: 20px;
+    padding: 0;
+    left: 20px;
+    bottom: 20px;
+    color: #000;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    box-shadow: none;
+    z-index: 2;
+    &.type02 {
+      position: absolute;
+      width: auto;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+    }
+  }
+  &.is-cus-agree{
+    width: 500px;
+    .pl-drop-layer-body{
+      overflow-y: auto;
+      height: 192px;
+    }
+  }
+  &.is-mainchat-detail {
+    width: 252px;
+  }
+}
+.pl-dateDropWrap{
+  position: relative;
+}

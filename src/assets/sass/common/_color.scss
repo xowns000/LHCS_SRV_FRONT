@@ -1,0 +1,286 @@
+@charset "utf-8";
+$color-main: var(--primary-color);
+// $color-main-fade: #273aa7;
+
+:root {
+  --primary-color: #4c5cbb;
+}
+
+$color-main-fade: color-mix(in srgb,var(--primary-color),#000 30%);
+
+//main
+$color-bg: #f3f4fa;
+//bg
+$color-bg-default: #f3f5f9;
+$color-bg-disable: #f0f0f0;
+$color-bg-focus: #fff;
+// $color-bg-drop-focus: #f0f4ff;
+$color-bg-drop-focus: color-mix(in srgb,var(--primary-color),#fff 91%);
+$color-light-blue: #f1f3ff;
+$color-bg-filelist: #f6f4f4;
+$color-bg-list: #f6f6f6;
+$color-bg-active: color-mix(in srgb,var(--primary-color),#fff 95%);
+
+//border
+$color-border-focus: $color-main;
+$color-border: #dbdbdb;
+$color-border2: #878787;
+//font
+// $color-font-default: #2d4364;
+$color-font-default: color-mix(in srgb,var(--primary-color),#000 20%);
+$color-font-disable: #8b8b8b;
+$color-font-focus: #000;
+// $color-drop-focus: #000f98;
+$color-drop-focus: color-mix(in srgb,var(--primary-color),#fff 10%);
+$color-font-sub: #666;
+
+$color-bg-hover-btn: #E1E1E1;
+
+//switch
+$color-control-bg: #848484;
+
+// grid
+$color-tbody-th: color-mix(in srgb, var(--primary-color), #FFF 93%);
+
+// status
+$color-error: #FF2D10;
+$color-accept: #02A952;
+$color-reject: #FF9314;
+$color-open: #00A2C6;
+$color-after: #D83EFF;
+
+//////////////////////////////////
+
+$color-point: #f78b1e;
+$color-fill: #64748b;
+$color-light: #f2f3f8;
+$color-red: #f26161;
+$color-org: #fc8722;
+$color-yellow: #fac219;
+$color-blue: #1c6aca;
+$color-cyan: #40cee2;
+$color-indigo: #3f51b5;
+$color-blueGray: #607d8b;
+$color-green: #24b36b;
+$color-purple: #9c67f9;
+$color-pink: #ffccd0;
+
+$color-border-active: #4e94e9;
+
+$color-scrollbar: #bdbdbd;
+
+$color-mail: #1dcfbf;
+$color-sms: #f1dc2e;
+$color-ttalk: #2abed1;
+$color-kakao: #f9e200;
+$color-line: #00c300;
+$color-naver: #00c63b;
+$color-wechat: #38ce19;
+$color-facebook: #1877f3;
+$color-twitter: #1da1f2;
+$color-talk: #9c67f9;
+
+.is-bg {
+  &-red {
+    background-color: $color-red !important;
+  }
+  &-org {
+    background-color: $color-org !important;
+  }
+  &-yellow {
+    background-color: $color-yellow !important;
+  }
+  &-blue {
+    background-color: $color-blue !important;
+  }
+  &-cyan {
+    background-color: $color-cyan !important;
+  }
+  &-indigo {
+    background-color: $color-indigo !important;
+  }
+  &-blueGray {
+    background-color: $color-blueGray !important;
+  }
+  &-green {
+    background-color: $color-green !important;
+  }
+  &-purple {
+    background-color: $color-purple !important;
+  }
+  &-black {
+    background-color: #000 !important;
+  }
+  &-darkgray {
+    background-color: #363636 !important;
+  }
+  &-gray {
+    background-color: #999 !important;
+  }
+  &-white {
+    background-color: #fff !important;
+  }
+  &-light {
+    background-color: $color-bg !important;
+  }
+  &-pink {
+    background-color: $color-pink !important;
+  }
+  &-main {
+    background-color: $color-main !important;
+  }
+}
+.is-bg-light {
+  &-red {
+    background-color: rgba($color-red, 0.1) !important;
+  }
+  &-org {
+    background-color: rgba($color-org, 0.1) !important;
+  }
+  &-yellow {
+    background-color: rgba($color-yellow, 0.2) !important;
+  }
+  &-blue {
+    background-color: rgba($color-blue, 0.1) !important;
+  }
+  &-cyan {
+    background-color: rgba($color-cyan, 0.1) !important;
+  }
+  &-indigo {
+    background-color: rgba($color-indigo, 0.1) !important;
+  }
+  &-green {
+    background-color: rgba($color-green, 0.15) !important;
+  }
+  &-purple {
+    background-color: rgba($color-purple, 0.1) !important;
+  }
+}
+
+.is-border {
+  &-red {
+    border-color: $color-red !important;
+  }
+  &-org {
+    border-color: $color-org !important;
+  }
+  &-yellow {
+    border-color: $color-yellow !important;
+  }
+  &-blue {
+    border-color: $color-blue !important;
+  }
+  &-cyan {
+    border-color: $color-cyan !important;
+  }
+  &-indigo {
+    border-color: $color-indigo !important;
+  }
+  &-blueGray {
+    border-color: $color-blueGray !important;
+  }
+  &-green {
+    border-color: $color-green !important;
+  }
+  &-purple {
+    border-color: $color-purple !important;
+  }
+  &-black {
+    border-color: #000 !important;
+  }
+  &-gray {
+    border-color: #999 !important;
+  }
+  &-white {
+    border-color: #fff !important;
+  }
+  &-light {
+    border-color: $color-bg !important;
+  }
+}
+.is-txt {
+  &-main {
+    color: $color-main !important;
+  }
+  &-error {
+    color: $color-error !important;
+  }
+  &-accept {
+    color: $color-accept !important;
+  }
+  &-reject {
+    color: $color-reject !important;
+  }
+  &-open {
+    color: $color-open !important;
+  }
+  &-disable {
+    color: $color-font-disable !important;
+  }
+  &-sub {
+    color: $color-font-sub !important;
+  }
+  &-bull {
+    color: $color-border !important;
+  }
+  &-after {
+    color: $color-after !important;
+  }
+  &-red {
+    color: darken($color-red, 5%) !important;
+  }
+  &-org {
+    color: darken($color-org, 5%) !important;
+  }
+  &-yellow {
+    color: darken($color-yellow, 5%) !important;
+  }
+  &-blue {
+    color: darken($color-blue, 5%) !important;
+  }
+  &-cyan {
+    color: darken($color-cyan, 5%) !important;
+  }
+  &-indigo {
+    color: darken($color-indigo, 5%) !important;
+  }
+  &-blueGray {
+    color: darken($color-blueGray, 5%) !important;
+  }
+  &-green {
+    color: darken($color-green, 5%) !important;
+  }
+  &-purple {
+    color: darken($color-purple, 5%) !important;
+  }
+  &-black {
+    color: #000 !important;
+  }
+  &-gray {
+    color: #999 !important;
+  }
+  &-white {
+    color: #fff !important;
+  }
+  &-bold {
+    font-weight: 600 !important;
+  }
+  &-left {
+    text-align: left !important;
+    * {
+      text-align: left !important;
+    }
+  }
+  &-right {
+    text-align: right !important;
+    * {
+      text-align: right !important;
+    }
+  }
+  &-center {
+    text-align: center !important;
+    * {
+      text-align: center !important;
+    }
+  }
+}

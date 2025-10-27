@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+.vue-slider {
+  .vue-slider-dot{
+    .vue-slider-dot-handle {
+      background-color: rgb(76, 92, 187);
+      box-shadow: none;
+      &-focus {
+        box-shadow: none;
+      }
+    }
+    &::after{
+      transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+      content: "";
+      color: rgb(76, 92, 187);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.3;
+      position: absolute;
+      left: -11px;
+      top: -11px;
+      transform: scale(0.1);
+      pointer-events: none;
+    }
+    &:hover {
+      &::after{
+        transform: scale(1);
+      }
+    }
+
+  }
+  .vue-slider-process{
+    background-color: rgb(76, 92, 187);
+  }
+  .vue-slider-dot-tooltip-inner{
+    background-color: rgb(76, 92, 187);
+    border-color: rgb(76, 92, 187);
+  }
+}

@@ -1,0 +1,80 @@
+@charset "utf-8";
+
+.pl-layout-left{
+  width: 60px;
+  background-color: $color-main !important;
+  .v-list {
+    padding: 0;
+    .v-item-group {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      height: 100%;
+      padding: 66px 7px 22px 7px;
+      .v-list-item {
+        flex: 0;
+        border-radius: 8px;
+        flex-basis: 46px;
+        transition: all .5s ease;
+        &:hover{
+          background: rgba(255,255,255, .15);
+        }
+        &.v-list-item--active {
+          background: rgba(255,255,255, 1);
+          &::before {
+            opacity: 0;
+          }
+        }
+        &.is-setting {
+          margin-top: auto;
+          &.v-list-item--active{
+            background: $color-main !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.pl-menu-autosearch{
+  padding: 10px;
+  > .v-input {
+    margin: 0;
+    padding: 0;
+    border: 1px solid $color-main;
+    border-radius: 5px;
+    background: #FFF;
+    .v-input__prepend-outer {
+      margin-left: 5px;
+      margin-top: 5px;
+    }
+    input {
+      padding-left: 40px;
+      font-size: 13px;
+    }
+    .v-input__slot:before{
+      display: none;
+    }
+    .v-select__slot{
+      position: relative;
+      &::before {
+        content: '';
+        width: 23px;
+        height: 23px;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        background-image: url("data:image/svg+xml,%3Csvg width='22' height='23' viewBox='0 0 22 23' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.08981 17.083C13.5577 17.083 17.1797 13.4827 17.1797 9.04152C17.1797 4.60031 13.5577 1 9.08981 1C4.62191 1 1 4.60031 1 9.04152C1 13.4827 4.62191 17.083 9.08981 17.083Z' stroke='%23232323' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M15.7502 15.7827L21 21.0011' stroke='%23232323' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+        transform: translateY(-50%);
+      }
+    }
+  }
+}
+
+// v-menu 오버라이드
+.v-menu__content .v-select-list .v-list-item {
+  &.v-list-item--highlighted {
+    background: $color-bg-drop-focus;
+  }
+
+}

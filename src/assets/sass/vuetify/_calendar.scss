@@ -1,0 +1,109 @@
+@charset "utf-8";
+
+.pl-full-calendar {
+  overflow-y: scroll;
+  height: calc(100vh - 239px);
+  &-title {
+    display: inline-flex;
+    font-size: 14px;
+    height: 40px;
+    align-items: center;
+  }
+  &-detail-dialog {
+    padding: 0;
+    border: 0 !important;
+  }
+  &-detail-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFF;
+  }
+  .v-event{
+    margin: 6px;
+  }
+  .v-calendar-weekly {
+    display: table;
+    table-layout: fixed;
+  }
+  .v-calendar-weekly__head {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    border-bottom: 1px solid $color-border;
+    &-weekday {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      margin-left: 1px !important;
+      font-size: 14px;
+      font-weight: 700;
+      color: #000 !important;
+      background-color: #FFF !important;
+      &:last-child {
+        border-right: 1px solid $color-border !important;
+      }
+      &:first-child,
+      &:last-child {
+        color: $color-error !important;
+      }
+    }
+  }
+  .v-calendar-weekly__week{
+    min-height: 100px;
+  }
+  &-viewbtn {
+    .v-list-item {
+      border-radius: 5px;
+      &::before {
+        border-radius: 5px;
+      }
+      &.v-list-item--active {
+        font-weight: 700;
+        color: $color-drop-focus;
+        &::before {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}
+
+.pl-weekCalendar{
+  width: 100%;
+  border: 0 !important;
+  .v-calendar-daily__intervals-head{
+    display: none;
+  }
+  .v-calendar-daily_head-day{
+    border: 0 !important;
+    &.v-present{
+      .primary--text,
+      .v-btn{
+        background-color: transparent !important;
+        color: $color-main !important;
+      }
+    }
+    &.selected-day{
+      background: color-mix(in srgb,var(--primary-color),#fff 85%);
+      border-radius: 12px;
+      box-shadow: inset 0 0 0 1px $color-main;
+      .theme--light.v-btn:focus::before{
+        opacity: 0;
+      }
+    }
+  }
+  .v-calendar-daily_head-weekday{
+    font-size: 12px;
+  }
+  .v-calendar-daily_head-day-label{
+    .v-btn{
+      font-weight: 700;
+      height: 20px;
+      border-radius: 5px;
+    }
+  }
+  .v-calendar-daily__body{
+    display: none;
+  }
+}

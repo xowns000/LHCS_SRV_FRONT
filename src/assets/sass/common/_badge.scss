@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+.pl-badge{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 25px;
+    height: 18px;
+	line-height: 1;
+	padding: 0 5px 1px;
+	border-radius: 9px;
+	background-color: $color-org;
+	font-size: 11px;
+	color: #fff;
+    box-sizing: border-box;
+	&.is-red{background-color: $color-red;}
+    &.is-org{background-color: $color-org;}
+    &.is-yellow{background-color: $color-yellow; color: #000;}
+    &.is-blue{background-color: $color-blue;}
+    &.is-cyan{background-color: $color-cyan;}
+    &.is-indigo{background-color: $color-indigo;}
+    &.is-blueGray{background-color: $color-blueGray;}
+    &.is-green{background-color: $color-green;}
+    &.is-purple{background-color: $color-purple;}
+    &.is-main{background-color: $color-main;}
+    &.is-black{background-color: #000;}
+    &.is-white{background-color: #fff;color:#333;}
+    &.is-number{    	
+		min-width: 15px;
+		height: 15px;
+		padding: 0 4px 1px;
+    }
+    &.is-new{    	
+		min-width: 15px;
+		height: 16px;
+		padding: 0 4px 1px;
+        border-radius: 3px;
+    }	
+}

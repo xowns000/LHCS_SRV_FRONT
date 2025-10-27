@@ -1,0 +1,316 @@
+@charset "utf-8";
+
+.common-progress-dialog {
+  box-shadow: none;
+  text-align: center;
+  overflow: hidden;
+  background: transparent !important;
+  .loader-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .loader {
+      width: 200px;
+      height: 40px;
+      background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='200.799' height='39.543' viewBox='0 0 200.799 39.543'%3E%3Cdefs%3E%3CclipPath id='5os5mrmwoa'%3E%3Cpath data-name='패스 7' d='M111.643 647.9a14.354 14.354 0 0 0-14.338 14.338v20.946h6.559v-20.945a7.779 7.779 0 1 1 7.779 7.78h-7.775v6.559h7.775a14.339 14.339 0 1 0 0-28.677z' style='fill:none'/%3E%3C/clipPath%3E%3CclipPath id='0165zimzxb'%3E%3Cpath data-name='사각형 14' transform='translate(-236.586 164.197)' style='fill:none' d='M0 0h1217.639v684.922H0z'/%3E%3C/clipPath%3E%3CclipPath id='bvds0iq8vc'%3E%3Cpath data-name='패스 8' d='M93.613 670.02h10.239v6.58H93.613a3.289 3.289 0 0 1 0-6.579z' style='clip-rule:evenodd;fill:none'/%3E%3C/clipPath%3E%3CclipPath id='mcfitghkid'%3E%3Cpath data-name='패스 9' d='M146.189 654.15a8 8 0 0 0-5.747 2.376 8.188 8.188 0 0 0-1.75 8.911 8.536 8.536 0 0 0 1.75 2.585 8.19 8.19 0 0 0 8.911 1.749 8.523 8.523 0 0 0 2.581-1.746 8.21 8.21 0 0 0 1.729-2.584 8.044 8.044 0 0 0 0-6.338 7.886 7.886 0 0 0-1.722-2.574 8.519 8.519 0 0 0-2.578-1.748 8.218 8.218 0 0 0-3.174-.631zm0-6.192a14.251 14.251 0 0 1 5.572 1.119 14.259 14.259 0 0 1 7.626 7.628 14.22 14.22 0 0 1 1.111 5.09l.006.242v11.457a3.1 3.1 0 0 1-3.1 3.1h-.575a2.521 2.521 0 0 1-2.521-2.521l-.029.021a14.346 14.346 0 0 1-2.771 1.485l-.245.1-.248.091a14.464 14.464 0 0 1-10.4-.291 14.259 14.259 0 0 1-7.626-7.628 14.416 14.416 0 0 1 0-11.14 14.259 14.259 0 0 1 7.627-7.627 14.247 14.247 0 0 1 5.573-1.126z' style='fill:none'/%3E%3C/clipPath%3E%3CclipPath id='nkq83g5age'%3E%3Cpath data-name='패스 10' d='M173.808 643.642a3.1 3.1 0 0 0-3.1 3.1v26.755a3.1 3.1 0 1 0 6.192 0v-26.758a3.1 3.1 0 0 0-3.092-3.097z' style='fill:none'/%3E%3C/clipPath%3E%3CclipPath id='6u7n3pqfbf'%3E%3Cpath data-name='패스 11' d='M227.319 643.642a3.1 3.1 0 0 1 3.1 3.1v3.418h1.745a3.1 3.1 0 0 1 3.093 2.958v.138a3.1 3.1 0 0 1-3.1 3.1h-1.745v16.281a3.1 3.1 0 0 1-2.958 3.093h-.138a3.1 3.1 0 0 1-3.1-3.1v-16.28h-1.706a3.1 3.1 0 0 1-3.094-2.958v-.138a3.1 3.1 0 0 1 3.1-3.1h1.712v-3.418a3.1 3.1 0 0 1 2.958-3.094z' style='fill:none'/%3E%3C/clipPath%3E%3CclipPath id='9uvkaoongg'%3E%3Cpath data-name='패스 12' d='M248.857 643.642a3.1 3.1 0 0 1 3.1 3.1v3.418h1.743a3.1 3.1 0 0 1 3.093 2.958v.138a3.1 3.1 0 0 1-3.1 3.1h-1.746v16.281a3.1 3.1 0 0 1-2.959 3.093h-.138a3.1 3.1 0 0 1-3.1-3.1v-16.28h-1.713a3.1 3.1 0 0 1-3.093-2.958v-.138a3.1 3.1 0 0 1 3.1-3.1h1.713v-3.418a3.1 3.1 0 0 1 2.959-3.094z' style='fill:none'/%3E%3C/clipPath%3E%3CclipPath id='tv8bf86l3h'%3E%3Cpath data-name='패스 13' d='M200.563 654.15a7.985 7.985 0 0 0-4.51 1.361 7.9 7.9 0 0 0-2.556 2.732l-.039.071h14.21l-.025-.046a7.857 7.857 0 0 0-2.429-2.661l-.141-.1a7.985 7.985 0 0 0-4.51-1.357zm0-6.192A14.221 14.221 0 0 1 209.4 651a14.542 14.542 0 0 1 3.129 3.42 14.122 14.122 0 0 1 2.349 7.852c0 .4-.016.795-.05 1.2l-.028.3-.084.737h-21.968l.015.054a7.773 7.773 0 0 0 2.359 3.743l.13.113.133.112a7.867 7.867 0 0 0 5.178 1.869 6.438 6.438 0 0 0 4.426-1.3q.315-.3.673-.679a3.683 3.683 0 0 1 4.52-.637 2.754 2.754 0 0 1 .989 3.767 2.917 2.917 0 0 1-.265.378 11.781 11.781 0 0 1-2.557 2.356 13.97 13.97 0 0 1-7.786 2.305 14.248 14.248 0 0 1-5.571-1.119 14.25 14.25 0 0 1-7.626-7.628 14.416 14.416 0 0 1 0-11.14 14.259 14.259 0 0 1 7.627-7.627 14.247 14.247 0 0 1 5.57-1.118z' style='fill:none'/%3E%3C/clipPath%3E%3CclipPath id='mbsry2d27i'%3E%3Cpath data-name='패스 14' d='M276.807 654.15a7.985 7.985 0 0 0-4.51 1.361 7.9 7.9 0 0 0-2.556 2.732l-.04.071h14.211l-.025-.046a7.867 7.867 0 0 0-2.429-2.661l-.141-.1a7.985 7.985 0 0 0-4.51-1.357zm0-6.192a14.221 14.221 0 0 1 8.838 3.042 14.542 14.542 0 0 1 3.129 3.42 14.122 14.122 0 0 1 2.349 7.852c0 .4-.016.795-.05 1.2l-.028.3-.084.737h-21.969l.015.054a7.779 7.779 0 0 0 2.358 3.743l.13.113.133.112a7.872 7.872 0 0 0 5.179 1.869 6.438 6.438 0 0 0 4.426-1.3q.315-.3.673-.679a3.683 3.683 0 0 1 4.52-.637 2.754 2.754 0 0 1 .989 3.767 2.829 2.829 0 0 1-.266.378 11.778 11.778 0 0 1-2.556 2.356 13.972 13.972 0 0 1-7.786 2.305 14.248 14.248 0 0 1-5.571-1.119 14.256 14.256 0 0 1-7.627-7.628 14.428 14.428 0 0 1 0-11.14 14.256 14.256 0 0 1 7.628-7.627 14.247 14.247 0 0 1 5.57-1.118z' style='fill:none'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg data-name='그룹 57'%3E%3Cg data-name='그룹 28'%3E%3Cg data-name='그룹 27' style='clip-path:url(%235os5mrmwoa)' transform='translate(-90.324 -643.642)'%3E%3Cg data-name='그룹 26'%3E%3Cg data-name='그룹 25' style='clip-path:url(%230165zimzxb)'%3E%3Cpath data-name='사각형 13' transform='translate(94.134 644.73)' style='fill:%23e24c5f' d='M0 0h35.019v41.626H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg data-name='그룹 32'%3E%3Cg data-name='그룹 31' style='clip-path:url(%23bvds0iq8vc)' transform='translate(-90.324 -643.642)'%3E%3Cg data-name='그룹 30'%3E%3Cg data-name='그룹 29' style='clip-path:url(%230165zimzxb)'%3E%3Cpath data-name='사각형 15' transform='translate(87.153 666.849)' style='fill:%23f6d90c' d='M0 0h19.87v12.92H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg data-name='그룹 36'%3E%3Cg data-name='그룹 35' style='clip-path:url(%23mcfitghkid)' transform='translate(-90.324 -643.642)'%3E%3Cg data-name='그룹 34'%3E%3Cg data-name='그룹 33' style='clip-path:url(%230165zimzxb)'%3E%3Cpath data-name='사각형 17' transform='translate(128.702 644.787)' style='fill:%23e24c5f' d='M0 0h34.974v34.974H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg data-name='그룹 40'%3E%3Cg data-name='그룹 39' style='clip-path:url(%23nkq83g5age)' transform='translate(-90.324 -643.642)'%3E%3Cg data-name='그룹 38'%3E%3Cg data-name='그룹 37' style='clip-path:url(%230165zimzxb)'%3E%3Cpath data-name='사각형 19' transform='translate(167.541 640.471)' style='fill:%23e24c5f' d='M0 0h12.534v39.29H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg data-name='그룹 44'%3E%3Cg data-name='그룹 43' style='clip-path:url(%236u7n3pqfbf)' transform='translate(-90.324 -643.642)'%3E%3Cg data-name='그룹 42'%3E%3Cg data-name='그룹 41' style='clip-path:url(%230165zimzxb)'%3E%3Cpath data-name='사각형 21' transform='translate(216.242 640.471)' style='fill:%23e24c5f' d='M0 0h22.185v38.426H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg data-name='그룹 48'%3E%3Cg data-name='그룹 47' style='clip-path:url(%239uvkaoongg)' transform='translate(-90.324 -643.642)'%3E%3Cg data-name='그룹 46'%3E%3Cg data-name='그룹 45' style='clip-path:url(%230165zimzxb)'%3E%3Cpath data-name='사각형 23' transform='translate(237.781 640.471)' style='fill:%23e24c5f' d='M0 0h22.185v38.426H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg data-name='그룹 52'%3E%3Cg data-name='그룹 51' style='clip-path:url(%23tv8bf86l3h)' transform='translate(-90.324 -643.642)'%3E%3Cg data-name='그룹 50'%3E%3Cg data-name='그룹 49' style='clip-path:url(%230165zimzxb)'%3E%3Cpath data-name='사각형 25' transform='translate(183.076 644.787)' style='fill:%23e24c5f' d='M0 0h34.974v34.974H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg data-name='그룹 56'%3E%3Cg data-name='그룹 55' style='clip-path:url(%23mbsry2d27i)' transform='translate(-90.324 -643.642)'%3E%3Cg data-name='그룹 54'%3E%3Cg data-name='그룹 53' style='clip-path:url(%230165zimzxb)'%3E%3Cpath data-name='사각형 27' transform='translate(259.32 644.787)' style='fill:%23e24c5f' d='M0 0h34.974v34.974H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+      animation: AniFadeIn .5s ease-in;
+    }
+    .loader-icn-wrap {
+      display: flex;
+      justify-content: space-between;
+      width: 200px;
+      margin-top: 20px;
+      padding-bottom: 20px;
+      &.ani {
+        .loader-icn01,
+        .loader-icn02,
+        .loader-icn03,
+        .loader-icn04,
+        .loader-icn05 {
+          animation-name: AniLoader;
+          animation-timing-function: ease-out;
+          animation-iteration-count: infinite;
+          animation-fill-mode: forwards;
+        }
+        .loader-icn01 {
+          animation-delay: 1s;
+          animation-duration: 6s;
+        }
+        .loader-icn02 {
+          animation-delay: 2s;
+          animation-duration: 6s;
+        }
+        .loader-icn03 {
+          animation-delay: 3s;
+          animation-duration: 6s;
+        }
+        .loader-icn04 {
+          animation-delay: 4s;
+          animation-duration: 6s;
+        }
+        .loader-icn05 {
+          animation-delay: 5s;
+          animation-duration: 6s;
+        }
+        .loader-icn01,
+        .loader-icn02,
+        .loader-icn03,
+        .loader-icn04,
+        .loader-icn05 {
+          width: 26px;
+          height: 26px;
+        }
+        .loader-icn01 {
+          background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='26.079' height='26.071' viewBox='0 0 26.079 26.071'%3E%3Cdefs%3E%3CclipPath id='jgel6zmypa'%3E%3Cpath data-name='패스 3' d='m29.1 731.325-.372.372a6.846 6.846 0 0 1-7.813.946l-.156-.094-.168-.073a11.5 11.5 0 0 1-1.5-.893 31.461 31.461 0 0 1-4.629-3.893 31.512 31.512 0 0 1-3.894-4.629 11.547 11.547 0 0 1-.893-1.5l-.081-.186-.107-.173a6.776 6.776 0 0 1 .97-7.78l.391-.391a.818.818 0 0 1 1.328.073l2.128 2.69a1.948 1.948 0 0 1-.149 2.424 3.333 3.333 0 0 0 .015 4.7l5.069 5.069a3.337 3.337 0 0 0 4.716 0l.1-.1a1.849 1.849 0 0 1 2.347-.115l2.624 2.15a.889.889 0 0 1 .074 1.403zm1.615-3.476-2.623-2.15a4.51 4.51 0 0 0-5.922.292l-.1.1a.671.671 0 0 1-.945 0l-5.069-5.069a.666.666 0 0 1-.014-.929l.013-.014-.014.014.014-.014a4.609 4.609 0 0 0 .341-5.949l-2.128-2.69a3.473 3.473 0 0 0-5.3-.3l-.391.391a9.427 9.427 0 0 0-1.345 11.08s1.223 2.836 5.35 6.963 6.962 5.349 6.962 5.349a9.5 9.5 0 0 0 11.078-1.342l.372-.372a3.547 3.547 0 0 0-.279-5.36z' style='fill:none'/%3E%3C/clipPath%3E%3CclipPath id='npkzfkwirb'%3E%3Cpath data-name='사각형 6' transform='translate(-232.967 593.319)' style='fill:none' d='M0 0h716.346v402.945H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg data-name='그룹 12'%3E%3Cg data-name='그룹 11' style='clip-path:url(%23jgel6zmypa)' transform='translate(-6.001 -710.054)'%3E%3Cg data-name='그룹 10'%3E%3Cg data-name='그룹 9' style='clip-path:url(%23npkzfkwirb)'%3E%3Cpath data-name='사각형 5' transform='translate(4.136 708.189)' style='fill:%23e24c5f' d='M0 0h29.81v29.801H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+        }
+        .loader-icn02 {
+          background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='26.035' height='26.104' viewBox='0 0 26.035 26.104'%3E%3Cdefs%3E%3CclipPath id='p1axfbbk3a'%3E%3Cpath data-name='패스 4' d='m114.014 718.826-7.613-5.642a2.6 2.6 0 0 0-3.1 0l-7.613 5.642 8.086 3.677a2.606 2.606 0 0 0 2.152 0zm1.253 2.295L107 724.879a5.2 5.2 0 0 1-4.3 0l-8.263-3.758v9.826a2.606 2.606 0 0 0 2.6 2.61h15.621a2.607 2.607 0 0 0 2.6-2.61zm2.6-2.024a1.3 1.3 0 0 0-.529-1.049l-9.393-6.963a5.2 5.2 0 0 0-6.193 0l-9.393 6.963a1.3 1.3 0 0 0-.527 1.049v11.85a5.213 5.213 0 0 0 5.207 5.22h15.621a5.213 5.213 0 0 0 5.207-5.22z' style='clip-rule:evenodd;fill:none'/%3E%3C/clipPath%3E%3CclipPath id='7zumzndr5b'%3E%3Cpath data-name='사각형 8' transform='translate(-232.967 593.319)' style='fill:none' d='M0 0h716.346v402.945H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg data-name='그룹 16'%3E%3Cg data-name='그룹 15' style='clip-path:url(%23p1axfbbk3a)' transform='translate(-91.836 -710.063)'%3E%3Cg data-name='그룹 14'%3E%3Cg data-name='그룹 13' style='clip-path:url(%237zumzndr5b)'%3E%3Cpath data-name='사각형 7' transform='translate(89.97 708.197)' style='fill:%23f6d90c' d='M0 0h29.766v29.835H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+        }
+        .loader-icn03 {
+          background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='26.097' height='26.096' viewBox='0 0 26.097 26.096'%3E%3Cdefs%3E%3CclipPath id='9goc43xwwa'%3E%3Cpath data-name='패스 2' d='M184.15 723.119h7.829a1.305 1.305 0 0 0 0-2.61h-7.829a1.305 1.305 0 0 0 0 2.61zm0 3.914h5.22a1.305 1.305 0 0 0 0-2.61h-5.22a1.305 1.305 0 0 0 0 2.61zm14.353-1.957 2.61 1.957v-9.786a4.567 4.567 0 0 0-4.567-4.567h-6.524a4.564 4.564 0 0 0-4.126 2.61h5.431a7.177 7.177 0 0 1 7.176 7.176zm-18.267 7.176 3.131-2.348a1.3 1.3 0 0 1 .783-.261h7.177a4.568 4.568 0 0 0 4.567-4.567v-2.61a4.568 4.568 0 0 0-4.567-4.567H184.8a4.567 4.567 0 0 0-4.567 4.567zm2.825-16.75a7.177 7.177 0 0 1 6.961-5.432h6.524a7.177 7.177 0 0 1 7.177 7.177v12.4a1.305 1.305 0 0 1-2.088 1.043l-3.712-2.784a7.177 7.177 0 0 1-6.6 4.35h-6.742l-4.871 3.654a1.306 1.306 0 0 1-2.088-1.044v-12.4a7.18 7.18 0 0 1 5.439-6.966z' style='clip-rule:evenodd;fill:none'/%3E%3C/clipPath%3E%3CclipPath id='g5fr7arxfb'%3E%3Cpath data-name='사각형 4' transform='translate(-232.967 593.319)' style='fill:none' d='M0 0h716.346v402.945H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg data-name='그룹 8'%3E%3Cg data-name='그룹 7' style='clip-path:url(%239goc43xwwa)' transform='translate(-177.626 -710.07)'%3E%3Cg data-name='그룹 6'%3E%3Cg data-name='그룹 5' style='clip-path:url(%23g5fr7arxfb)'%3E%3Cpath data-name='사각형 3' transform='translate(175.761 708.205)' style='fill:%233bb4cf' d='M0 0h29.827v29.827H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+        }
+        .loader-icn04 {
+          background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='26.116' height='26.117' viewBox='0 0 26.116 26.117'%3E%3Cdefs%3E%3CclipPath id='jbtnp5sqxa'%3E%3Cpath data-name='패스 5' d='m265.637 712.926 1.417 9.094H278.4a1.1 1.1 0 0 1 0 2.177h-11.346l-1.417 9.094 20.631-10.183zm-.864-2.79 24.252 11.97a1.167 1.167 0 0 1 0 2l-24.252 11.97a.825.825 0 0 1-.363.087.888.888 0 0 1-.716-.391 1.222 1.222 0 0 1-.2-.892l1.834-11.776-1.834-11.775a1.19 1.19 0 0 1 .334-1.044.826.826 0 0 1 .945-.149z' style='fill:none'/%3E%3C/clipPath%3E%3CclipPath id='o1qb04x7gb'%3E%3Cpath data-name='사각형 10' transform='translate(-232.967 593.319)' style='fill:none' d='M0 0h716.346v402.945H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg data-name='그룹 20'%3E%3Cg data-name='그룹 19' style='clip-path:url(%23jbtnp5sqxa)' transform='translate(-263.478 -710.05)'%3E%3Cg data-name='그룹 18'%3E%3Cg data-name='그룹 17' style='clip-path:url(%23o1qb04x7gb)'%3E%3Cpath data-name='사각형 9' transform='translate(261.612 708.184)' style='fill:%233baea4' d='M0 0h29.847v29.848H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+        }
+        .loader-icn05 {
+          background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='26.097' height='26.097' viewBox='0 0 26.097 26.097'%3E%3Cdefs%3E%3CclipPath id='eosqu031ia'%3E%3Cpath data-name='패스 1' d='M365.007 720.509a1.305 1.305 0 1 1-1.3 1.305 1.306 1.306 0 0 1 1.3-1.305zm-5.219 0a1.305 1.305 0 1 1-1.3 1.305 1.305 1.305 0 0 1 1.3-1.305zm11.743 0v2.61h1.3v-2.61zm-19.572 0v2.61h1.3v-2.61zm16.962-3.262v9.134a.654.654 0 0 1-.652.652h-11.743a.654.654 0 0 1-.653-.652v-9.134a.651.651 0 0 1 .191-.462.657.657 0 0 1 .462-.191h11.743a.652.652 0 0 1 .652.653zm-1.846 12.4h-9.357l-1.845 1.845v1.417a.652.652 0 0 0 .653.652h11.743a.652.652 0 0 0 .652-.652v-1.417zm-.763-15.658v-2.61a1.3 1.3 0 1 1 2.609 0v2.675a3.264 3.264 0 0 1 2.61 3.2v.652h2.61a1.306 1.306 0 0 1 1.305 1.3v5.219a1.305 1.305 0 0 1-1.305 1.305h-2.61v.653a3.261 3.261 0 0 1-1.37 2.656l.988.988a1.307 1.307 0 0 1 .382.922v1.958a3.262 3.262 0 0 1-3.262 3.262h-11.743a3.261 3.261 0 0 1-3.262-3.262v-1.958a1.306 1.306 0 0 1 .381-.922l.987-.988a3.341 3.341 0 0 1-.413-.35 3.258 3.258 0 0 1-.955-2.306v-.653h-2.61a1.3 1.3 0 0 1-1.3-1.305V719.2a1.3 1.3 0 0 1 1.3-1.3h2.61v-.652a3.262 3.262 0 0 1 2.609-3.2v-2.675a1.305 1.305 0 0 1 2.61 0v2.61z' style='clip-rule:evenodd;fill:none'/%3E%3C/clipPath%3E%3CclipPath id='f0i2jfaerb'%3E%3Cpath data-name='사각형 2' transform='translate(-232.967 593.319)' style='fill:none' d='M0 0h716.346v402.945H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg data-name='그룹 4'%3E%3Cg data-name='그룹 3' style='clip-path:url(%23eosqu031ia)' transform='translate(-349.349 -710.07)'%3E%3Cg data-name='그룹 2'%3E%3Cg data-name='그룹 1' style='clip-path:url(%23f0i2jfaerb)'%3E%3Cpath data-name='사각형 1' transform='translate(347.484 708.205)' style='fill:%236e6cae' d='M0 0h29.827v29.827H0z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+        }
+      }
+    }
+    .loader-morph {
+      .loader-morph-p1,
+      .loader-morph-p2,
+      .loader-morph-p3 {
+        border: 10px solid #EDE028;
+      }
+      .loader-morph-p1 {
+        border-color: #EDE028;
+      }
+      .loader-morph-p2 {
+        border-color: #EB6572;
+      }
+      .loader-morph-p3 {
+        border-color: #7564AB;
+      }
+    }
+  }
+  // dot circle
+  .lds-roller {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-roller div {
+    animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    transform-origin: 40px 40px;
+  }
+  .lds-roller div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    margin: -4px 0 0 -4px;
+  }
+  .lds-roller div:nth-child(1) {
+    animation-delay: -0.036s;
+  }
+  .lds-roller div:nth-child(1):after {
+    top: 63px;
+    left: 63px;
+  }
+  .lds-roller div:nth-child(2) {
+    animation-delay: -0.072s;
+  }
+  .lds-roller div:nth-child(2):after {
+    top: 68px;
+    left: 56px;
+  }
+  .lds-roller div:nth-child(3) {
+    animation-delay: -0.108s;
+  }
+  .lds-roller div:nth-child(3):after {
+    top: 71px;
+    left: 48px;
+  }
+  .lds-roller div:nth-child(4) {
+    animation-delay: -0.144s;
+  }
+  .lds-roller div:nth-child(4):after {
+    top: 72px;
+    left: 40px;
+  }
+  .lds-roller div:nth-child(5) {
+    animation-delay: -0.18s;
+  }
+  .lds-roller div:nth-child(5):after {
+    top: 71px;
+    left: 32px;
+  }
+  .lds-roller div:nth-child(6) {
+    animation-delay: -0.216s;
+  }
+  .lds-roller div:nth-child(6):after {
+    top: 68px;
+    left: 24px;
+  }
+  .lds-roller div:nth-child(7) {
+    animation-delay: -0.252s;
+  }
+  .lds-roller div:nth-child(7):after {
+    top: 63px;
+    left: 17px;
+  }
+  .lds-roller div:nth-child(8) {
+    animation-delay: -0.288s;
+  }
+  .lds-roller div:nth-child(8):after {
+    top: 56px;
+    left: 12px;
+  }
+  @keyframes lds-roller {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+// mark: chart loading
+.pl-chart-loading {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  .pl-chart-loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #DADFF2;
+    border-bottom-color: $color-main;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 3s linear infinite;
+  }
+  @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+  }
+}
+.pl-chart-nodata {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  background: #f9f9f9;
+  border-radius: 10px;
+  &::after {
+    content: 'NO DATA';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(calc(-50% + 20px), -50%);
+    color: #DDD;
+    // animation: noData-fade 2s ease infinite;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 36px;
+    height: 36px;
+    transform: translate( calc(-50% - 50px), calc(-50% + 2px));
+    background-image: url("data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24.27 29.4L21.255 24.18C22.725 23.1 23.745 21.42 23.955 19.5H30C29.745 23.64 27.525 27.24 24.27 29.4ZM19.5 10.545V4.5C25.95 4.89 31.11 10.05 31.5 16.5H25.455C25.11 13.365 22.635 10.89 19.5 10.545ZM10.5 18.75C10.5 19.71 10.695 20.625 11.07 21.45L5.85 24.465C4.98 22.74 4.5 20.805 4.5 18.75C4.5 11.955 9.81 6.405 16.5 6V12.045C13.125 12.42 10.5 15.27 10.5 18.75ZM17.25 31.5C12.795 31.5 8.88 29.25 6.6 25.77L11.82 22.755C13.05 24.42 15 25.5 17.25 25.5C18.21 25.5 19.125 25.305 19.95 24.93L22.965 30.15C21.24 31.02 19.305 31.5 17.25 31.5Z' fill='%238B8B8B'/%3E%3C/svg%3E%0A");
+    animation: noData-circle 2s linear infinite;
+  }
+  .pl-chart-loader {
+    display: none;
+  }
+}
+
+// mark: typing loader
+.pl-typing-loader{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  height: 23px;
+  & > span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 7px;
+    height: 7px;
+    background: black;
+    border-radius: 20px;
+    animation: typing-loader 0.8s infinite alternate;
+
+    &:nth-of-type(2) {
+      animation-delay: 0.2s;
+    }
+    &:nth-of-type(3) {
+      animation-delay: 0.6s;
+    }
+  }
+
+  @keyframes typing-loader {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 0.1;
+      transform: scale(1);
+    }
+  }
+
+}
+
+@keyframes AniFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(.9);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes AniLoader {
+  0%,
+  16%,
+  100% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(-20%);
+    opacity: 1;
+  }
+  13% {
+    transform: translateY(-10%);
+  }
+};

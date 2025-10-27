@@ -1,0 +1,141 @@
+@charset "utf-8";
+
+.pl-cols {
+  display: flex;
+  > * {
+    flex: 1 0 0px;
+    min-width: 0;
+    max-width: 100%;
+    width: auto;
+    &:first-child {
+      margin-left: 0 !important;
+    }
+  }
+  > .pl-split {
+    margin-left: 10px;
+    margin-right: 0;
+  }
+  > .is-col-fix,
+  > .pl-unit,
+  > .pl-split,
+  > button,
+  > .pl-btn,
+  > .col-fix,
+  > .unit,
+  > .split,
+  > .v-chip,
+  > label,
+  > .is-value {
+    flex: 0 1 auto;
+  }
+  .is-col-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 0 1 auto;
+    > div {
+      text-align: center;
+    }
+    button {
+      margin: 3px 0;
+    }
+  }
+  > .pl-card + .pl-card {
+    margin-top: 0;
+  }
+  > .pl-box + .pl-box {
+    margin-top: 0;
+  }
+  & + & {
+    margin-top: 20px;
+  }
+  &.is-hidden + & {
+    margin-top: 0;
+  }
+  &.is-space-0 {
+    > * {
+      margin-left: 0 !important;
+    }
+    > .pl-list-form,
+    > .pl-split {
+      margin-left: 0;
+    }
+  }
+  &.is-space-5 {
+    > * {
+      margin-left: 5px !important;
+      &:first-child {
+        margin-left: 0 !important;
+      }
+    }
+    > .pl-list-form,
+    > .pl-split {
+      margin-left: 5px;
+    }
+  }
+  &.is-space-10 {
+    > * {
+      margin-left: 10px !important;
+      &:first-child {
+        margin-left: 0 !important;
+      }
+    }
+    > .pl-list-form,
+    > .pl-split {
+      margin-left: 10px;
+    }
+  }
+  &.is-space-15 {
+    > * {
+      margin-left: 15px !important;
+      &:first-child {
+        margin-left: 0 !important;
+      }
+    }
+    > .pl-list-form,
+    > .pl-split {
+      margin-left: 15px;
+    }
+  }
+  &.is-space-20 {
+    > * {
+      margin-left: 20px !important;
+      &:first-child {
+        margin-left: 0 !important;
+      }
+    }
+    > .pl-list-form,
+    > .pl-split {
+      margin-left: 20px;
+    }
+  }
+  > .pl-label {
+    margin-right: 0;
+  }
+  > .pl-unit {
+    min-width: 10px;
+  }
+}
+
+th,
+td {
+  .pl-cols {
+    > * {
+      margin-left: 2px !important;
+      &:first-child {
+        margin-left: 0 !important;
+      }
+    }
+    > .pl-split {
+      margin-left: 8px !important;
+      margin-right: 6px;
+    }
+    & + .pl-cols {
+      margin-top: 2px;
+    }
+    > .pl-selection + .pl-selection {
+      margin-left: 2px;
+    }
+  }
+}

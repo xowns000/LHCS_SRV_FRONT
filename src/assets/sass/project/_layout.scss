@@ -1,0 +1,139 @@
+@charset "utf-8";
+
+html,
+body {
+  height: 100%;
+  overflow-y: hidden;
+}
+body {
+  background-color: $color-bg;
+}
+body > div.pl-palette {
+  height: 100%;
+  &.development-class{
+    overflow-y: auto;
+  }
+  &.production-class{
+    overflow-y: hidden;
+  }
+  &.SVY {
+    overflow-y: auto !important;
+  }
+}
+
+.frame-layout {
+  height: 100%;
+  > .v-application--wrap {
+    display: flex;
+    flex-direction: column;
+    min-width: 1900px;
+    min-height: 900px;
+    height: 100%;
+    > header {
+      flex: 0 0 auto;
+      height: 70px;
+    }
+    > main {
+      flex: 1 1 auto;
+      > .v-main__wrap {
+        display: flex;
+        .is-layout-center {
+          width: auto;
+          max-width: 100%;
+          flex: 1 1 auto;
+          display: flex;
+          flex-direction: column;
+          // padding: 0 69px 0 60px;
+          padding: 0 0 0 60px;
+        }
+        .pl-layout-contents {
+          flex: 1 1 auto;
+          min-height: 0;
+          padding-right: 69px;
+          background-color: $color-bg;
+        }
+        .pl-layout-footer {
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          height: 35px;
+          padding-left: 15px;
+          background-color: #e5e9ed;
+        }
+      }
+    }
+  }
+}
+.pl-left-nav {
+  background-color: #64748b;
+  .v-navigation-drawer__content {
+    overflow-y: hidden;
+    padding-top: 8px;
+    background-color: #64748b;
+  }
+}
+.pl-left-nav-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 13px;
+  padding-right: 2px;
+}
+.pl-nav-btn {
+  display: inline-block;
+  width: 48px;
+  height: 46px;
+  border-radius: 6px;
+  cursor: pointer;
+  i {
+    opacity: 0.9;
+  }
+  &:hover {
+    background-color: #344b6b;
+    i {
+      opacity: 0.7;
+    }
+  }
+}
+.pl-sublayout-top {
+  padding: 14px 22px;
+  border-bottom: 1px solid $color-border;
+  > div {
+    position: relative;
+  }
+  &-h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: $color-font-focus;
+  }
+  &-desc {
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 17px;
+    color: $color-font-focus;
+  }
+  &-breadcrumb{
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 13px;
+    font-weight: 400;
+    color: $color-font-focus;
+  }
+  .is-subcondition {
+    position: absolute;
+    z-index: 1;
+    background: #FFF;
+    left: -14px;
+    right: -14px;
+    padding: 0 14px 14px 14px;
+    border-bottom: 1px solid $color-border;
+  }
+}
+
+// card width
+
+
+
+

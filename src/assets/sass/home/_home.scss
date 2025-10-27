@@ -1,0 +1,323 @@
+@charset "utf-8";
+// layout
+.pl-container.type-home {
+  display: flex;
+  gap: 16px;
+  .pl-home-status {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .pl-card-top,
+  .pl-card {
+    padding: 16px 20px;
+  }
+
+  // 상담원정보
+  .pl-home-cs-info-wrap {
+    .pl-card-top {
+      flex-direction: column;
+      align-items: start ;
+      .pl-home-cs-my {
+        display: flex;
+        .pl-portrait {
+          position: relative;
+          width: 69px;
+          height: 69px;
+          img {
+            overflow: hidden;
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            background-image: linear-gradient(#fff, #fff), linear-gradient(to right, #909090 0%, #C6C6C6 100%);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+          }
+          &.alert {
+            &::before {
+              content: '';
+              display: block;
+              position: absolute;
+              right: 0;
+              bottom: 0;
+              width: 27px;
+              height: 27px;
+              background: #FFFFFF;
+              border-radius: 50%;
+              border: 2px solid #FF9595;
+            }
+            &::after {
+              content: '';
+              display: block;
+              position: absolute;
+              right: 3px;
+              bottom: 5px;
+              width: 20px;
+              height: 20px;
+              background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.0968 12.1039V16.9699H3.90344V12.1039C3.90344 8.67404 6.46637 5.98993 9.50011 5.98993C12.5338 5.98993 15.0968 8.67404 15.0968 12.1039Z' fill='%23FFB9B9' stroke='%23FF5C5C' stroke-width='1.5'/%3E%3Cpath d='M17.25 17.2C17.25 17.8168 16.781 18.25 16.3 18.25H2.7C2.21903 18.25 1.75 17.8168 1.75 17.2C1.75 16.5833 2.21903 16.15 2.7 16.15H16.3C16.781 16.15 17.25 16.5833 17.25 17.2Z' fill='%23FFBCBC' stroke='%23FF5C5C' stroke-width='1.5'/%3E%3Cpath d='M9.50002 4.5C9.49083 4.5 9.47778 4.49697 9.46274 4.48104C9.44722 4.4646 9.43335 4.43717 9.43335 4.4V2.6C9.43335 2.56282 9.44722 2.53539 9.46274 2.51895C9.47778 2.50303 9.49083 2.5 9.50002 2.5C9.50921 2.5 9.52225 2.50303 9.53729 2.51895C9.55282 2.53539 9.56668 2.56282 9.56668 2.6V4.4C9.56668 4.43717 9.55282 4.4646 9.53729 4.48104C9.52225 4.49697 9.50921 4.5 9.50002 4.5Z' stroke='%23FF5C5C'/%3E%3Cmask id='path-4-inside-1_919_3279' fill='white'%3E%3Cpath d='M4.39994 6.19994C4.25493 6.19994 4.10998 6.14132 3.99931 6.02414L2.29931 4.22414C2.07797 3.98978 2.07797 3.6101 2.29931 3.37568C2.52065 3.14126 2.87923 3.14132 3.10063 3.37568L4.80063 5.17568C5.02197 5.41004 5.02197 5.78972 4.80063 6.02414C4.6899 6.14132 4.54495 6.19994 4.39994 6.19994Z'/%3E%3C/mask%3E%3Cpath d='M3.99931 6.02414L5.08982 4.9942L5.08982 4.9942L3.99931 6.02414ZM2.29931 4.22414L1.20879 5.25408L1.20879 5.25408L2.29931 4.22414ZM3.10063 3.37568L4.19115 2.34575L4.19102 2.34561L3.10063 3.37568ZM4.80063 5.17568L3.71011 6.20562L3.71011 6.20562L4.80063 5.17568ZM4.80063 6.02414L5.89088 7.05435L5.89128 7.05394L4.80063 6.02414ZM4.39994 4.69994C4.66508 4.69994 4.91539 4.80951 5.08982 4.9942L2.90879 7.05408C3.30456 7.47313 3.84478 7.69994 4.39994 7.69994V4.69994ZM5.08982 4.9942L3.38983 3.19421L1.20879 5.25408L2.90879 7.05408L5.08982 4.9942ZM3.38983 3.19421C3.71453 3.53801 3.71435 4.06192 3.38996 4.40548L1.20865 2.34589C0.441586 3.15828 0.441402 4.44155 1.20879 5.25408L3.38983 3.19421ZM3.38996 4.40548C3.01908 4.79827 2.3805 4.79769 2.01024 4.40576L4.19102 2.34561C3.37797 1.48495 2.02221 1.48426 1.20865 2.34589L3.38996 4.40548ZM2.01011 4.40562L3.71011 6.20562L5.89115 4.14575L4.19115 2.34575L2.01011 4.40562ZM3.71011 6.20562C3.38541 5.86181 3.38559 5.3379 3.70998 4.99434L5.89128 7.05394C6.65835 6.24154 6.65853 4.95827 5.89115 4.14575L3.71011 6.20562ZM3.71037 4.99393C3.8846 4.80954 4.13473 4.69994 4.39994 4.69994V7.69994C4.95517 7.69994 5.4952 7.4731 5.89088 7.05435L3.71037 4.99393Z' fill='%23FF5C5C' mask='url(%23path-4-inside-1_919_3279)'/%3E%3Cmask id='path-6-inside-2_919_3279' fill='white'%3E%3Cpath d='M14.6 6.19992C14.455 6.19992 14.31 6.1413 14.1993 6.02412C13.978 5.78976 13.978 5.41008 14.1993 5.17566L15.8993 3.37566C16.1207 3.1413 16.4793 3.1413 16.7007 3.37566C16.9221 3.61002 16.922 3.9897 16.7007 4.22412L15.0007 6.02412C14.8899 6.1413 14.745 6.19992 14.6 6.19992Z'/%3E%3C/mask%3E%3Cpath d='M14.1993 5.17566L13.1088 4.14572L13.1087 4.14586L14.1993 5.17566ZM15.8993 3.37566L14.8088 2.34572L15.8993 3.37566ZM16.7007 4.22412L17.7912 5.25405L17.7913 5.25392L16.7007 4.22412ZM15.0007 6.02412L16.0909 7.05433L16.0912 7.05405L15.0007 6.02412ZM14.6 4.69992C14.8651 4.69992 15.1154 4.80949 15.2898 4.99418L13.1088 7.05405C13.5046 7.47311 14.0448 7.69992 14.6 7.69992V4.69992ZM15.2898 4.99418C15.6146 5.33799 15.6144 5.8619 15.29 6.20545L13.1087 4.14586C12.3416 4.95826 12.3414 6.24153 13.1088 7.05405L15.2898 4.99418ZM15.2898 6.20559L16.9898 4.4056L14.8088 2.34572L13.1088 4.14572L15.2898 6.20559ZM16.9898 4.4056C16.6192 4.79807 15.9807 4.79786 15.6103 4.40574L17.791 2.34558C16.9778 1.48474 15.6222 1.48453 14.8088 2.34572L16.9898 4.4056ZM15.6103 4.40574C15.2853 4.06173 15.2858 3.53771 15.61 3.19432L17.7913 5.25392C18.5582 4.44168 18.5588 3.15831 17.791 2.34558L15.6103 4.40574ZM15.6101 3.19418L13.9101 4.99418L16.0912 7.05405L17.7912 5.25405L15.6101 3.19418ZM13.9104 4.9939C14.0846 4.80952 14.3348 4.69992 14.6 4.69992V7.69992C15.1552 7.69992 15.6952 7.47307 16.0909 7.05433L13.9104 4.9939Z' fill='%23FF5C5C' mask='url(%23path-6-inside-2_919_3279)'/%3E%3C/svg%3E%0A");
+              animation: blink 1s step-end infinite;
+
+            }
+          }
+        }
+
+      }
+      .pl-home-cs-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 12px;
+        color: $color-font-sub;
+
+      }
+    }
+    .pl-home-cs-today {
+      &-list-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 18px;
+        > div {
+          display: flex;
+          padding: 14px;
+          background: #F4F4F4;
+          border-radius: 5px;
+          .pl-home-cs-today-list-title{
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            .pl-home-cs-today-list-title-subject{
+
+            }
+            .pl-home-cs-today-list-title-count{
+              margin-top: 12px;
+              strong {
+                font-size: 16px;
+              }
+            }
+          }
+          .pl-home-cs-today-list-status {
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-items: end;
+            margin-left: auto;
+            line-height: 1;
+            > div {
+              display: flex;
+              align-items: center;
+              margin-top: 12px;
+              > strong{
+                width: 55px;
+                margin-left: 6px;
+                font-size: 16px;
+                text-align: right;
+                > sub {
+                  bottom: 0;
+                }
+              }
+            }
+          }
+
+        }
+
+      }
+
+    }
+    .pl-home-cs-weekly {
+      &-list-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 18px;
+        border-top: 1px solid $color-border;
+        > div {
+          margin-top: 16px;
+          display: flex;
+          flex-direction: column;
+          .pl-home-cs-weekly-list-unit {
+            display: flex;
+            align-items: center;
+            margin-top: 12px;
+            &-title {
+              width: 105px;
+            }
+            .pl-monitor-progress {
+              flex: 0 0 245px;
+            }
+          }
+        }
+      }
+
+    }
+
+  }
+
+  // 전화상담
+  .pl-home-call-wrap {
+    .pl-home-call-title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+    canvas {
+      height: 170px !important;
+    }
+  }
+  .pl-home-call-info {
+    display: flex;
+    justify-content: space-between;
+    > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      strong {
+        font-size: 18px;
+      }
+      span {}
+    }
+  }
+
+
+  // sns 상담
+  .pl-home-sns-wrap {
+    position: relative;
+    display: flex;
+    gap: 68px;
+    &-title{
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .pl-home-sns-chart-wrap{
+      position: relative;
+      flex: 1 1 50%;
+      canvas {
+        width: 300px;
+        height: 130px !important;
+      }
+      .pl-home-sns-em-txt {
+        position: absolute;
+        top: 76px;
+        left: 73px;
+        width: 56px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        > strong {
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 1;
+        }
+        > span {
+          display: block;
+        }
+
+      }
+    }
+    .pl-home-sns-info-wrap {
+      flex: 1 1 50%;
+      &-detail {
+        >strong {
+          display: block;
+          margin-top: 12px;
+          font-weight: 700;
+          font-size: 22px;
+        }
+      }
+      &-detail-ch{
+        display: flex;
+        margin-top: 12px;
+        padding-top: 12px;
+        gap: 8px;
+        border-top: 1px solid $color-border;
+      }
+    }
+  }
+
+  // calendar
+  .pl-home-calendar-wrap {
+    height: auto;
+    .pl-home-calendar-today {
+      align-self: flex-start;
+    }
+    .pl-calendar .v-date-picker-table {
+      padding-bottom: 0;
+    }
+    .pl-home-calendar-info {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #F1F1F1;
+      padding: 12px 12px 0;
+      > div {
+        text-align: center;
+        > span {
+          display: block;
+          padding-top: 8px;
+          line-height: 1;
+        }
+        > strong {
+          display: block;
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 1;
+        }
+      }
+
+    }
+    .pl-home-calendar-card-wrap {
+      display: flex;
+      flex-direction: column;
+      margin-top: 18px;
+      border-radius: 10px;
+      background: #F4F9FE;
+
+      .pl-home-calendar-card-list{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 20px;
+        border-top: 1px solid #EBEFF3;
+        color: $color-font-focus;
+        > strong {
+          font-size: 16px;
+          font-weight: 700;
+        }
+        &:first-child {
+          border-top: 0;
+        }
+      }
+    }
+  }
+
+  // bbs
+  .pl-home-bbs-wrap {
+    flex: 1;
+    .v-tabs-bar,
+    .v-tabs-items {
+      background: transparent;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10%, 0);
+  }
+  to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0);
+  }
+  to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}

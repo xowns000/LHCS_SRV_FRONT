@@ -1,0 +1,386 @@
+@charset "utf-8";
+// layout
+.pl-container.type-mainchat {
+  display: grid;
+  gap: 16px;
+  .pl-mainchat-csinfo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    &.expand-history {
+      .pl-mainchat-csinfo-cus {
+        height: auto !important;
+        .pl-card {
+          display: none;
+        }
+      }
+      .pl-mainchat-csinfo-history-research{
+        height: calc(100vh - 422px);
+      }
+      .pl-mainchat-csinfo-cus.expand {
+        height: 220px !important;
+        .pl-card {
+          display: flex;
+        }
+        & + .pl-mainchat-csinfo-history  {
+          .pl-card {
+            display: block;
+            .pl-chat-history-list {
+              height: 370px !important;
+            }
+            // .pl-mainchat-csinfo-history-research{
+            //   height: calc(100vh - 555px) !important;
+            // }
+          }
+
+        }
+      }
+    }
+  }
+  .pl-card-top,
+  .pl-card {
+    padding: 20px;
+  }
+  .pl-mainchat-csinfo-history-research{
+    overflow-y: auto;
+    height: calc(100vh - 555px);
+  }
+
+}
+
+// 채팅 입력
+.pl-chat-input{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $color-border;
+  border-radius: 5px;
+  &-text-wrap {
+    position: relative;
+    flex: 1;
+    padding: 12px;
+    .v-textarea {
+      height: 100%;
+      textarea {
+        padding-right: 40px;
+      }
+    }
+    .pl-tooltip-btn {
+      position: absolute;
+      top: 50%;
+      right: 26px;
+      transform: translateY(-50%);
+    }
+  }
+  &-bottom {
+    padding: 12px;
+    border-top: 1px solid $color-border;
+  }
+}
+
+// 고객정보
+.pl-form-inline-wrap.type-mainchat {
+  flex-wrap: wrap;
+  gap: 8px;
+  .pl-form-inline {
+    flex: 1 0 calc(50% - 10px);
+    align-self: flex-start;
+    min-height: auto;
+    gap: 26px;
+    .pl-label {
+      flex: 0 0 113px;
+      align-self: flex-start;
+      padding-top: 0;
+      word-break: break-all;
+      white-space: normal;
+    }
+    .pl-desc {
+
+    }
+  }
+}
+
+.pl-mainchat-csinfo-cus {
+  &.expand {
+    height: calc(100vh - 201px) !important;
+    & + .pl-mainchat-csinfo-history  > .pl-card {
+      display: none;
+    }
+  }
+  .pl-portrait {
+    position: relative;
+    width: 66px;
+    height: 66px;
+    cursor: pointer;
+    > img {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+    &.vip {
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 29px;
+        height: 29px;
+        background-image: url("data:image/svg+xml,%3Csvg width='29' height='29' viewBox='0 0 29 29' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.5 28C21.9558 28 28 21.9558 28 14.5C28 7.04416 21.9558 1 14.5 1C7.04416 1 1 7.04416 1 14.5C1 21.9558 7.04416 28 14.5 28Z' fill='%23FB8518' stroke='white' stroke-width='2'/%3E%3C/svg%3E%0A");
+      }
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 4px;
+        bottom: 5px;
+        width: 20px;
+        height: 20px;
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 2C5.58065 2 2 5.58065 2 10C2 14.4194 5.58065 18 10 18C14.4194 18 18 14.4194 18 10C18 5.58065 14.4194 2 10 2ZM12.5806 7.41935C13.1516 7.41935 13.6129 7.88065 13.6129 8.45161C13.6129 9.02258 13.1516 9.48387 12.5806 9.48387C12.0097 9.48387 11.5484 9.02258 11.5484 8.45161C11.5484 7.88065 12.0097 7.41935 12.5806 7.41935ZM7.41935 7.41935C7.99032 7.41935 8.45161 7.88065 8.45161 8.45161C8.45161 9.02258 7.99032 9.48387 7.41935 9.48387C6.84839 9.48387 6.3871 9.02258 6.3871 8.45161C6.3871 7.88065 6.84839 7.41935 7.41935 7.41935ZM13.7032 12.9097C12.7839 14.0129 11.4355 14.6452 10 14.6452C8.56452 14.6452 7.21613 14.0129 6.29677 12.9097C5.85806 12.3839 6.65161 11.7258 7.09032 12.2484C7.8129 13.1161 8.87097 13.6097 10 13.6097C11.129 13.6097 12.1871 13.1129 12.9097 12.2484C13.3419 11.7258 14.1387 12.3839 13.7032 12.9097Z' fill='white'/%3E%3C/svg%3E%0A");
+      }
+    }
+    &.alert {
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 29px;
+        height: 29px;
+        background-image: url("data:image/svg+xml,%3Csvg width='29' height='29' viewBox='0 0 29 29' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.5 28C21.9558 28 28 21.9558 28 14.5C28 7.04416 21.9558 1 14.5 1C7.04416 1 1 7.04416 1 14.5C1 21.9558 7.04416 28 14.5 28Z' fill='%23E64040' stroke='white' stroke-width='2'/%3E%3C/svg%3E%0A");
+      }
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 4px;
+        bottom: 6px;
+        width: 20px;
+        height: 20px;
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.0002 3C13.1868 3 15.7778 5.58141 15.7778 8.75613V14.8245H4.22253V8.75613C4.22253 5.58141 6.81362 3 10.0002 3Z' fill='white' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16.6553 14.8246H3.34473C3.15432 14.8246 3 14.9784 3 15.1681V16.6566C3 16.8463 3.15432 17 3.34473 17H16.6553C16.8457 17 17 16.8463 17 16.6566V15.1681C17 14.9784 16.8457 14.8246 16.6553 14.8246Z' fill='white' stroke='white' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.5 8.79768C6.5 7.03857 7.97317 5.61255 9.80154 5.61255' stroke='%23E54040' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+        animation: blink 1s step-end infinite;
+
+      }
+    }
+  }
+  .pl-card-top-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 110px;
+    display: inherit;
+  }
+}
+.pl-container.type-mainchat {
+  .pl-portrait {
+    width: 46px;
+    height: 46px;
+    &::before {
+      right: -6px;
+      bottom: -5px;
+    }
+    &::after {
+      right: -2px;
+      bottom: -1px;
+
+    }
+    &.alert {
+      &::before {
+        right: -6px;
+        bottom: -5px;
+      }
+      &::after {
+        right: -2px;
+        bottom: 0px;
+
+      }
+    }
+    & + div {
+      position: relative;
+      flex: 1;
+      .pl-btn-wrap {
+        position: absolute;
+        top: 0;
+        left: 130px;
+      }
+    }
+  }
+}
+
+// 통합접촉이력
+.pl-mainchat-csinfo-history{
+
+}
+// 채팅목록 선택 : 이메일
+.pl-chat-email-wrap{
+  flex: 1;
+  &-top {
+    display: flex;
+    gap: 12px;
+    .is-email{
+      flex: 0 0 30px;
+    }
+    &-date{
+      text-align: right;
+      flex: 0 0 120px;
+    }
+  }
+  &-title {}
+  &-desc {}
+  &-content {
+    overflow-y: auto;
+    height: calc(100vh - 393px);
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid $color-border;
+
+  }
+  .is-mainchat-slide  {
+    transform: translateX(0px);
+  }
+}
+
+// 상담목록
+.pl-mainchat-cs-list {
+  &-top {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    &-date {
+      font-size: 16px;
+      font-weight: 700;
+      color: $color-font-focus;
+    }
+    &-manager {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      > img {
+        overflow: hidden;
+        border-radius: 50%;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        background-image: linear-gradient(#fff, #fff), linear-gradient(to right, #909090 0%, #C6C6C6 100%);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+      }
+    }
+  }
+  &-status {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      > strong {
+        font-weight: 400;
+      }
+      > span{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 25px;
+        margin-top: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        background: #F8F8F8;
+        border-radius: 80px;
+        cursor: pointer;
+        transition: all $easing-time;
+        &:hover{
+          background: $color-bg-hover-btn;
+        }
+      }
+    }
+    .status-span {
+      span {
+        color: $color-error;
+        background: #FFF3F3;
+        border: 1px solid;
+
+      }
+    }
+    &.filter-all{
+      .status-all {
+        @extend .status-span;
+      }
+    }
+    &.filter-wait{
+      .status-wait {
+        @extend .status-span;
+      }
+    }
+    &.filter-cs{
+      .status-cs {
+        @extend .status-span;
+      }
+    }
+    &.filter-done{
+      .status-done {
+        @extend .status-span;
+      }
+    }
+    &.filter-after{
+      .status-after {
+        @extend .status-span;
+      }
+    }
+    &.filter-bookmark{
+      .status-bookmark {
+        @extend .status-span;
+      }
+    }
+  }
+  &-unit-wrap {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    // height: 470px;
+    height: calc(100vh - 520px);
+    // height: calc(100vh - 479px);
+    margin-top: 12px;
+    padding-bottom: 10px;
+    &-bottom{
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 10px;
+      display: block;
+      height: 20px;
+      background: linear-gradient(0deg, white 0%, #ffffff 50%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .pl-mainchat-cs-list-unit {
+      display: flex;
+      padding: 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #F5F5F5;
+      border-radius: 5px;
+
+      &.active{
+        // background: #f3f7ff;
+        background: color-mix(in srgb,var(--primary-color),#fff 91%);
+        // box-shadow: inset 0 0 1px 1px #bac4ff;
+        box-shadow: inset 0 0 1px 1px var(--primary-color);
+        filter: saturate(120%);
+        box-sizing: border-box;
+      }
+      &:hover {
+        // background: #f3f7ff;
+        background: color-mix(in srgb,var(--primary-color),#fff 91%);
+        filter: saturate(120%);
+      }
+    }
+
+  }
+  // tabs bg
+  .theme--light.v-tabs-items {
+    background: transparent;
+  }
+
+}

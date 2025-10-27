@@ -1,0 +1,194 @@
+@charset "utf-8";
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 4px;
+  background: rgba($color-scrollbar, .1);
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba($color-scrollbar, .1);
+  border-radius: 4px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba($color-scrollbar, .5);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+
+.pl-cols .is-vrt:hover::-webkit-scrollbar,/* 마우스 hover 시 스크롤바 스타일 변경 */
+.pl-note-list-wrap:hover::-webkit-scrollbar,
+.pl-alarm-list-wrap:hover::-webkit-scrollbar,
+.pl-campaign-list:hover::-webkit-scrollbar,
+.pl-chat-history-list:hover::-webkit-scrollbar,
+.pl-mainchat-csinfo-history-rsearch:hover::-webkit-scrollbar,
+.pl-chatting-log:hover::-webkit-scrollbar,
+.pl-right-chatgpt-type01:hover::-webkit-scrollbar,
+.pl-chatgpt-recent-list:hover::-webkit-scrollbar,
+.pl-mainchat-cs-list-unit-wrap:hover::-webkit-scrollbar,
+.pl-right-kms-detail-content:hover::-webkit-scrollbar,
+.pl-scroll-box:hover::-webkit-scrollbar,
+.pl-phone-sample-list-wrap:hover::-webkit-scrollbar,
+.pl-chatgpt-setting-body:hover::-webkit-scrollbar,
+.pl-dialog-body:hover::-webkit-scrollbar,
+.pl-scroll-body:hover::-webkit-scrollbar,
+.pl-tree-body:hover::-webkit-scrollbar,
+.pl-card:hover::-webkit-scrollbar {
+  width: 6px;
+}
+.pl-cols .is-vrt:hover::-webkit-scrollbar-thumb,
+.pl-note-list-wrap:hover::-webkit-scrollbar-thumb,
+.pl-alarm-list-wrap:hover::-webkit-scrollbar-thumb,
+.pl-campaign-list:hover::-webkit-scrollbar-thumb,
+.pl-chat-history-list:hover::-webkit-scrollbar-thumb,
+.pl-mainchat-csinfo-history-rsearch:hover::-webkit-scrollbar-thumb,
+.pl-chatting-log:hover::-webkit-scrollbar-thumb,
+.pl-right-chatgpt-type01:hover::-webkit-scrollbar-thumb,
+.pl-mainchat-cs-list-unit-wrap:hover::-webkit-scrollbar-thumb,
+.pl-chatgpt-recent-list:hover::-webkit-scrollbar-thumb,
+.pl-right-kms-detail-content:hover::-webkit-scrollbar-thumb,
+.pl-scroll-box:hover::-webkit-scrollbar-thumb,
+.pl-phone-sample-list-wrap:hover::-webkit-scrollbar-thumb,
+.pl-chatgpt-setting-body:hover::-webkit-scrollbar-thumb,
+.pl-dialog-body:hover::-webkit-scrollbar-thumb,
+.pl-scroll-body:hover::-webkit-scrollbar-thumb,
+.pl-tree-body:hover::-webkit-scrollbar-thumb,
+.pl-card:hover::-webkit-scrollbar-thumb {
+  background: rgba($color-scrollbar, .5);
+}
+.pl-cols .is-vrt:hover::-webkit-scrollbar-track,
+.pl-note-list-wrap:hover::-webkit-scrollbar-track,
+.pl-alarm-list-wrap:hover::-webkit-scrollbar-track,
+.pl-campaign-list:hover::-webkit-scrollbar-track,
+.pl-chat-history-list:hover::-webkit-scrollbar-track,
+.pl-mainchat-csinfo-history-rsearch:hover::-webkit-scrollbar-track,
+.pl-chatting-log:hover::-webkit-scrollbar-track,
+.pl-right-chatgpt-type01:hover::-webkit-scrollbar-track,
+.pl-mainchat-cs-list-unit-wrap::-webkit-scrollbar-track,
+.pl-chatgpt-recent-list:hover::-webkit-scrollbar-track,
+.pl-right-kms-detail-content:hover::-webkit-scrollbar-track,
+.pl-scroll-box:hover::-webkit-scrollbar-track,
+.pl-phone-sample-list-wrap:hover::-webkit-scrollbar-track,
+.pl-chatgpt-setting-body:hover::-webkit-scrollbar-track,
+.pl-dialog-body:hover::-webkit-scrollbar-track,
+.pl-scroll-body:hover::-webkit-scrollbar-track,
+.pl-tree-body:hover::-webkit-scrollbar-track,
+.pl-card:hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pl-cols .is-vrt::-webkit-scrollbar,/* 스크롤바 기본 스타일 */
+.pl-note-list-wrap::-webkit-scrollbar,/* 스크롤바 기본 스타일 */
+.pl-alarm-list-wrap::-webkit-scrollbar,
+.pl-campaign-list::-webkit-scrollbar,
+.pl-chat-history-list::-webkit-scrollbar,
+.pl-mainchat-csinfo-history-rsearch::-webkit-scrollbar,
+.pl-chatting-log::-webkit-scrollbar,
+.pl-right-chatgpt-type01::-webkit-scrollbar,
+.pl-chatgpt-recent-list::-webkit-scrollbar,
+.pl-mainchat-cs-list-unit-wrap::-webkit-scrollbar,
+.pl-right-kms-detail-content::-webkit-scrollbar,
+.pl-scroll-box::-webkit-scrollbar,
+.pl-phone-sample-list-wrap::-webkit-scrollbar,
+.pl-chatgpt-setting-body::-webkit-scrollbar,
+.pl-dialog-body::-webkit-scrollbar,
+.pl-scroll-body::-webkit-scrollbar,
+.pl-tree-body::-webkit-scrollbar,
+.pl-card::-webkit-scrollbar {
+  // width: 0;
+  background: transparent;
+
+}
+.pl-cols .is-vrt::-webkit-scrollbar-thumb:hover,
+.pl-note-list-wrap::-webkit-scrollbar-thumb:hover,
+.pl-alarm-list-wrap::-webkit-scrollbar-thumb:hover,
+.pl-campaign-list::-webkit-scrollbar-thumb:hover,
+.pl-chat-history-list::-webkit-scrollbar-thumb:hover,
+.pl-mainchat-csinfo-history-rsearch::-webkit-scrollbar-thumb:hover,
+.pl-chatting-log::-webkit-scrollbar-thumb:hover,
+.pl-right-chatgpt-type01::-webkit-scrollbar-thumb:hover,
+.pl-chatgpt-recent-list::-webkit-scrollbar-thumb:hover,
+.pl-mainchat-cs-list-unit-wrap::-webkit-scrollbar-thumb:hover,
+.pl-right-kms-detail-content::-webkit-scrollbar-thumb:hover,
+.pl-scroll-box::-webkit-scrollbar-thumb:hover,
+.pl-phone-sample-list-wrap::-webkit-scrollbar-thumb:hover,
+.pl-chatgpt-setting-body::-webkit-scrollbar-thumb:hover,
+.pl-dialog-body::-webkit-scrollbar-thumb:hover,
+.pl-scroll-body::-webkit-scrollbar-thumb:hover,
+.pl-tree-body::-webkit-scrollbar-thumb:hover,
+.pl-card::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+.pl-cols .is-vrt::-webkit-scrollbar-thumb,
+.pl-note-list-wrap::-webkit-scrollbar-thumb,
+.pl-alarm-list-wrap::-webkit-scrollbar-thumb,
+.pl-campaign-list::-webkit-scrollbar-thumb,
+.pl-chat-history-list::-webkit-scrollbar-thumb,
+.pl-mainchat-csinfo-history-rsearch::-webkit-scrollbar-thumb,
+.pl-chatting-log::-webkit-scrollbar-thumb,
+.pl-right-chatgpt-type01::-webkit-scrollbar-thumb,
+.pl-chatgpt-recent-list::-webkit-scrollbar-thumb,
+.pl-right-kms-detail-content::-webkit-scrollbar-thumb,
+.pl-mainchat-cs-list-unit-wrap::-webkit-scrollbar-thumb,
+.pl-scroll-box::-webkit-scrollbar-thumb,
+.pl-phone-sample-list-wrap::-webkit-scrollbar-thumb,
+.pl-chatgpt-setting-body::-webkit-scrollbar-thumb,
+.pl-dialog-body::-webkit-scrollbar-thumb,
+.pl-scroll-body::-webkit-scrollbar-thumb,
+.pl-tree-body::-webkit-scrollbar-thumb,
+.pl-card::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+.pl-cols .is-vrt::-webkit-scrollbar-track,
+.pl-note-list-wrap::-webkit-scrollbar-track,
+.pl-alarm-list-wrap::-webkit-scrollbar-track,
+.pl-campaign-list::-webkit-scrollbar-track,
+.pl-chat-history-list::-webkit-scrollbar-track,
+.pl-mainchat-csinfo-history-rsearch::-webkit-scrollbar-track,
+.pl-chatting-log::-webkit-scrollbar-track,
+.pl-right-chatgpt-type01::-webkit-scrollbar-track,
+.pl-chatgpt-recent-list::-webkit-scrollbar-track,
+.pl-right-kms-detail-content::-webkit-scrollbar-track,
+.pl-mainchat-cs-list-unit-wrap::-webkit-scrollbar-track,
+.pl-scroll-box::-webkit-scrollbar-track,
+.pl-phone-sample-list-wrap::-webkit-scrollbar-track,
+.pl-chatgpt-setting-body::-webkit-scrollbar-track,
+.pl-dialog-body::-webkit-scrollbar-track,
+.pl-scroll-body::-webkit-scrollbar-track,
+.pl-tree-body::-webkit-scrollbar-track,
+.pl-card::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pl-phone-sample-list-wrap:hover::-webkit-scrollbar {
+  background: transparent;
+}
+.pl-phone-sample-list-wrap:hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+.pl-phone-sample-list-wrap:hover::-webkit-scrollbar-thumb {
+  background: rgba($color: #000000, $alpha: .4);
+}
+
+// mark: vertical bar
+.vertical-bar{
+  opacity: 0;
+  position: absolute;
+  right: -16px;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  background: #ddd;
+  border-radius: 10px;
+  cursor: col-resize;
+  &:hover{
+    opacity: 1;
+  }
+}

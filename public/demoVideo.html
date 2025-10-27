@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>영상통화 데모</title>
+  <script>
+  </script>
+  <style>
+    html,
+    body{
+      /* height: 100%; */
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .demo-contetn_wrap{
+      display: flex;
+      flex-direction: column;
+      padding: 20px 20px 16px;
+    }
+    .demo-video-wrap{
+      position: relative;
+      width: 100%;
+    }
+    .demo-video-cam-wrap{
+      height: 280px;
+      border-radius: 10px;
+      background-color: rgb(223, 223, 223);
+    }
+    .demo-video-controls{
+      display: flex;
+      justify-content: space-between;
+      background: #FFF;
+    }
+    .demo-video-control{
+      padding: 12px;
+      display: flex;
+      gap: 8px;
+    }
+    .demo-chat-wrap{
+      margin-top: 8px;
+    }
+    .demo-video-cam{
+      width: 500px;
+    }
+    .demo-video-time{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 12px;
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 8px;
+      font-family: 'Open Sans';
+      font-size: 12px;
+      letter-spacing: 0;
+      line-height: 0;
+      color: white;
+      background: rgba(0, 0, 0, .35);
+      border-radius: 6px;
+    }
+    .demo-video-time::before{
+      /* content: ''; */
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: red;
+    }
+    .demo-video-cam-user{
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+    .demo-video-cam-unit{
+      display: flex;
+      align-items: center;
+      width: 70px;
+      height: 40px;
+      border-radius: 4px;
+      border: 2px solid transparent;
+    }
+    .demo-video-cam-unit img {
+      width: 68px;
+    }
+    .demo-video-cam-unit.selected{
+      border-color: #0baa20;
+    }
+    .demo-video-btn{
+      display: flex;
+      padding: 6px 0;
+      gap: 8px;
+    }
+    .demo-control-btn{
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 10px;
+      background-color: #4c5cbb;
+      color: #FFF;
+    }
+    .demo-chat-inner{
+      overflow-x: hidden;
+      overflow-y: scroll;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: 206px;
+      padding: 12px;
+      background: #f5f7fe;
+      border-radius: 5px 5px 0 0;
+      border: 1px solid #dbdbdb;
+    }
+    .demo-chat-msg{
+      align-self: center;
+      font-size: 13px;
+      color: #000;
+    }
+    .demo-msg{
+      align-self: center;
+      position: relative;
+      max-width: 70%;
+      margin-right: 13px;
+      padding: 9px 14px;
+      font-size: 13px;
+      color: #000;
+      background-color: #dfdfdf;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .demo-msg.user{
+      align-self: flex-start;
+      margin-left: 13px;
+      background: #FFF;
+      color: #000;
+      border-color: #dbdbdb;
+      word-break: break-word;
+    }
+    .demo-msg.user::after{
+      content: "";
+      width: 20px;
+      height: 15px;
+      position: absolute;
+      bottom: -1px;
+      left: -10px;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 0l11 15H.48a.48.48 0 01-.48-.48c0-.2.123-.376.306-.453C5.382 11.947 9 6.45 9 0z' fill='%23fff'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20 15H.48a.48.48 0 01-.48-.48c0-.2.123-.376.306-.453C4.96 12.124 8.387 7.341 8.926 1.59 8.975 1.068 9 .537 9 0l11 15zm-.733-1H2.614C6.5 12.5 9.5 6.5 10 1.364L19.267 14z' fill='%23DBDBDB'/%3E%3C/svg%3E");
+      background-color: transparent
+    }
+    .demo-msg.manager{
+      align-self: flex-end;
+      background-color: #7380d5;
+      border: 1px solid #7380d5;
+      color: #FFF;
+    }
+    .demo-msg.manager::after{
+      content: "";
+      width: 20px;
+      height: 15px;
+      position: absolute;
+      right: -10px;
+      bottom: -1px;
+      background-color: #7380d5;
+      -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 0L0 15h19.52a.48.48 0 00.48-.48.493.493 0 00-.306-.453C14.618 11.947 11 6.45 11 0z' fill='%237A83B9'/%3E%3C/svg%3E")
+    }
+    .demo-msg[data-time]::before {
+      content: attr(data-time);
+      position: absolute;
+      bottom: 0;
+      right: -35px;
+      font-size: 11px;
+      color: #666;
+    }
+    .demo-msg.manager[data-time]::before {
+      left: -35px;
+    }
+    .demo-chat-input {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      background: #FFF;
+      border-radius: 0 0 5px 5px;
+      border: 1px solid #dbdbdb;
+      border-top: 0;
+    }
+    .demo-chat-form{
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+    }
+    /* button */
+    button {
+      -webkit-appearance: none;
+      background: none;
+      border: 0;
+    }
+
+    /* icon */
+    [class*="icon-"]{
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: 50% 50%;
+    }
+    .icon-msg{
+      width: 30px;
+      height: 30px;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='30' height='30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.25 7.9l10.613-3.537c4.762-1.588 7.35 1.012 5.774 5.774L22.1 20.75c-2.375 7.137-6.275 7.137-8.65 0L12.4 17.6l-3.15-1.05c-7.138-2.375-7.138-6.263 0-8.65zM12.637 17.063l4.476-4.488' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    }
+    .icon-cursor{
+      background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg id='Capa_1' style='enable-background:new 0 0 368.5 442.4;' version='1.1' viewBox='0 0 368.5 442.4' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cpath d='M352.4,242.2L352.4,242.2L72.5,10.2C58.4-1.5,38.8-3.3,22.8,5.6C6.7,14.5-2.1,32,0.4,50.2l47.5,353.9 c2.4,18.2,14.9,32.3,32.6,36.9c3.7,1,7.5,1.4,11.2,1.4c13.9,0,27.2-6.5,35.8-18.1c46.3-62.5,120.4-101.3,198.2-103.8 c18.5-0.6,34.4-12.3,40.4-29.9C372,273,366.7,254,352.4,242.2z M88.3,410.7c-2.5-0.6-8.4-3-9.4-10.7L31.4,46c-1.1-8.1,4.7-12,6.5-13 c1-0.6,3.4-1.7,6.5-1.7c2.4,0,5.2,0.7,8,3l279.9,231.9l0,0c6.4,5.3,4.7,12.2,4,14.2s-3.5,8.4-11.7,8.7 c-87.3,2.8-170.4,46.4-222.4,116.5C97.3,412.4,90.3,411.2,88.3,410.7z'/%3E%3C/svg%3E");
+    }
+    .icon-edit{
+      background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg class='feather feather-edit' fill='none' height='24' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/%3E%3Cpath d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'/%3E%3C/svg%3E");
+    }
+    .icon-select{
+      background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8,4 L8,2 L11,2 L11,4 L8,4 Z M13,4 L13,2 L16,2 L16,4 L13,4 Z M8,22 L8,20 L11,20 L11,22 L8,22 Z M13,22 L13,20 L16,20 L16,22 L13,22 Z M2,16 L2,13 L4,13 L4,16 L2,16 Z M2,11 L2,8 L4,8 L4,11 L2,11 Z M20,16 L20,13 L22,13 L22,16 L20,16 Z M20,11 L20,8 L22,8 L22,11 L20,11 Z M2,6 L2,2 L6,2 L6,4 L4,4 L4,6 L2,6 Z M22,6 L20,6 L20,4 L18,4 L18,2 L22,2 L22,6 Z M2,18 L4,18 L4,20 L6,20 L6,22 L2,22 L2,18 Z M22,18 L22,22 L18,22 L18,20 L20,20 L20,18 L22,18 Z' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+    .icon-eraser{
+      background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg fill='none' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.8698 2.66878L20.8384 7.6373C21.717 8.51598 21.717 9.9406 20.8384 10.8193L12.1566 19.4998L18.2544 19.5C18.6341 19.5 18.9479 19.7821 18.9976 20.1482L19.0044 20.25C19.0044 20.6297 18.7223 20.9435 18.3562 20.9931L18.2544 21L9.84443 21.0012C9.22822 21.0348 8.60082 20.8163 8.1301 20.3456L3.16157 15.377C2.28289 14.4984 2.28289 13.0737 3.16157 12.1951L12.6879 2.66878C13.5665 1.7901 14.9912 1.7901 15.8698 2.66878ZM5.70856 11.7678L4.22223 13.2557C3.92934 13.5486 3.92934 14.0235 4.22223 14.3164L9.19076 19.2849C9.33721 19.4314 9.52915 19.5046 9.72109 19.5046L9.74997 19.5L9.78846 19.5016C9.95737 19.4864 10.1221 19.4142 10.2514 19.2849L11.7376 17.7978L5.70856 11.7678ZM13.7485 3.72944L6.76956 10.7068L12.7986 16.7368L19.7777 9.75862C20.0706 9.46573 20.0706 8.99085 19.7777 8.69796L14.8092 3.72944C14.5163 3.43654 14.0414 3.43654 13.7485 3.72944Z' fill='%23212121'/%3E%3C/svg%3E");
+    }
+    .icon-trash{
+      background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle/%3E%3Cg data-name='1' id='_1'%3E%3Cpath d='M356.65,450H171.47a41,41,0,0,1-40.9-40.9V120.66a15,15,0,0,1,15-15h237a15,15,0,0,1,15,15V409.1A41,41,0,0,1,356.65,450ZM160.57,135.66V409.1a10.91,10.91,0,0,0,10.9,10.9H356.65a10.91,10.91,0,0,0,10.91-10.9V135.66Z'/%3E%3Cpath d='M327.06,135.66h-126a15,15,0,0,1-15-15V93.4A44.79,44.79,0,0,1,230.8,48.67h66.52A44.79,44.79,0,0,1,342.06,93.4v27.26A15,15,0,0,1,327.06,135.66Zm-111-30h96V93.4a14.75,14.75,0,0,0-14.74-14.73H230.8A14.75,14.75,0,0,0,216.07,93.4Z'/%3E%3Cpath d='M264.06,392.58a15,15,0,0,1-15-15V178.09a15,15,0,1,1,30,0V377.58A15,15,0,0,1,264.06,392.58Z'/%3E%3Cpath d='M209.9,392.58a15,15,0,0,1-15-15V178.09a15,15,0,0,1,30,0V377.58A15,15,0,0,1,209.9,392.58Z'/%3E%3Cpath d='M318.23,392.58a15,15,0,0,1-15-15V178.09a15,15,0,0,1,30,0V377.58A15,15,0,0,1,318.23,392.58Z'/%3E%3Cpath d='M405.81,135.66H122.32a15,15,0,0,1,0-30H405.81a15,15,0,0,1,0,30Z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    .icon-rec{
+      /* 음성 ON  */
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 21' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 12.5c1.7 0 3-1.3 3-3v-6c0-1.7-1.3-3-3-3s-3 1.3-3 3v6c0 1.7 1.3 3 3 3Zm5.3-3c0 3-2.5 5.1-5.3 5.1s-5.3-2.1-5.3-5.1H0c0 3.4 2.7 6.2 6 6.7v3.3h2v-3.3c3.3-.5 6-3.3 6-6.7h-1.7Z' fill='%23ffffff' fill-rule='evenodd' class='fill-000000'%3E%3C/path%3E%3C/svg%3E");
+    }
+    .icon-rec-off{
+      width: 16px;
+      height: 16px;
+      /* 음성 OFF */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 18 21' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-rule='evenodd' class='fill-000000'%3E%3Cpath d='M16 9.5h-1.7c0 .7-.2 1.4-.4 2l1.2 1.2c.6-.9.9-2 .9-3.2ZM12 9.7V3.5c0-1.7-1.3-3-3-3s-3 1.3-3 3v.2l6 6ZM1.3 1.5 0 2.8l6 6v.7c0 1.7 1.3 3 3 3 .2 0 .4 0 .7-.1l1.7 1.7c-.7.3-1.5.5-2.3.5-2.8 0-5.3-2.1-5.3-5.1H2c0 3.4 2.7 6.2 6 6.7v3.3h2v-3.3c.9-.1 1.8-.5 2.5-.9l4.2 4.2 1.3-1.3L1.3 1.5Z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    }
+    .icon-video{
+      width: 16px;
+      height: 16px;
+      /* 비디오 ON  */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M18 7c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-3.333L22 17V7l-4 3.333V7z' fill='%23ffffff' class='fill-000000'%3E%3C/path%3E%3C/svg%3E");
+    }
+    .icon-video-off{
+      width: 16px;
+      height: 16px;
+      /* 비디오 OFF  */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 19h10.879L2.145 6.265A1.977 1.977 0 0 0 2 7v10c0 1.103.897 2 2 2zM18 7c0-1.103-.897-2-2-2H6.414L3.707 2.293 2.293 3.707l18 18 1.414-1.414L18 16.586v-2.919L22 17V7l-4 3.333V7z' fill='%23ffffff' class='fill-000000'%3E%3C/path%3E%3C/svg%3E");
+    }
+    .icon-pause{
+      width: 16px;
+      height: 16px;
+      /* 일시정지 */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 320 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M272 63.1h-32c-26.51 0-48 21.49-48 47.1v288c0 26.51 21.49 48 48 48l32 1.8c26.51 0 48-21.49 48-48V112c0-26.51-21.5-48.9-48-48.9zm-192 0H48c-26.51 0-48 21.49-48 48v288C0 426.5 21.49 448 48 448h32c26.51 0 48-21.49 48-48V112c0-26.51-21.5-48.9-48-48.9z' fill='%23ffffff' class='fill-000000'%3E%3C/path%3E%3C/svg%3E");
+    }
+    .icon-play{
+      width: 16px;
+      height: 16px;
+      /* 재생 */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 512 512'%3E%3Cpath d='M405.2 232.9 126.8 67.2c-3.4-2-6.9-3.2-10.9-3.2-10.9 0-19.8 9-19.8 20H96v344h.1c0 11 8.9 20 19.8 20 4.1 0 7.5-1.4 11.2-3.4l278.1-165.5c6.6-5.5 10.8-13.8 10.8-23.1s-4.2-17.5-10.8-23.1z' fill='%23ffffff' class='fill-000000'%3E%3C/path%3E%3C/svg%3E");
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      border-radius: 4px;
+      background: #bdbdbd;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #bdbdbd;
+      border-radius: 4px;
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background: #99999950;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+    .demo-chat-inner:hover::-webkit-scrollbar {
+      width: 6px;
+    }
+    .demo-chat-inner:hover::-webkit-scrollbar-thumb {
+      background: #99999950;
+    }
+    .demo-chat-inner:hover::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .demo-chat-inner::-webkit-scrollbar {
+      background: transparent;
+    }
+    .demo-chat-inner::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+    .demo-chat-inner::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+    .demo-chat-inner::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="demo-contetn_wrap">
+    <div class="demo-video-wrap">
+      <!-- 영상화면 -->
+      <div class="demo-video-cam-wrap">
+        <img src="@demo_cam.png" alt="영상통화 비디오" class="demo-video-cam">
+        <div class="demo-video-time">
+          00:02:17
+        </div>
+        <div class="demo-video-cam-user">
+          <div class="demo-video-cam-unit"><img src="@demo_cam.png" alt="영상통화 비디오"></div>
+          <div class="demo-video-cam-unit selected"><img src="@demo_cam.png" alt="영상통화 비디오"></div>
+          <div class="demo-video-cam-unit"><img src="@demo_cam.png" alt="영상통화 비디오"></div>
+        </div>
+      </div>
+      <!-- 영상 컨트롤 -->
+      <div class="demo-video-controls">
+        <div class="demo-video-control">
+          <button type="button" class="icon-cursor"></button>
+          <button type="button" class="icon-edit"></button>
+          <button type="button" class="icon-select"></button>
+          <button type="button" class="icon-eraser"></button>
+          <button type="button" class="icon-trash"></button>
+        </div>
+        <!-- 재생 버튼 -->
+        <div class="demo-video-btn">
+          <button type="button" class="demo-control-btn"><span class="icon-rec"></span>음성 ON</button>
+          <button type="button" class="demo-control-btn"><span class="icon-video"></span>비디오 ON</button>
+          <button type="button" class="demo-control-btn"><span class="icon-pause"></span>일시정지</button>
+        </div>
+      </div>
+    </div>
+    <!-- 채팅창 -->
+    <div class="demo-chat-wrap">
+      <!-- 채팅 내역 -->
+      <div class="demo-chat-inner">
+        <div class="demo-chat-msg">한국클라우드 님이 입장하셨습니다.</div>
+        <div class="demo-msg">고객1-Mic ON</div>
+        <div class="demo-msg">고객1-Video ON</div>
+        <div class="demo-msg user" data-time="13:55">안녕하세요 문의 드립니다.</div>
+        <div class="demo-msg manager" data-time="13:55">안녕하세요 고객님 기다리게 해서 죄송합니다. 무엇을 도와드릴까요?</div>
+        <div class="demo-msg user" data-time="17:55">안녕하세요 문의 드립니다.</div>
+        <div class="demo-msg manager" data-time="22:55">안녕하세요 고객님 기다리게 해서 죄송합니다. 무엇을 도와드릴까요?</div>
+      </div>
+      <!-- 채팅 입력 -->
+      <div class="demo-chat-input">
+        <input type="text" class="demo-chat-form" placeholder="채팅 내용을 입력하십시오.">
+        <button type="button"><span class="icon-msg"></span></button>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+@charset "utf-8";
+
+.pl-quick-layer {
+  display: flex;
+  flex-direction: column;
+  width: 633px;
+	// height: 834px;
+	height: calc(100vh - 121px);
+  position: fixed;
+  z-index: 2;
+  top: 105px;
+  right: 85px;
+  bottom: 30px;
+  background: #FFF;
+  border-radius: 10px;
+  box-shadow: -3px 0px 6px rgba(0,0,0, .1);
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 0;
+    h1 {
+      display: flex;
+      align-items: center;
+      flex: 1 1 auto;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: #000;
+    }
+  }
+  &-body {
+    overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 100%;
+    height: auto;
+    padding: 20px;
+  }
+  &.is-setting {
+    width: 302px;
+    // width: 558px;
+    border: 2px solid #6e6e6e;
+  }
+  &.is-order{
+    border: 2px solid #6F83FF;
+  }
+}

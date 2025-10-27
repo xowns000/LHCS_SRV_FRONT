@@ -1,0 +1,432 @@
+@charset "utf-8";
+
+.v-input__slot {
+  margin-bottom: 0;
+}
+.v-text-field.pl-form {
+  width: 130px;
+  // flex: 0 0 130px;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px !important;
+  border: 1px solid $color-bg-default;
+  font-size: 13px;
+  input,
+  textarea {
+    height: 100%;
+    color: $color-font-default;
+  }
+  input {
+    padding: 0 0 2px;
+  }
+  > .v-input__control > .v-input__slot {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+  .mdi::before {
+    font-size: 16px;
+  }
+  .v-text-field__prefix,
+  .v-text-field__suffix {
+    line-height: 100%;
+    padding-bottom: 2px;
+  }
+  &.is-search {
+    .v-input__append-inner {
+    }
+  }
+  // &.v-text-field--solo{
+  .v-input__control {
+    min-height: 28px;
+    height: 28px;
+    .v-input__slot {
+      height: 100%;
+      margin: 0;
+      padding: 0 8px;
+      border-color: $color-bg-default;
+      background-color: $color-bg-default;
+      box-shadow: none !important;
+      .v-text-field__slot {
+        height: 100%;
+        padding: 0;
+        input {
+          height: 100%;
+        }
+      }
+      .v-input__prepend-inner,
+      .v-input__append-inner {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        margin-top: 0;
+        .v-input__icon {
+          height: 100%;
+          min-width: 12px;
+          width: auto;
+          margin: 0 5px;
+        }
+      }
+      .v-input__prepend-inner {
+        margin-left: -7px;
+      }
+      .v-input__append-inner {
+        // margin-right: -3px;
+      }
+    }
+  }
+  &.v-textarea {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    .v-input__control {
+      min-height: 100%;
+      height: 100%;
+      .v-input__slot {
+        padding: 0;
+        background: $color-bg-default !important;
+        fieldset{
+          border: 0;
+        }
+      }
+    }
+  }
+  &.v-input--is-focused:not(.is-datetime) {
+    transition: all $easing-time ease;
+    border-color: $color-border-focus;
+    .v-input__control {
+      .v-input__slot {
+        background-color: #FFF;
+      }
+    }
+    input,
+    textarea {
+
+    }
+  }
+  &.v-input--is-disabled {
+    .v-input__control {
+      .v-input__slot {
+        background: $color-bg-disable !important;
+        textarea {
+          color: $color-font-disable !important;
+        }
+        input {
+          color: $color-font-disable !important;
+        }
+      }
+    }
+  }
+  &.v-input--is-readonly:not(.is-datetime) {
+    border-color: transparent;
+    .v-input__control {
+      .v-input__slot {
+        background: #FFF;
+        input {
+        }
+      }
+    }
+    &.v-select{
+      border-color: $color-bg-disable;
+      .mdi-menu-down::before{
+        opacity: 0.5;
+      }
+    }
+  }
+  &.error--text,
+  &[data-error="true"],
+  &.is-error {
+    border-color: $color-error;
+    .v-input__control {
+      .v-input__slot {
+        background-color: rgba($color-error, .15);
+      }
+    }
+  }
+  &.is-red {
+    .v-input__control {
+      .v-input__slot {
+        background-color: $color-red;
+        color: #fff;
+      }
+    }
+  }
+  &.is-blue {
+    .v-input__control {
+      .v-input__slot {
+        background-color: $color-blue;
+        color: #fff;
+      }
+    }
+  }
+  &.is-yellow {
+    .v-input__control {
+      .v-input__slot {
+        background-color: $color-yellow;
+        color: #000;
+      }
+    }
+  }
+  &.is-green {
+    .v-input__control {
+      .v-input__slot {
+        background-color: $color-green;
+        color: #fff;
+      }
+    }
+  }
+  &.is-black {
+    .v-input__control {
+      .v-input__slot {
+        background-color: #000;
+        color: #fff;
+      }
+    }
+  }
+  &.is-gray {
+    .v-input__control {
+      .v-input__slot {
+        background-color: #000;
+        color: #fff;
+      }
+    }
+  }
+  &.is-trans {
+    .v-input__control {
+      .v-input__slot {
+        border-color: transparent;
+        background-color: transparent;
+      }
+    }
+    &.v-input--is-focused {
+      .v-input__control {
+        .v-input__slot {
+          border-color: transparent;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+  &.is-sm {
+    width: 100px;
+    flex: 0 0 100px;
+    .v-input__control {
+      .v-input__slot {
+      }
+    }
+  }
+  &.is-xss {width: 50px; flex: 0 0 50px;}
+  &.is-xs {width: 80px; flex: 0 0 80px;}
+  &.is-lg {
+    width: 260px;
+    // flex: 0 0 260px;
+    .v-input__control {
+      .v-input__slot {
+      }
+    }
+  }
+  &.is-auto {
+    width: 100%;
+    .v-input__control {
+      .v-input__slot {
+      }
+    }
+  }
+
+  &.is-tag {
+    flex: 0 0 100px;
+    min-width: 100px;
+    border-radius: 50px !important;
+    .v-text-field__slot input {
+    }
+  }
+
+  &.text-start{
+    input {
+      text-align: left;
+    }
+  }
+  &.text-end{
+    input {
+      text-align: right;
+    }
+  }
+  &.text-center{
+    input {
+      text-align: center;
+    }
+  }
+}
+.v-textarea.pl-form {
+  textarea {
+    width: 100%;
+    min-height: 100%;
+    margin: 0 !important;
+    padding: 6px 8px;
+    line-height: 1.4;
+    box-sizing: border-box;
+  }
+  &.v-text-field--solo {
+    .v-input__control {
+      min-height: 100%;
+      height: 100%;
+    }
+  }
+  &.is-noresize {
+    textarea {
+      resize: none;
+    }
+
+  }
+}
+.v-textarea.v-text-field--box.v-text-field--single-line:not(.v-input--dense) .v-label,
+.v-textarea.v-text-field--box.v-text-field--outlined:not(.v-input--dense) .v-label,
+.v-textarea.v-text-field--enclosed.v-text-field--single-line:not(.v-input--dense) .v-label,
+.v-textarea.v-text-field--enclosed.v-text-field--outlined:not(.v-input--dense) .v-label {
+  top: 6px;
+  font-size: 13px;
+}
+.v-application--is-ltr .v-text-field .v-input__append-inner {
+  padding-left: 2px;
+}
+.v-text-field__details {
+  display: none;
+}
+.v-input input {
+  max-height: 60px;
+}
+.v-file-input.pl-form {
+  .v-input__prepend-outer {
+    display: none;
+  }
+
+  > .v-input__control > .v-input__slot {
+    &::before {
+      content: "";
+      top: 50%;
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      margin-top: -7px;
+      margin-left: 6px;
+      border: 0;
+      // background: url(../img/icons-blue.png) no-repeat -850px 0;
+    }
+    .v-file-input__text {
+      padding-left: 18px;
+    }
+  }
+}
+.v-text-field--filled > .v-input__control > .v-input__slot,
+.v-text-field--full-width > .v-input__control > .v-input__slot,
+.v-text-field--outlined > .v-input__control > .v-input__slot {
+  min-height: 20px;
+}
+
+
+::-webkit-input-placeholder {
+  color: #999 !important;
+  opacity: 1;
+} // WebKit, Blink, Edge
+:-moz-placeholder {
+  color: #999 !important;
+  opacity: 1;
+} // Mozilla Firefox 4 to 18
+::-moz-placeholder {
+  color: #999 !important;
+  opacity: 1;
+} // Mozilla Firefox 19+
+:-ms-input-placeholder {
+  color: #999 !important;
+  opacity: 1;
+} // Internet Explorer 10-11
+
+.pl-form-inline-wrap {
+	display: flex;
+	gap: 12px;
+	.pl-form-inline {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		min-height: 32px;
+		.pl-desc {
+			display: flex;
+      align-items: center;
+      gap: 8px;
+      & > :last-child{
+        flex-grow: 1;
+      }
+		}
+	}
+	&.vertical {
+		flex-direction: column;
+    gap: 12px;
+    word-break: break-word;
+
+		.pl-form-inline {
+			gap: 26px;
+
+			> .pl-label {
+				flex: 0 0 175px;
+        align-self: start;
+        padding-top: 6px;
+			}
+      > .pl-desc {
+        flex-wrap: wrap;
+      }
+      .pl-desc-btn {
+        align-self: end;
+      }
+		}
+    &.type-auto {
+      .pl-label {
+        flex: 1;
+      }
+    }
+    &.type-readonly {
+      gap: 0px;
+      .pl-label {
+        font-weight: 400;
+      }
+      .pl-desc {
+        font-weight: 700;
+      }
+    }
+    &.type-2 {
+      .pl-form-inline {
+        flex-wrap: wrap;
+        gap: 8px;
+        .pl-label {
+          padding-top: 0;
+        }
+      }
+    }
+    &.is-border {
+      border-top: 1px solid $color-border !important;
+    }
+    &.label-100 {
+      .pl-label {
+        flex: 0 0 100px;
+      }
+    }
+	}
+
+  .pl-form {
+    flex: 0 0 130px;
+    &.is-xss {flex: 0 0 50px;}
+    &.is-xs {flex: 0 0 80px;}
+    &.is-sm {flex: 0 0 100px;}
+    &.is-lg {flex: 0 0 260px;}
+    &.is-auto {flex: 0 0 100%;}
+  }
+  & + .pl-form-inline-wrap {
+    margin-top: 12px;
+  }
+}
+
+.pl-form-hint {
+  width: 100%;
+  color: $color-font-sub;
+  font-size: 12px;
+}

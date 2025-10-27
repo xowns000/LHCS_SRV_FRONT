@@ -1,0 +1,106 @@
+@charset "utf-8";
+
+.pl-info-txt{
+	position: relative;
+	min-height: 16px;
+	margin-top: 5px;
+	padding-left: 20px;
+	font-size: 13px;
+	word-break: keep-all;
+	word-break: break-word;
+    word-spacing: -1px;
+    letter-spacing: -0.2px;
+    box-sizing: border-box;
+	&:before{
+		content:"";
+		display: inline-block;
+		position: absolute;
+		top: 2px;
+		left: 0;
+		width: 15px;
+		height: 15px;
+		// background: url(../img/icons.png) no-repeat;
+		background-position: -600px -50px;
+	}
+	&.is-blue{
+		// &:before{background-image: url(../img/icons-blue.png)}
+	}
+	&.is-red{
+		// &:before{background-image: url(../img/icons-red.png)}
+	}
+	&.is-fill{
+		&:before{background-position: -650px -50px;}
+	}
+	&:first-child{margin-top:0;}
+
+	& + div, & + ul, & + table{margin-top: 10px;}
+	& + .pl-info-group{margin-top: 5px;}
+}
+div, p{
+	&.pl-info-txt{width: 100%;margin-bottom: 0;}
+}
+.pl-info-group{
+	display: inline-flex;
+	align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
+    .pl-info-txt{flex: 1 0 0px;}
+}
+.pl-info-box{
+	display: inline-block;
+    width: 100%;
+	padding: 15px 15px;
+	border-radius: 3px;
+	background: #f2f3f8;
+	box-sizing: border-box;
+	> *:first-child{margin-top:0;}
+	&.is-pre-cation{
+		padding: 25px 30px;
+		.pl-btn-link{
+			width: 100%;
+			text-align: left;
+			& + .pl-btn-link{margin-top: 15px;}
+		}
+	}
+	h1{
+		font-size: 13px;
+		letter-spacing: -0.5px;
+	}
+	> * + .pl-list-dot{margin-top: 8px;}
+	> * + .pl-desc{margin-top: 5px;font-size: 12px;}
+	& + .pl-info-box{margin-top: 10px;}
+}
+
+.pl-info-tbl{
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+	border-top: 1px solid #999;
+	thead{
+		background: #fff;
+		th{
+			padding: 10px;
+			border-bottom: 1px solid #d9d9d9;
+			font-size: 12px;
+			box-sizing: border-box;
+		}
+	}
+	tbody{
+		background: #fff;
+		th, td{
+			padding: 10px 15px;
+			border-bottom: 1px solid #ebebeb;
+			font-size: 13px;
+			text-align: left;
+			box-sizing: border-box;
+		}
+		th{
+			border-right: 1px solid #ebebeb;
+			background-color: #fafafa;
+		}
+		td{
+		}
+	}
+}

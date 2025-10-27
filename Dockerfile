@@ -1,0 +1,11 @@
+FROM node:14
+
+WORKDIR /orange/app/palette3/webapps
+
+COPY package.json .
+ADD . .
+
+RUN npm install
+
+EXPOSE 3003
+CMD ["npm", "run", "serve-production"]

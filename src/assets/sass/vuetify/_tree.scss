@@ -1,0 +1,61 @@
+@charset "utf-8";
+
+.pl-tree {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $color-border;
+  &-header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 5px;
+    .is-left,
+    .is-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px
+    }
+    .is-left {
+      label {
+        margin-left: 3px;
+        font-size: 13px;
+        font-weight: bold;
+      }
+    }
+  }
+  &-body {
+    overflow: auto;
+    flex: 1 1 auto;
+    height: auto;
+    max-height: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .v-treeview-node__root{
+      min-height: 28px;
+    }
+    .v-treeview-node__prepend {
+      margin: 0 !important;
+    }
+    .v-treeview-node__content {
+      margin: 0 !important;
+    }
+    .v-treeview-node__level{
+    }
+    .v-treeview-node__label{
+      cursor: pointer;
+    }
+    .mdi-menu-down{
+      &::before {
+        content: '';
+        width: 20px;
+        height: 20px;
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.7275 8L9.77147 13L4.81543 8' stroke='%23232323' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+      }
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+}
