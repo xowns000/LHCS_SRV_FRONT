@@ -12,9 +12,9 @@
               <div class="pl-desc">
                 <v-select
                   class="pl-form"
-                  :items="DEPT_LIST"
+                  :items="SRCH_DEPT_LIST"
                   placeholder="선택하세요"
-                  v-model="DEPT_ID"
+                  v-model="SRCH_DEPT_ID"
                 ></v-select>
               </div>
             </div>
@@ -27,7 +27,7 @@
                   class="pl-form"
                   :items="this.mixin_common_code_get(this.common_code, 'EXL_COND_TY', '전체')"
                   placeholder="선택하세요"
-                  v-model="EXL_COND_SE_CD"
+                  v-model="SRCH_EXL_COND_SE_CD"
                 ></v-select>
               </div>
             </div>
@@ -40,7 +40,7 @@
                   class="pl-form"
                   :items="this.mixin_common_code_get(this.common_code, 'EXL_COND', '전체')"
                   placeholder="선택하세요"
-                  v-model="EXL_COND_CD"
+                  v-model="SRCH_EXL_COND_CD"
                 ></v-select>
               </div>
             </div>
@@ -52,7 +52,7 @@
                 <v-text-field
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
-                  v-model="EXL_COND_CN"
+                  v-model="SRCH_EXL_COND_CN"
                   @keydown.enter="getGridList(false)"
                 />
               </div>
@@ -65,7 +65,7 @@
                 <v-select
                   class="pl-form "
                   :items="this.mixin_common_code_get(this.common_code, 'USE_WT', '전체')"
-                  v-model="USE_YN"
+                  v-model="SRCH_USE_YN"
                   placeholder="선택하세요"
                 ></v-select>
               </div>
@@ -78,7 +78,7 @@
                 <v-select
                   class="pl-form "
                   :items="this.mixin_common_code_get(this.common_code, 'USE_WT', '전체')"
-                  v-model="DEL_YN"
+                  v-model="SRCH_DEL_YN"
                   placeholder="선택하세요"
                 ></v-select>
               </div>
@@ -180,17 +180,76 @@
             <div class="pl-form-inline-wrap vertical mt-2">
               <div class="pl-form-inline">
                 <span class="pl-label">
-                  게시 유형
+                  센터 구분
                   <v-icon class="pl-icon20 required"></v-icon>
                 </span>
                 <div class="pl-desc">
-                  <!-- <v-select
+                  <v-select
                     class="pl-form"
-                    :items="this.mixin_common_code_get(this.common_code, 'BORD_TP')"
+                    :items="DEPT_LIST"
                     placeholder="선택하세요"
-                    v-model="digParams.BOARD_TP"
-                    :rules="detailValidateRules.DATA_TYPE_CD"
-                  ></v-select> -->
+                    v-model="DEPT_ID"
+                    :rules="detailValidateRules.DEPT_ID"
+                  ></v-select>
+                </div>
+              </div>
+              <div class="pl-form-inline">
+                <span class="pl-label">
+                  제외조건 구분
+                  <v-icon class="pl-icon20 required"></v-icon>
+                </span>
+                <div class="pl-desc">
+                  <v-select
+                    class="pl-form"
+                    :items="this.mixin_common_code_get(this.common_code, 'EXL_COND_TY')"
+                    placeholder="선택하세요"
+                    v-model="EXL_COND_SE_CD"
+                    :rules="detailValidateRules.EXL_COND_SE_CD"
+                  ></v-select>
+                </div>
+              </div>
+              <div class="pl-form-inline">
+                <span class="pl-label">
+                  제외조건
+                  <v-icon class="pl-icon20 required"></v-icon>
+                </span>
+                <div class="pl-desc">
+                  <v-select
+                    class="pl-form"
+                    :items="this.mixin_common_code_get(this.common_code, 'EXL_COND')"
+                    placeholder="선택하세요"
+                    v-model="EXL_COND_CD"
+                    :rules="detailValidateRules.EXL_COND_CD"
+                  ></v-select>
+                </div>
+              </div>
+              <div class="pl-form-inline">
+                <span class="pl-label">
+                  제외조건 값
+                  <v-icon class="pl-icon20 required"></v-icon>
+                </span>
+                  <div class="pl-desc">
+                    <v-text-field
+                    class="pl-form is-lg"
+                    placeholder="검색어 입력"
+                    v-model="EXL_COND_CN"
+                    :rules="detailValidateRules.EXL_COND_CN"
+                  />
+                </div>
+              </div>
+              <div class="pl-form-inline">
+                <span class="pl-label">
+                  사용여부
+                  <v-icon class="pl-icon20 required"></v-icon>
+                </span>
+                <div class="pl-desc">
+                  <v-select
+                    class="pl-form"
+                    :items="this.mixin_common_code_get(this.common_code, 'USE_WT')"
+                    placeholder="선택하세요"
+                    v-model="USE_YN"
+                    :rules="detailValidateRules.USE_YN"
+                  ></v-select>
                 </div>
               </div>
             </div>
@@ -198,7 +257,7 @@
         </template>
         <template slot="footer">
           <v-btn class="pl-btn is-sub" @click="mixin_hideDialog('RegExlCond')">닫기</v-btn>
-          <v-btn class="pl-btn" @click="exlCondValidate">저장</v-btn>
+          <v-btn class="pl-btn" @click="saveBtn()">저장</v-btn>
         </template>
       </compo-dialog>
     </v-dialog>
@@ -216,13 +275,38 @@ export default {
     return {
       common_code: [],
 
+      detailValidateRules: {
+        DEPT_ID: [
+          v => !!v || '센터구분을 선택하세요',
+        ],
+        EXL_COND_SE_CD: [
+          v => !!v || '제외조건 구분을 선택하세요.',
+        ],
+        EXL_COND_CD: [
+          v => !!v || '제외조건을 선택하세요.',
+        ],
+        EXL_COND_CN: [
+          v => !!v || '제외조건 값을 입력하세요.',
+        ],
+        USE_YN: [
+          v => !!v || '사용여부를 선택하세요.',
+        ],
+      },
+
+      SRCH_DEPT_LIST:[],
+      SRCH_DEPT_ID:'',
+      SRCH_EXL_COND_SE_CD:'',
+      SRCH_EXL_COND_CD:'', 
+      SRCH_EXL_COND_CN:'',
+      SRCH_USE_YN:'Y',
+      SRCH_DEL_YN:'N',
+
       DEPT_LIST:[],
       DEPT_ID:'',
       EXL_COND_SE_CD:'',
       EXL_COND_CD:'', 
       EXL_COND_CN:'',
       USE_YN:'Y',
-      DEL_YN:'N',
 
       selectedRow: {},
       SRVY_EXL_COND_ID:'',
@@ -279,16 +363,18 @@ export default {
   
   methods: {
     async getDeptList(){
-      this.DEPT_LIST=[{
+      this.SRCH_DEPT_LIST=[{
         text:'전체'
         , value:''
       }];
+      this.DEPT_LIST=[];
       let deptCdList = await this.mixin_getDeptList();
       for(let i=0;i<deptCdList.length;i++){
         let list = {
           text:deptCdList[i].DEPT_NM
           , value: deptCdList[i].DEPT_ID
         }
+        this.SRCH_DEPT_LIST.push(list);
         this.DEPT_LIST.push(list);
       }
     },
@@ -296,6 +382,12 @@ export default {
     rowSelect(item){
       this.selectedRow = item;
       this.SRVY_EXL_COND_ID = item.SRVY_EXL_COND_ID;
+      
+      this.DEPT_ID=item.DEPT_ID;
+      this.EXL_COND_SE_CD=item.EXL_COND_SE_CD;
+      this.EXL_COND_CD=item.EXL_COND_CD;
+      this.EXL_COND_CN=item.EXL_COND_CN;
+      this.USE_YN=item.USE_YN;
     },
     
     async getGridList(next){
@@ -308,12 +400,12 @@ export default {
 
       let sUrl = '/api/svy/exclusion/selectConditionList';
       let postParam = {
-        DEPT_ID: this.DEPT_ID
-        , EXL_COND_SE_CD: this.EXL_COND_SE_CD
-        , EXL_COND_CD : this.EXL_COND_CD
-        , EXL_COND_CN : this.EXL_COND_CN
-        , USE_YN : this.USE_YN
-        , DEL_YN : this.DEL_YN
+        DEPT_ID: this.SRCH_DEPT_ID
+        , EXL_COND_SE_CD: this.SRCH_EXL_COND_SE_CD
+        , EXL_COND_CD : this.SRCH_EXL_COND_CD
+        , EXL_COND_CN : this.SRCH_EXL_COND_CN
+        , USE_YN : this.SRCH_USE_YN
+        , DEL_YN : this.SRCH_DEL_YN
       }
 
       let headParam = {
@@ -369,6 +461,12 @@ export default {
     initSel(){
       this.selectedRow = {};
       this.SRVY_EXL_COND_ID = '';
+
+      this.DEPT_ID='';
+      this.EXL_COND_SE_CD='';
+      this.EXL_COND_CD='';
+      this.EXL_COND_CN='';
+      this.USE_YN='Y';
     },
     
     //row 선택 활성화
@@ -377,42 +475,31 @@ export default {
       return activeClass;
     },
 
-    // 저장 버튼 validation
-    exlCondValidate(){
-      let fromYear = this.digParams.START_DATE;
-      let toYear = this.digParams.END_DATE;
-      let now = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10);
-      var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+    //저장버튼 클릭
+    async saveBtn(){
+      let sUrl = '/api/svy/exclusion/mergeCondition';
+      let postParam = {
+        SRVY_EXL_COND_ID: this.SRVY_EXL_COND_ID
+        , DEPT_ID: this.DEPT_ID
+        , EXL_COND_SE_CD: this.EXL_COND_SE_CD
+        , EXL_COND_CD : this.EXL_COND_CD
+        , EXL_COND_CN : this.EXL_COND_CN
+        , USE_YN : this.USE_YN
+      }
 
-      if(!this.detailValidate()) {
-        return;
-      }else if(this.mixin_isEmpty(fromYear) ||
-         this.mixin_isEmpty(this.digParams.END_DATE)) {
-        this.showAlert(this.MESSAGE.ALERT.CHECK_DATE);
-        return;
-      }else if(fromYear < now && this.flagData.DIG_CHECK){
-        this.showAlert(this.MESSAGE.ALERT.CHECK_UNDER_DATE);
-        return;
-      }else if((fromYear.replace(/-/gi, '') > toYear.replace(/-/gi, '')) || (toYear < now)) {
-        this.showAlert(this.MESSAGE.ALERT.CHECK_OVER_DATE);
-        return;
-      }else if(!regex.test(fromYear) || !regex.test(toYear)){
-        this.showAlert(this.MESSAGE.ALERT.CHECK_OVER_DATE);
-        return;
-      }else if(this.digParams.BOARD_CONTENTS.length > 4006){ // 내용 글자수 제한(실제 글자수 3998자 이상일 경우 제한 - ckeditor)
-        this.showAlert(this.MESSAGE.ALERT.CHECK_CN_LENGTH);
-        return;
-      }else if(this.digParams.BOARD_TITLE.length > 300){ // 제목 글자수 제한(300자 제한)
-        this.showAlert(this.MESSAGE.ALERT.CHECK_TTL_LENGTH);
-        return;
+      let headParam = {
+        head : {
+        }
       }
-      
-      if(this.flagData.DIG_CHECK){
-        this.showAlert(this.MESSAGE.CONFIRM.REG);
-      }else{
-        this.showAlert(this.MESSAGE.CONFIRM.MOD);
+
+      let response = await this.common_postCall(sUrl, postParam, headParam);
+
+      if(!response.HEADER.ERROR_FLAG) {
+        this.mixin_hideDialog('RegExlCond');
+        this.getGridList();
+        this.showToast({  msg: '처리가 완료되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 2000 })
       }
-    },
+    }
   },
 }
 </script>
