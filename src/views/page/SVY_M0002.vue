@@ -95,6 +95,10 @@
       <div class="pl-card-body">
         <div class="pl-grid-top">
           <div class="pl-grid-top-left">
+            <v-btn class="pl-btn is-icon is-sub" @click="btnDetail">
+              <span class="pl-icon20 zoom-fit"></span>
+              전체보기
+            </v-btn>
             <v-btn class="pl-btn is-icon is-sub" @click="mixin_showDialog('RegExlCond')" :disabled="selectedRow.ROW_NUMBER != undefined ? false : true">
               <span class="pl-icon20 document"></span>
               선택항목 상세
@@ -261,6 +265,69 @@
         </template>
       </compo-dialog>
     </v-dialog>
+
+    <!-- 전체보기 dialog -->
+    <v-dialog
+      v-model="dialogDetail"
+      content-class="dialog-draggable is-fg"
+      fullscreen
+      hide-overlay
+      :retain-focus="false">
+      <div class="draggable-area">drag area</div>
+      <compo-dialog
+        :headerTitle="'제외조건 전체보기'"
+        @hide="mixin_hideDialog('Detail')">
+        <template slot="body">
+          <v-data-table
+            class="pl-grid is-rowspan"
+            :headers="gridDetailHeaders"
+            :items="gridDetailItems"
+            fixed-header
+            hide-default-header
+            item-key="ROW_NUMBER"
+            height="700px"
+            :items-per-page="gridDetailItems.length"
+            :item-class="isDetailActiveRow"
+            hide-default-footer
+            page.sync="1"
+            @page-count="pageCount = $event"
+            @click:row="rowDetailSelect"
+            no-data-text="등록된 데이터가 없습니다."
+          >
+            <template v-slot:header>
+              <thead class="v-data-table-header multi-row">
+                <tr>
+                  <th rowspan="2" width="100px" class="text-center"><span>부서</span></th>
+                  <th colspan="3" width="360px" class="text-center"><span>상담유형</span></th>
+                  <th rowspan="2" width="360px" class="text-center"><span>상담메모</span></th>
+                  <th rowspan="2" width="200px" class="text-center"><span>인입번호</span></th>
+                  <th rowspan="2" width="150px" class="text-center"><span>상담채널</span></th>
+                  <th rowspan="2" width="150px" class="text-center"><span>상담경로</span></th>
+                  <th rowspan="2" width="150px" class="text-center"><span>처리방법</span></th>
+                  <th rowspan="2" width="150px" class="text-center"><span>개인정보</span></th>
+                  <th rowspan="2" width="150px" class="text-center"><span>인입번호</span></th>
+                  <th rowspan="2" width="100px" class="text-center"><span>접수자명</span></th>
+                  <th rowspan="2" width="150px" class="text-center"><span>비고</span></th>
+                </tr>
+                <tr>
+                  <th class="text-center" style="white-space: nowrap;"><span>대</span></th>
+                  <th class="text-center" style="white-space: nowrap;"><span>중</span></th>
+                  <th class="text-center" style="white-space: nowrap;"><span>소</span></th>
+                </tr>
+              </thead>
+            </template>
+            <template v-slot:item.CUTT_CN="{ item }">
+              <div
+                v-html="sanitizeContent(item.CUTT_CN)"
+              >
+              </div>
+            </template>
+          </v-data-table>
+        </template>
+        <template slot="footer">
+        </template>
+      </compo-dialog>
+    </v-dialog>
   </div>
 </template>
 
@@ -326,18 +393,37 @@ export default {
       gridTotalCnt: 0,
 
       gridDataHeaders: [
-          { text: '번호', value: 'ROW_NUMBER', align: 'center', width: '80px' },
-          { text: '부서', value: 'DEPT_NM', align: 'left', width: '120px'},
-          { text: '조건 구분', value: 'EXL_COND_SE_NM', align: 'center', width: '200px'},
-          { text: '조건', value: 'EXL_COND_NM', align: 'left', width: '200px' },
-          { text: '조건 값', value: 'EXL_COND_CN', align: 'left', width: '300px'},
-          { text: '등록자', value: 'RGTR_NM', align: 'left', width: '120px'},
-          { text: '등록일', value: 'REG_DT_F', align: 'left', width: '120px'},
-          { text: '수정자', value: 'MDFR_NM', align: 'left', width: '120px'},
-          { text: '수정일', value: 'MDFCN_DT_F', align: 'left', width: '120px'},
+        { text: '번호', value: 'ROW_NUMBER', align: 'center', width: '80px' },
+        { text: '부서', value: 'DEPT_NM', align: 'left', width: '120px'},
+        { text: '조건 구분', value: 'EXL_COND_SE_NM', align: 'center', width: '200px'},
+        { text: '조건', value: 'EXL_COND_NM', align: 'left', width: '200px' },
+        { text: '조건 값', value: 'EXL_COND_CN', align: 'left', width: '300px'},
+        { text: '등록자', value: 'RGTR_NM', align: 'left', width: '120px'},
+        { text: '등록일', value: 'REG_DT_F', align: 'left', width: '120px'},
+        { text: '수정자', value: 'MDFR_NM', align: 'left', width: '120px'},
+        { text: '수정일', value: 'MDFCN_DT_F', align: 'left', width: '120px'},
       ],
 
       dialogRegExlCond:false,
+
+      gridDetailHeaders:[
+        { text: '부서', value: 'DEPT_NM'},
+        { text: '대', value: 'CNSLT_DIV_CD_1'},
+        { text: '중', value: 'CNSLT_DIV_CD_2'},
+        { text: '소', value: 'CNSLT_DIV_CD_3'},
+        { text: '상담메모', value: 'CUTT_CN'},
+        { text: '인입번호', value: 'LAST_PHN_NO'},
+        { text: '상담채널', value: 'RCPT_CHN_CD'},
+        { text: '상담경로', value: 'DRWI_TYPE_CD'},
+        { text: '처리방법', value: 'PRCS_CHN_CD'},
+        { text: '개인정보', value: 'PRVC_CLCT_AGRE_YN'},
+        { text: '인입번호', value: '1111'},
+        { text: '접수자명', value: 'USER_NM'},
+        { text: '비고', value: '2222'},
+      ],
+      gridDetailItems:[],
+      selectedDetailRow: {},
+      dialogDetail: false,
     }
   },
   watch: {
@@ -352,6 +438,8 @@ export default {
     // 공통코드설정
     let codeName = ['EXL_COND_TY', 'EXL_COND', 'USE_WT'];
     this.common_code = await this.mixin_common_code_get_all(codeName);
+
+    this.selectConditionAll();
 
     this.getDeptList();
     this.getGridList();
@@ -376,6 +464,23 @@ export default {
         }
         this.SRCH_DEPT_LIST.push(list);
         this.DEPT_LIST.push(list);
+      }
+    },
+
+    async selectConditionAll(){
+      let sUrl = '/api/svy/exclusion/selectConditionAll';
+      let postParam = {
+      }
+
+      let headParam = {
+        head : {
+        }
+      }
+
+      let response = await this.common_postCall(sUrl, postParam, headParam);
+
+      if(!response.HEADER.ERROR_FLAG) {
+        this.gridDetailItems = response.DATA;
       }
     },
 
@@ -455,7 +560,6 @@ export default {
     },
 
     deleteBtn(){
-
     },
 
     initSel(){
@@ -498,7 +602,41 @@ export default {
         this.mixin_hideDialog('RegExlCond');
         this.getGridList();
         this.showToast({  msg: '처리가 완료되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 2000 })
+        
+        this.selectConditionAll();
       }
+    },
+
+    btnDetail(){
+      this.mixin_showDialog('Detail');
+    },
+
+    rowDetailSelect(item){
+      this.selectedDetailRow = item;
+    },
+
+    isDetailActiveRow(item){
+      const activeClass = item === this.selectedDetailRow ? "active" : "";
+      return activeClass;
+    },
+
+    sanitizeContent(content) {
+      if (!content) return '';
+
+      // 1️⃣ <br>, <br/> 태그는 임시 치환
+      let temp = content.replace(/<br\s*\/?>/gi, '[[BR]]');
+
+      // 2️⃣ 나머지 HTML 태그 제거
+      temp = temp.replace(/<[^>]*>/g, '');
+
+      // 3️⃣ 다시 [[BR]] → <br> 복원
+      temp = temp.replace(/\[\[BR\]\]/g, '<br>');
+
+      // 4️⃣ script, iframe 등 보안 위험 요소 제거 (추가 안전망)
+      temp = temp.replace(/<script[^>]*>.*?<\/script>/gi, '');
+      temp = temp.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '');
+
+      return temp;
     }
   },
 }

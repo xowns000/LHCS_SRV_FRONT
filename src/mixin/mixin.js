@@ -3390,7 +3390,6 @@ export const mixin = {
       let response = await this.common_postCall(sUrl, postParam, headParam);
 
       if(!response.HEADER.ERROR_FLAG) {
-        console.log("response",response);
         returnData = response.DATA;
       }
       return returnData;
