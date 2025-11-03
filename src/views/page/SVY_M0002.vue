@@ -316,12 +316,78 @@
                 </tr>
               </thead>
             </template>
+            <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
+              <div
+                v-html="sanitizeContent(item.CNSLT_DIV_CD_1)"
+              >
+              </div>
+            </template>
+            <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
+              <div
+                v-html="sanitizeContent(item.CNSLT_DIV_CD_2)"
+              >
+              </div>
+            </template>
+            <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
+              <div
+                v-html="sanitizeContent(item.CNSLT_DIV_CD_3)"
+              >
+              </div>
+            </template>
             <template v-slot:item.CUTT_CN="{ item }">
               <div
                 v-html="sanitizeContent(item.CUTT_CN)"
               >
               </div>
             </template>
+            <template v-slot:item.LAST_PHN_NO="{ item }">
+              <div
+                v-html="sanitizeContent(item.LAST_PHN_NO)"
+              >
+              </div>
+            </template>
+            <template v-slot:item.RCPT_CHN_CD="{ item }">
+              <div
+                v-html="sanitizeContent(item.RCPT_CHN_CD)"
+              >
+              </div>
+            </template>
+            <template v-slot:item.DRWI_TYPE_CD="{ item }">
+              <div
+                v-html="sanitizeContent(item.DRWI_TYPE_CD)"
+              >
+              </div>
+            </template>
+            <template v-slot:item.PRCS_CHN_CD="{ item }">
+              <div
+                v-html="sanitizeContent(item.PRCS_CHN_CD)"
+              >
+              </div>
+            </template>
+            <template v-slot:item.PRVC_CLCT_AGRE_YN="{ item }">
+              <div
+                v-html="sanitizeContent(item.PRVC_CLCT_AGRE_YN)"
+              >
+              </div>
+            </template>
+            <!-- <template v-slot:item.1111="{ item }">
+              <div
+                v-html="sanitizeContent(item.1111)"
+              >
+              </div>
+            </template> -->
+            <template v-slot:item.USER_NM="{ item }">
+              <div
+                v-html="sanitizeContent(item.USER_NM)"
+              >
+              </div>
+            </template>
+            <!-- <template v-slot:item.2222="{ item }">
+              <div
+                v-html="sanitizeContent(item.2222)"
+              >
+              </div>
+            </template> -->
           </v-data-table>
         </template>
         <template slot="footer">
@@ -438,8 +504,6 @@ export default {
     // 공통코드설정
     let codeName = ['EXL_COND_TY', 'EXL_COND', 'USE_WT'];
     this.common_code = await this.mixin_common_code_get_all(codeName);
-
-    this.selectConditionAll();
 
     this.getDeptList();
     this.getGridList();
@@ -602,12 +666,11 @@ export default {
         this.mixin_hideDialog('RegExlCond');
         this.getGridList();
         this.showToast({  msg: '처리가 완료되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 2000 })
-        
-        this.selectConditionAll();
       }
     },
 
     btnDetail(){
+      this.selectConditionAll();
       this.mixin_showDialog('Detail');
     },
 
