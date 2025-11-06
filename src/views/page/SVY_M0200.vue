@@ -354,7 +354,8 @@
             <div class="pl-card">
               <div class="pl-grid-top">
                 <div class="pl-grid-top-left">
-                  <v-btn class="pl-btn is-icon is-sub" @click="btnExUpload" :disabled="stts_head === 'TERMIAT' ? true:false">
+                   <!-- :disabled="stts_head === 'TERMIAT' ? true:false -->
+                  <v-btn class="pl-btn is-icon is-sub" @click="btnExUpload"">
                     <span class="pl-icon20 excelup"></span>
                     엑셀 업로드
                   </v-btn>
@@ -368,9 +369,15 @@
                     :show-size="1000"
                   />
                   <!-- 엑셀 다운로드 버튼 -->
-                  <v-btn class="pl-btn is-icon is-sub" @click="btnExDownLoad" :disabled="stts_head === 'TERMIAT' ? true:false">
+                    <!-- :disabled="stts_head === 'TERMIAT' ? true:false -->
+                  <v-btn class="pl-btn is-icon is-sub" @click="btnExDownLoad"">
                     <span class="pl-icon20 exceltemplate"></span>
                     엑셀 양식 다운로드
+                  </v-btn>
+                   <!-- :disabled="stts_head === 'TERMIAT' ? true:false" -->
+                  <v-btn class="pl-btn is-icon is-sub" @click="btnExlCond">
+                    <span class="pl-icon20 reject"></span>
+                    제외조건 적용
                   </v-btn>
                   <v-btn class="pl-btn is-icon is-sub" @click="btnSaveTab2" :disabled="stts_head === 'TERMIAT' ? true:false">
                     <span class="pl-icon20 save"></span>
@@ -1147,6 +1154,220 @@
       @updateParent="btnSelectList"
       @closeDialog="closeSttsUpdate"
     />
+    
+    <!-- 전체보기 dialog -->
+    <v-dialog
+      v-model="dialogExlCond"
+      content-class="dialog-draggable is-lg"
+      fullscreen
+      hide-overlay
+      :retain-focus="false">
+      <div class="draggable-area">drag area</div>
+      <compo-dialog
+        :headerTitle="'제외조건 적용하기'"
+        @hide="mixin_hideDialog('ExlCond')">
+        <template 
+          v-if="dialogTab=='exlCond'"
+          slot="body">
+          <div class="pl-form-inline-wrap">
+            <div class="pl-form-inline">
+              제외조건을 검색하여 적용할 제외조건을 선택 후 다음단계로 이동하세요.
+            </div>
+          </div>
+          <div class="pl-form-inline-wrap">
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                센터구분
+              </span>
+              <div class="pl-desc">
+                <v-select
+                  class="pl-form"
+                  :items="SRCH_DEPT_LIST"
+                  placeholder="선택하세요"
+                  v-model="SRCH_DEPT_ID"
+                ></v-select>
+              </div>
+            </div>
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                제외조건 구분
+              </span>
+              <div class="pl-desc">
+                <v-select
+                  class="pl-form"
+                  :items="this.mixin_common_code_get(this.common_code, 'EXL_COND_TY', '전체')"
+                  placeholder="선택하세요"
+                  v-model="SRCH_EXL_COND_SE_CD"
+                ></v-select>
+              </div>
+            </div>
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                제외조건
+              </span>
+              <div class="pl-desc">
+                <v-select
+                  class="pl-form"
+                  :items="this.mixin_common_code_get(this.common_code, 'EXL_COND', '전체')"
+                  placeholder="선택하세요"
+                  v-model="SRCH_EXL_COND_CD"
+                ></v-select>
+              </div>
+            </div>
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                제외조건 값
+              </span>
+              <div class="pl-desc">
+                <v-text-field
+                  class="pl-form is-lg"
+                  placeholder="검색어 입력"
+                  v-model="SRCH_EXL_COND_CN"
+                  @keydown.enter="getGridList()"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="pl-form-inline-wrap">
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                사용여부
+              </span>
+              <div class="pl-desc">
+                <v-select
+                  class="pl-form "
+                  :items="this.mixin_common_code_get(this.common_code, 'USE_WT', '전체')"
+                  v-model="SRCH_USE_YN"
+                  placeholder="선택하세요"
+                ></v-select>
+              </div>
+            </div>
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                삭제여부
+              </span>
+              <div class="pl-desc">
+                <v-select
+                  class="pl-form "
+                  :items="this.mixin_common_code_get(this.common_code, 'USE_WT', '전체')"
+                  v-model="SRCH_DEL_YN"
+                  placeholder="선택하세요"
+                ></v-select>
+              </div>
+            </div>
+            <v-btn class="pl-btn is-icon" @click="getGridList(false)">
+              <span class="pl-icon20 search"></span>
+              조회
+            </v-btn>
+          </div>
+          <v-data-table
+            class="pl-grid has-control mt-2"
+            :headers="EXL_COND_HEADER_LIST"
+            :items="EXL_COND_LIST"
+            fixed-header
+            show-select
+            item-key="ROW_NUMBER"
+            height="580px"
+            :items-per-page="EXL_COND_LIST.length"
+            :item-class="isExlCondActiveRow"
+            hide-default-footer
+            page.sync="1"
+            @page-count="pageCount = $event"
+            @click:row="rowExlCondSelect"
+            v-model="SEL_EXL_COND_LIST"
+            no-data-text="등록된 데이터가 없습니다."
+          >
+          </v-data-table>
+        </template>
+        <template 
+          v-else-if="dialogTab=='exlTrgt'"
+          slot="body">
+          <div class="pl-form-inline-wrap">
+            <div class="pl-form-inline">
+              제외 대상자를 선택한 후 [적용]버튼을 눌러 대상자를 확정해주세요<br>
+              적용 후에는 다시 대상자를 되돌릴 수 없습니다
+            </div>
+          </div>
+          <v-data-table
+            class="pl-grid has-control mt-2"
+            :headers="EXL_COND_TRGT_HEADER_LIST"
+            :items="EXL_COND_TRGT_LIST"
+            fixed-header
+            show-select
+            item-key="ROW_NUMBER"
+            height="300px"
+            :items-per-page="EXL_COND_TRGT_LIST.length"
+            :item-class="isExlCondTrgtActiveRow"
+            hide-default-footer
+            page.sync="1"
+            @page-count="pageCount = $event"
+            @click:row="rowExlCondTrgtSelect"
+            v-model="SEL_EXL_COND_TRGT_LIST"
+            no-data-text="등록된 데이터가 없습니다."
+            :key="dialogTab"
+          >
+            <template v-slot:item.REASON="{ item }">
+              <div
+                v-html="sanitizeContent(item.REASON)"
+              >
+              </div>
+            </template> 
+          </v-data-table>
+          <div class="d-flex justify-center align-center is-mt-m" style="gap: 14px">
+            <!-- arrow up 버튼 -->
+            <compo-tooltip-btn
+              TitleProp="up"
+              ClassProp="pl-tooltip-btn"
+              IconProp="pl-icon30 is-arrow-up"
+              TooltipPositionProp="bottom"
+              @btnClick="un_stng_btn()"
+              :DisabledProp="SEL_EXL_COND_TRGT_LIST.length == 0 ? true : false"
+            ></compo-tooltip-btn>
+            <!-- arrow down 버튼 -->
+            <compo-tooltip-btn
+              TitleProp="down"
+              ClassProp="pl-tooltip-btn"
+              IconProp="pl-icon30 is-arrow-down"
+              TooltipPositionProp="bottom"
+              @btnClick="stng_btn()"
+              :DisabledProp="SEL_EXL_COND_TRGT_LIST.length == 0 ? true : false"
+            ></compo-tooltip-btn>
+          </div>
+          <v-data-table
+            class="pl-grid has-control mt-2"
+            :headers="EXL_COND_TRGT_HEADER_LIST"
+            :items="EXL_COND_TRGT_LIST"
+            fixed-header
+            show-select
+            item-key="ROW_NUMBER"
+            height="300px"
+            :items-per-page="EXL_COND_TRGT_LIST.length"
+            :item-class="isExlCondTrgtActiveRow"
+            hide-default-footer
+            page.sync="1"
+            @page-count="pageCount = $event"
+            @click:row="rowExlCondTrgtSelect"
+            v-model="SEL_EXL_COND_TRGT_LIST"
+            no-data-text="등록된 데이터가 없습니다."
+            :key="dialogTab"
+          >
+            <template v-slot:item.REASON="{ item }">
+              <div
+                v-html="sanitizeContent(item.REASON)"
+              >
+              </div>
+            </template> 
+          </v-data-table>
+        </template>
+        <template slot="footer">
+          <span class="pl-counter">선택된 제외조건 <em class="pl-1">({{ SEL_EXL_COND_LIST.length }})</em> 건 / 제외 대상 <em class="pl-1">({{ EXL_COND_TRGT_LIST.length }})</em> 명 / 임의 적용 대상 <em class="pl-1">({{ EXL_COND_TRGT_EXL.length }})</em> 명</span>
+          <v-btn v-if="dialogTab=='exlCond'" class="pl-btn is-sub ml-2" @click="mixin_hideDialog('ExlCond')">닫기</v-btn>
+          <v-btn v-else class="pl-btn is-sub ml-2" @click="brforeProc()">이전</v-btn>
+          <v-btn v-if="dialogTab=='exlCond'" class="pl-btn" @click="nextProc()">다음</v-btn>
+          <v-btn v-else class="pl-btn type-exl" @click="nextProc()">적용</v-btn>
+        </template>
+      </compo-dialog>
+    </v-dialog>
   </div>
 </template>
 
@@ -1477,6 +1698,46 @@ export default {
       //원본 참여자 데이터.
       originalGridDataText: [],
 
+      dialogExlCond:false,
+      dialogTab:'',
+      EXL_COND_HEADER_LIST:[
+        { text: '번호', value: 'ROW_NUMBER', align: 'center', width: '80px' },
+        { text: '부서', value: 'DEPT_NM', align: 'left', width: '120px'},
+        { text: '조건 구분', value: 'EXL_COND_TEXT', align: 'left', width: '360px'},
+        { text: '수정자', value: 'MDFR_NM', align: 'left', width: '120px'},
+        { text: '수정일', value: 'MDFCN_DT_F', align: 'left', width: '120px'},
+      ],
+      EXL_COND_LIST:[],   //제외조건 리스트 - 적용할 제외조건을 선택하기 위한 리스트
+      SRCH_DEPT_LIST:[],
+      SRCH_DEPT_ID:'',
+      SRCH_EXL_COND_SE_CD:'',
+      SRCH_EXL_COND_CD:'', 
+      SRCH_EXL_COND_CN:'',
+      SRCH_USE_YN:'Y',
+      SRCH_DEL_YN:'N',
+      SEL_EXL_COND:{},    // 선택 제외조건
+      SEL_EXL_COND_LIST:[],   //선택 제외조건 리스트 - 선택된 적용할 제외조건 리스트
+      SEL_EXL_COND_TEXT:'',
+      EXL_COND_TRGT_HEADER_LIST:[
+        { text: '번호', value: 'ROW_NUMBER', align: 'center', width: '80px' },
+        { text: '이름', value: 'CUST_NM', align: 'left', width: '120px'},
+        { text: '전화번호', value: 'CUST_PHN_NO', align: 'left', width: '200px'},
+        { text: '제외 사유', value: 'REASON', align: 'left', width: '360px'},
+        { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'center',         width: '120px' },
+        { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '120px' },
+        { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '120px' },
+        { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
+        { text: '인입번호',         value: 'LAST_PHN_NO',       align: 'left',          width: '160px' },
+        { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
+        { text: '인입유형',         value: 'DRWI_TYPE_CD',             align: 'left',          width: '120px' },
+        { text: '처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
+        { text: '개인정보수집동의',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
+        { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
+      ],
+      EXL_COND_TRGT_LIST:[],   //제외조건 제외 대상자 리스트 - 제외조건으로 제외된 대상자를 보여주기위함 (적용된 제외조건과 대상을 한번에 저장)
+      SEL_EXL_COND_TRGT:{},
+      SEL_EXL_COND_TRGT_LIST:[],
+      EXL_COND_TRGT_EXL:[],   //제외조건 제외대상에서 제외한 대상 리스트
     }
   },
   watch: {
@@ -1486,6 +1747,12 @@ export default {
     //     this.SEND_MESSAGE = '';
     //   }
     // }
+    SEL_EXL_COND_LIST(){
+      for(let i=0;i<this.SEL_EXL_COND_LIST.length;i++){
+        let str = (i!=0 ? '<br>' : '') + (i+1) + '. ' + this.SEL_EXL_COND_LIST[i].EXL_COND_TEXT;
+        this.SEL_EXL_COND_TEXT += str;
+      }
+    }
   },
 
   computed: {
@@ -1504,6 +1771,7 @@ export default {
                     ,'SELT_ALW_NB'  //선택 허용수
                     ,'ANSW_SZ'      //답변 사이즈
                     ,'CUSL_PHN_NO'  //상담사 전화번호 - 문자 발신번호 목록에 추가됨
+                    ,'EXL_COND_TY', 'EXL_COND', 'USE_WT'
                   ];
     this.common_code = await this.mixin_common_code_get_all(codeName, 'Y');
 
@@ -1616,6 +1884,21 @@ export default {
         // { text: '암호화키',       value: 'URL_KEY',             align: 'center', width: '120px' },
       ];
       this.gridDataHeaders.push(...gridDataHeaders2);
+
+      //설문 제외조건
+      const gridDataHeaders3 = [
+        { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'center',         width: '120px' },
+        { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '120px' },
+        { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '120px' },
+        { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
+        { text: '인입번호',         value: 'LAST_PHN_NO',       align: 'left',          width: '160px' },
+        { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
+        { text: '인입유형',         value: 'DRWI_TYPE_CD',             align: 'left',          width: '120px' },
+        { text: '처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
+        { text: '개인정보수집동의',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
+        { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
+      ];
+      this.gridDataHeaders.push(...gridDataHeaders3);
 
       //엑셀 양식 확장 항목 추가.
       this.excelTemplateHeaders = [
@@ -4181,6 +4464,257 @@ export default {
         this.gridSelectedData = [];
       }
     },
+
+    btnExlCond(){
+      this.dialogTab = 'exlCond'
+      this.getDeptList();
+      this.mixin_showDialog('ExlCond');
+    },
+
+    async getDeptList(){
+      this.SRCH_DEPT_LIST=[{
+        text:'전체'
+        , value:''
+      }];
+      let deptCdList = await this.mixin_getDeptList();
+      for(let i=0;i<deptCdList.length;i++){
+        let list = {
+          text:deptCdList[i].DEPT_NM
+          , value: deptCdList[i].DEPT_ID
+        }
+        this.SRCH_DEPT_LIST.push(list);
+      }
+    },
+
+    async getGridList(){
+      this.SEL_EXL_COND_LIST = [];
+
+      let sUrl = '/api/svy/exclusion/selectConditionList';
+      let postParam = {
+        DEPT_ID: this.SRCH_DEPT_ID
+        , EXL_COND_SE_CD: this.SRCH_EXL_COND_SE_CD
+        , EXL_COND_CD : this.SRCH_EXL_COND_CD
+        , EXL_COND_CN : this.SRCH_EXL_COND_CN
+        , USE_YN : this.SRCH_USE_YN
+        , DEL_YN : this.SRCH_DEL_YN
+      }
+
+      let headParam = {
+        head : {
+          PAGING: 'Y',
+          ROW_CNT: 5000,
+          PAGES_CNT: 1
+        }
+      }
+
+      let response = await this.common_postCall(sUrl, postParam, headParam);
+
+      if(!response.HEADER.ERROR_FLAG) {
+        this.EXL_COND_LIST = response.DATA;
+      }
+    },
+
+    isExlCondActiveRow(item){
+      const activeClass = item === this.SEL_EXL_COND ? "active" : "";
+      return activeClass;
+    },
+
+    rowExlCondSelect(item){
+      this.SEL_EXL_COND = item
+    },
+
+    isExlCondTrgtActiveRow(item){
+      const activeClass = item === this.SEL_EXL_COND_TRGT ? "active" : "";
+      return activeClass;
+    },
+
+    rowExlCondTrgtSelect(item){
+      this.SEL_EXL_COND_TRGT = item
+    },
+
+    nextProc(){
+      if(this.dialogTab=='exlCond'){
+        this.dialogTab = 'exlTrgt';
+
+        this.EXL_COND_TRGT_LIST = [];
+        let trgtList = [];
+        for(let i=0;i<this.SEL_EXL_COND_LIST.length;i++){
+          let exlCond = this.SEL_EXL_COND_LIST[i].EXL_COND_SE_CD;
+          let cond = this.SEL_EXL_COND_LIST[i].EXL_COND_NM;
+          let condVl = this.SEL_EXL_COND_LIST[i].EXL_COND_CN;
+          let condReason = this.SEL_EXL_COND_LIST[i].EXL_COND_TEXT;
+          for(let n=0;n<this.gridDataText.length;n++){
+            let data = this.gridDataText[n];
+            let trgt = true;
+            switch(cond){
+              case '포함':
+                if(data[exlCond].indexOf(condVl)>-1){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '제외':
+                if(data[exlCond].indexOf(condVl)==-1){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '동일':
+                if(data[exlCond]==condVl){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '동일 제외':
+                if(data[exlCond]!=condVl){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '시작 문자열':
+                if(data[exlCond].startsWith(condVl)){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '시작 제외 문자열':
+                if(!data[exlCond].startsWith(condVl)){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '끝 문자열':
+                if(data[exlCond].endWith(condVl)){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '끝 제외 문자열':
+                if(!data[exlCond].endWith(condVl)){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '자릿수':
+                if(!data[exlCond].length==condVl){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              case '자릿수 아님':
+                if(!data[exlCond].length!=condVl){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgt = false
+                      break;
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                  }
+                }
+                break;
+              default:
+                break;
+            }
+          }
+        }
+        this.EXL_COND_TRGT_LIST = trgtList;
+      }
+    },
+
+    brforeProc(){
+      if(this.dialogTab=='exlTrgt'){
+        this.dialogTab = 'exlCond';
+      }
+    },
+
+    setExlCond(){
+
+    },
+    
+    sanitizeContent(content) {
+      if (!content) return '';
+
+      // 1️⃣ <br>, <br/> 태그는 임시 치환
+      let temp = content.replace(/<br\s*\/?>/gi, '[[BR]]');
+
+      // 2️⃣ 나머지 HTML 태그 제거
+      temp = temp.replace(/<[^>]*>/g, '');
+
+      // 3️⃣ 다시 [[BR]] → <br> 복원
+      temp = temp.replace(/\[\[BR\]\]/g, '<br>');
+
+      // 4️⃣ script, iframe 등 보안 위험 요소 제거 (추가 안전망)
+      temp = temp.replace(/<script[^>]*>.*?<\/script>/gi, '');
+      temp = temp.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '');
+
+      return temp;
+    }
   },
 };
 </script>
