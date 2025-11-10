@@ -71,6 +71,7 @@ const commonStore = {
       },
     ],
     isAlarm: true,
+    ognzList: [],
   }),
   getters: {
     GE_COMMON_TAB: (state) => state.tab,
@@ -89,6 +90,7 @@ const commonStore = {
     GE_COMMON_SETTING_FONTSIZE: (state) => state.chatFontSize,
     GE_COMMON_SETTING_IS_ALARM: (state) => state.isAlarm,
     GE_COMMON_SETTING_SHORTCUT: (state) => state.settingShortcut,
+    GE_COMMON_OGNZ_LIST: (state) => state.ognzList,
     // GE_COMMON_ACTIVE_TAB_NUM: state => state.active_tab_num,
     // GE_COMMON_ACTIVE_TAB_ID: state => state.active_tab_id,
     // GE_COMMON_ACTIVE_TAB_TITLE: state => state.active_tab_title,
@@ -234,6 +236,9 @@ const commonStore = {
     MU_SETTING_IS_ALARM(state, data) {
       state.isAlarm = data;
     },
+    MU_SETTING_OGNZ_LIST(state, data) {
+      state.ognzList = data;
+    },
 
 
   },
@@ -294,6 +299,11 @@ const commonStore = {
     // 알람표시 적용여부
     async AC_COMMON_SETTING_IS_ALARM({ commit }, data) {
       commit('MU_SETTING_IS_ALARM', data);
+    },
+
+    // 조직정보
+    async AC_COMMON_SETTING_OGNZ_LIST({ commit }, data) {
+      commit('MU_SETTING_OGNZ_LIST', data);
     },
 
   },

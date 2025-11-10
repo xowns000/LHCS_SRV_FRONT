@@ -7,6 +7,21 @@
           <div class="pl-form-inline-wrap">
             <div class="pl-form-inline">
               <span class="pl-label">
+                진행 부서
+              </span>
+              <div class="pl-desc">
+                <v-select
+                    class="pl-form"
+                    :items="ognz_list"
+                    item-text="DEPT_NM"
+                    item-value="DEPT_ID"
+                    v-model="SRVY_DEPT"
+                    placeholder="선택하세요"
+                ></v-select>
+              </div>
+            </div>
+            <div class="pl-form-inline">
+              <span class="pl-label">
                 진행 년도
               </span>
               <div class="pl-desc">
@@ -182,6 +197,21 @@
             <p>필수 항목을 입력하신 후 <strong>[저장]</strong> 버튼을 클릭하십시오.</p>
             <div class="pl-form-inline-wrap vertical mt-2">
               <div class="pl-form-inline">
+              <span class="pl-label">
+                진행 부서 <v-icon class="pl-icon20 required"></v-icon>
+              </span>
+                <div class="pl-desc">
+                  <v-select
+                      class="pl-form"
+                      :items="ognz_list.filter(item=>item.DEPT_ID !== '')"
+                      item-text="DEPT_NM"
+                      item-value="DEPT_ID"
+                      v-model="digParams.SRVY_DEPT"
+                      placeholder="선택하세요"
+                  ></v-select>
+                </div>
+              </div>
+              <div class="pl-form-inline">
                 <span class="pl-label">
                   진행 년도
                   <v-icon class="pl-icon20 required"></v-icon>
@@ -194,7 +224,7 @@
                     v-model="digParams.SRVY_YR"
                     required
                     :rules="validateRules.SRVY_YR"
-                    :disabled = "selectedRow.STTS_CD === undefined || selectedRow.STTS_CD == 'PRPARG' || selectedRow.STTS_CD == 'RFSL' ? false : true"
+                    :disabled = "mixin_isEmpty(digParams.SRVY_DEPT) || selectedRow.STTS_CD === undefined || selectedRow.STTS_CD == 'PRPARG' || selectedRow.STTS_CD == 'RFSL' ? false : true"
                   ></v-select>
                 </div>
               </div>
@@ -395,6 +425,7 @@
       gridTotalCnt: 0,
       gridDataHeaders: [
         { text: '번호',               value: 'ROW_NUMBER',        align: 'center', width: '80px' },
+        { text: '진행부서',           value: 'DEPT_NM',        align: 'left',   width: '100px' },
         { text: '진행년도',           value: 'SRVY_YR_NM',        align: 'left',   width: '100px' },
         { text: '설문조사명',         value: 'SRVY_NM',           align: 'left',   width: '100%' },
         { text: '설문시작일',         value: 'SRVY_BGNG_DT_F',      align: 'center', width: '140px' },
@@ -429,6 +460,7 @@
       SRVY_SE_CD: '',
       STTS_CD: '',
       SRVY_NM: '',
+      SRVY_DEPT: '',
 
       startDate: '',
       endDate: '',
@@ -532,6 +564,7 @@
       const date = new Date();
       const curYear = date.getFullYear();
       this.digParams = {
+        SRVY_DEPT: '',  // 다이얼로그 진행부서
         SRVY_YR: curYear.toString(),  // 다이얼로그 진행년도
         SRVY_SE_CD: '',            // 다이얼로그 계획구분
         SRVY_NM: '',              // 다이얼로그 설문조사명
@@ -567,6 +600,7 @@
         ,SRVY_SE_CD : this.SRVY_SE_CD     // 설문_구분_코드
         ,STTS_CD : this.STTS_CD           // 진행_상태_코드
         ,SRVY_NM : this.SRVY_NM           // 설문_명
+        ,SRVY_DEPT : this.SRVY_DEPT           // 설문 부서
       }
       const headParam = {
         head: {
@@ -656,6 +690,7 @@
         SRVY_EXPLN: selectedData.SRVY_EXPLN,
         STTS_CD: selectedData.STTS_CD,
         SRVY_ID: selectedData.SRVY_ID,
+        SRVY_DEPT : selectedData.DEPT_ID,
       };
       this.startDate = this.mixin_convertDate(this.digParams.SRVY_BGNG_DT, 'yyyy-MM-dd');
       this.endDate = this.mixin_convertDate(this.digParams.SRVY_END_DT, 'yyyy-MM-dd');
@@ -732,6 +767,7 @@
         ,SRVY_EXPLN : this.digParams.SRVY_EXPLN                               // 설문_설명
         ,TRGT_DSGN_YN : this.digParams.TRGT_DSGN_YN                           // 대상_지정_여부
         ,PSTG_YN : 'N'                                                        // 게시여부, 디폴트 N
+        ,DEPT_ID : this.digParams.SRVY_DEPT                           // 설문 진행 부서
       }
       const headParam = {
         head: {

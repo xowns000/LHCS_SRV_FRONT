@@ -649,6 +649,7 @@ export default {
 
             // }, 200);
           }
+          this.mixin_loadOgnzList()
         });
     },
     //사용자 정보 셋팅
