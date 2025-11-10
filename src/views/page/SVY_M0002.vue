@@ -49,12 +49,38 @@
                 제외조건 값
               </span>
               <div class="pl-desc">
+                <!-- 
+                  텍스트 입력
+                  인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
+                -->
                 <v-text-field
+                  v-if="SRCH_EXL_COND_SE_CD=='LAST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM'"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
                   @keydown.enter="getGridList(false)"
                 />
+                <!-- 
+                  텍스트 입력
+                  접수채널 / 처리방법
+                -->
+                <v-select
+                  v-else-if="SRCH_EXL_COND_SE_CD=='DRWI_TYPE_CD' || SRCH_EXL_COND_SE_CD=='PRCS_CHN_CD' || SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD' || SRCH_EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN'"
+                  class="pl-form"
+                  :items="SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
+                    : (SRCH_EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN' ? [{text:'전체',value:''},{text:'Y',value:'Y'}, {text:'N',value:'N'}] 
+                    : (this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_TYPE_CD' ? 'CVC' : 'PCMC', '전체')))"
+                  placeholder="선택하세요"
+                  v-model="SRCH_EXL_COND_CN"
+                ></v-select>
+                <!-- 상담유형 처리 (미정) -->
+                <v-select
+                  v-else="SRCH_EXL_COND_SE_CD=='DRWI_TYPE_CD' || SRCH_EXL_COND_SE_CD=='PRCS_CHN_CD'"
+                  class="pl-form"
+                  :items="this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_TYPE_CD' ? 'CVC' : 'PCMC', '전체')"
+                  placeholder="선택하세요"
+                  v-model="SRCH_EXL_COND_CN"
+                ></v-select>
               </div>
             </div>
             <div class="pl-form-inline">
@@ -233,12 +259,41 @@
                   <v-icon class="pl-icon20 required"></v-icon>
                 </span>
                   <div class="pl-desc">
+                    <!-- 
+                      텍스트 입력
+                      인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
+                    -->
                     <v-text-field
-                    class="pl-form is-lg"
-                    placeholder="검색어 입력"
-                    v-model="EXL_COND_CN"
-                    :rules="detailValidateRules.EXL_COND_CN"
-                  />
+                      v-if="EXL_COND_SE_CD=='LAST_PHN_NO' || EXL_COND_SE_CD=='CUTT_CN' || EXL_COND_SE_CD=='USER_NM'"
+                      class="pl-form is-lg"
+                      placeholder="검색어 입력"
+                      v-model="EXL_COND_CN"
+                      @keydown.enter="getGridList(false)"
+                      :rules="detailValidateRules.EXL_COND_CN"
+                    />
+                    <!-- 
+                      텍스트 입력
+                      접수채널 / 처리방법
+                    -->
+                    <v-select
+                      v-else-if="EXL_COND_SE_CD=='DRWI_TYPE_CD' || EXL_COND_SE_CD=='PRCS_CHN_CD' || EXL_COND_SE_CD=='RCPT_CHN_CD' || EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN'"
+                      class="pl-form"
+                      :items="EXL_COND_SE_CD=='RCPT_CHN_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
+                        : (EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN' ? [{text:'전체',value:''},{text:'Y',value:'Y'}, {text:'N',value:'N'}] 
+                        : (this.mixin_common_code_get(this.common_code, EXL_COND_SE_CD=='DRWI_TYPE_CD' ? 'CVC' : 'PCMC', '전체')))"
+                      placeholder="선택하세요"
+                      v-model="EXL_COND_CN"
+                      :rules="detailValidateRules.EXL_COND_CN"
+                    ></v-select>
+                    <!-- 상담유형 처리 (미정) -->
+                    <v-select
+                      v-else="EXL_COND_SE_CD=='DRWI_TYPE_CD' || EXL_COND_SE_CD=='PRCS_CHN_CD'"
+                      class="pl-form"
+                      :items="this.mixin_common_code_get(this.common_code, EXL_COND_SE_CD=='DRWI_TYPE_CD' ? 'CVC' : 'PCMC', '전체')"
+                      placeholder="선택하세요"
+                      v-model="EXL_COND_CN"
+                      :rules="detailValidateRules.EXL_COND_CN"
+                    ></v-select>
                 </div>
               </div>
               <div class="pl-form-inline">
@@ -493,7 +548,9 @@ export default {
     }
   },
   watch: {
-    
+    SRCH_EXL_COND_SE_CD(){
+      this.SRCH_EXL_COND_CN = '';
+    }
   },
 
   computed: {
@@ -502,7 +559,7 @@ export default {
 
   async created() {
     // 공통코드설정
-    let codeName = ['EXL_COND_TY', 'EXL_COND', 'USE_WT'];
+    let codeName = ['EXL_COND_TY', 'EXL_COND', 'USE_WT','CVC','PCMC'];
     this.common_code = await this.mixin_common_code_get_all(codeName);
 
     this.getDeptList();
