@@ -246,6 +246,21 @@
                       />
                     </div>
                   </div>
+                  <div class="pl-form-inline">
+                    <span class="pl-label">
+                      실시간 발송 사용 여부
+                      <v-icon class="pl-icon20 required"></v-icon>
+                    </span>
+                    <div class="pl-desc">
+                       <v-select
+                        class="pl-form flex-grow-0"
+                        :items="RTIME_SNDNG_SELECT"
+                        placeholder="선택하세요"
+                        v-model="RTIME_SNDNG_USE_YN"
+                        :rules="validateRules.RTIME_SNDNG_USE_YN"
+                      ></v-select>
+                    </div>
+                  </div>
                   <template v-if="mixin_getCustcoSrvcStat('AS_ALTMNT')">
                     <div class="pl-form-inline">
                       <span class="pl-label">
@@ -395,6 +410,10 @@ data() {
     DTL_LVL:'',
 
     LKAG_DEPT:'', //연동 부서(LH 상담 AP와 연동하는 부서ID)
+    RTIME_SNDNG_SELECT:[
+        {text : '사용', value : 'Y'},{text : '미사용', value : 'N'}
+    ], //연동 부서(LH 상담 AP와 연동하는 부서ID)
+    RTIME_SNDNG_USE_YN:'', //연동 부서(LH 상담 AP와 연동하는 부서ID)
 
     valid : true,
     validateRules: {
@@ -402,6 +421,9 @@ data() {
         v => !!v || '조직명 은(는) 필수 입력 항목 입니다.',
       ],
       USE_YN: [
+        v => !!v || '사용여부 은(는) 필수 입력 항목 입니다.',
+      ],
+      RTIME_SNDNG_USE_YN: [
         v => !!v || '사용여부 은(는) 필수 입력 항목 입니다.',
       ],
     },
@@ -537,7 +559,8 @@ data() {
         this.DTL_CHILD_CNT = this.selectedNode.CHILD_CNT;
         this.DTL_LVL = this.selectedNode.LVL;
         this.LKAG_DEPT = this.selectedNode.LKAG_DEPT;
-        
+        this.RTIME_SNDNG_USE_YN = this.selectedNode.RTIME_SNDNG_USE_YN;
+
         if(this.mixin_getCustcoSrvcStat('AS_ALTMNT')){
           this.DTL_CO_SE_CD = this.selectedNode.CO_SE_CD;//회사 구분;
           let RGN_LIST = [];
@@ -578,6 +601,7 @@ data() {
         this.DTL_CHILD_CNT = '';
         this.DTL_LVL = '';
         this.LKAG_DEPT = '';
+        this.RTIME_SNDNG_USE_YN = '';
         if(this.mixin_getCustcoSrvcStat('AS_ALTMNT')){
           this.DTL_CO_SE_CD = 'CT_OWN_CO';//회사 구분;
           this.RGN_DOSI = '';
@@ -627,6 +651,7 @@ data() {
         , OFC_NO : this.DTL_OFC_NO
         , USE_YN : this.DTL_USE_YN
         , LKAG_DEPT : this.LKAG_DEPT
+        , RTIME_SNDNG_USE_YN : this.RTIME_SNDNG_USE_YN
       }
 
       let headParam = {
