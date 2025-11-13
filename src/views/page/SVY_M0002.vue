@@ -54,7 +54,7 @@
                   인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
                 -->
                 <v-text-field
-                  v-if="SRCH_EXL_COND_SE_CD=='LAST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM'"
+                  v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM'"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
@@ -65,19 +65,19 @@
                   접수채널 / 처리방법
                 -->
                 <v-select
-                  v-else-if="SRCH_EXL_COND_SE_CD=='DRWI_TYPE_CD' || SRCH_EXL_COND_SE_CD=='PRCS_CHN_CD' || SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD' || SRCH_EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN'"
+                  v-else-if="SRCH_EXL_COND_SE_CD=='DRWI_SE_CD' || SRCH_EXL_COND_SE_CD=='PRCS_CHN_CD' || SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD' || SRCH_EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN'"
                   class="pl-form"
                   :items="SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
                     : (SRCH_EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN' ? [{text:'전체',value:''},{text:'Y',value:'Y'}, {text:'N',value:'N'}] 
-                    : (this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_TYPE_CD' ? 'CVC' : 'PCMC', '전체')))"
+                    : (this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_SE_CD' ? 'CVC' : 'PCMC', '전체')))"
                   placeholder="선택하세요"
                   v-model="SRCH_EXL_COND_CN"
                 ></v-select>
                 <!-- 상담유형 처리 (미정) -->
                 <v-select
-                  v-else="SRCH_EXL_COND_SE_CD=='DRWI_TYPE_CD' || SRCH_EXL_COND_SE_CD=='PRCS_CHN_CD'"
+                  v-else="SRCH_EXL_COND_SE_CD=='DRWI_SE_CD' || SRCH_EXL_COND_SE_CD=='PRCS_CHN_CD'"
                   class="pl-form"
-                  :items="this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_TYPE_CD' ? 'CVC' : 'PCMC', '전체')"
+                  :items="this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_SE_CD' ? 'CVC' : 'PCMC', '전체')"
                   placeholder="선택하세요"
                   v-model="SRCH_EXL_COND_CN"
                 ></v-select>
@@ -264,7 +264,7 @@
                       인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
                     -->
                     <v-text-field
-                      v-if="EXL_COND_SE_CD=='LAST_PHN_NO' || EXL_COND_SE_CD=='CUTT_CN' || EXL_COND_SE_CD=='USER_NM'"
+                      v-if="EXL_COND_SE_CD=='CUST_PHN_NO' || EXL_COND_SE_CD=='CUTT_CN' || EXL_COND_SE_CD=='USER_NM'"
                       class="pl-form is-lg"
                       placeholder="검색어 입력"
                       v-model="EXL_COND_CN"
@@ -276,20 +276,20 @@
                       접수채널 / 처리방법
                     -->
                     <v-select
-                      v-else-if="EXL_COND_SE_CD=='DRWI_TYPE_CD' || EXL_COND_SE_CD=='PRCS_CHN_CD' || EXL_COND_SE_CD=='RCPT_CHN_CD' || EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN'"
+                      v-else-if="EXL_COND_SE_CD=='DRWI_SE_CD' || EXL_COND_SE_CD=='PRCS_CHN_CD' || EXL_COND_SE_CD=='RCPT_CHN_CD' || EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN'"
                       class="pl-form"
                       :items="EXL_COND_SE_CD=='RCPT_CHN_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
                         : (EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN' ? [{text:'전체',value:''},{text:'Y',value:'Y'}, {text:'N',value:'N'}] 
-                        : (this.mixin_common_code_get(this.common_code, EXL_COND_SE_CD=='DRWI_TYPE_CD' ? 'CVC' : 'PCMC', '전체')))"
+                        : (this.mixin_common_code_get(this.common_code, EXL_COND_SE_CD=='DRWI_SE_CD' ? 'CVC' : 'PCMC', '전체')))"
                       placeholder="선택하세요"
                       v-model="EXL_COND_CN"
                       :rules="detailValidateRules.EXL_COND_CN"
                     ></v-select>
                     <!-- 상담유형 처리 (미정) -->
                     <v-select
-                      v-else="EXL_COND_SE_CD=='DRWI_TYPE_CD' || EXL_COND_SE_CD=='PRCS_CHN_CD'"
+                      v-else="EXL_COND_SE_CD=='DRWI_SE_CD' || EXL_COND_SE_CD=='PRCS_CHN_CD'"
                       class="pl-form"
-                      :items="this.mixin_common_code_get(this.common_code, EXL_COND_SE_CD=='DRWI_TYPE_CD' ? 'CVC' : 'PCMC', '전체')"
+                      :items="this.mixin_common_code_get(this.common_code, EXL_COND_SE_CD=='DRWI_SE_CD' ? 'CVC' : 'PCMC', '전체')"
                       placeholder="선택하세요"
                       v-model="EXL_COND_CN"
                       :rules="detailValidateRules.EXL_COND_CN"
@@ -395,9 +395,9 @@
               >
               </div>
             </template>
-            <template v-slot:item.LAST_PHN_NO="{ item }">
+            <template v-slot:item.CUST_PHN_NO="{ item }">
               <div
-                v-html="sanitizeContent(item.LAST_PHN_NO)"
+                v-html="sanitizeContent(item.CUST_PHN_NO)"
               >
               </div>
             </template>
@@ -407,9 +407,9 @@
               >
               </div>
             </template>
-            <template v-slot:item.DRWI_TYPE_CD="{ item }">
+            <template v-slot:item.DRWI_SE_CD="{ item }">
               <div
-                v-html="sanitizeContent(item.DRWI_TYPE_CD)"
+                v-html="sanitizeContent(item.DRWI_SE_CD)"
               >
               </div>
             </template>
@@ -533,9 +533,9 @@ export default {
         { text: '중', value: 'CNSLT_DIV_CD_2'},
         { text: '소', value: 'CNSLT_DIV_CD_3'},
         { text: '상담메모', value: 'CUTT_CN'},
-        { text: '인입번호', value: 'LAST_PHN_NO'},
+        { text: '인입번호', value: 'CUST_PHN_NO'},
         { text: '상담채널', value: 'RCPT_CHN_CD'},
-        { text: '상담경로', value: 'DRWI_TYPE_CD'},
+        { text: '상담경로', value: 'DRWI_SE_CD'},
         { text: '처리방법', value: 'PRCS_CHN_CD'},
         { text: '개인정보', value: 'PRVC_CLCT_AGRE_YN'},
         { text: '인입번호', value: '1111'},
