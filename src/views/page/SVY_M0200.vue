@@ -46,7 +46,7 @@
                 <v-select class="pl-form is-auto"
                   :items="srvyNmItems"
                   v-model="SRVY_NM"
-                  @change="btnSelectList"
+                  @change="btnSelectList()"
                   @click="getSrvyNmRefresh"
                   placeholder="선택하세요">
                 </v-select>
@@ -481,6 +481,40 @@
               <template v-slot:item.CUST_PHN_NO="{ item }">
                 {{ mixin_getCustcoSetting('ENV_PHNNO_MASKING_YN') ? mixin_mask_num(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) : mixin_setPhoneNo(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) }}
               </template>
+              <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
+                <v-select
+                  class="pl-form"
+                  :value="item.CNSLT_DIV_CD_1"
+                  :items="CUTT_TYPE_LIST_1"
+                  item-text="TEXT"
+                  item-value="VALUE"
+                  readonly
+                >
+                </v-select>
+              </template>
+              <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
+                <v-select
+                  class="pl-form"
+                  :value="item.CNSLT_DIV_CD_2"
+                  :items="CUTT_TYPE_LIST_2"
+                  item-text="TEXT"
+                  item-value="VALUE"
+                  readonly
+                >
+                </v-select>
+              </template>
+              <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
+                <v-select
+                  class="pl-form"
+                  :value="item.CNSLT_DIV_CD_3"
+                  :items="CUTT_TYPE_LIST_3"
+                  item-text="TEXT"
+                  item-value="VALUE"
+                  readonly
+                >
+                </v-select>
+              </template>
+              
               </v-data-table>
               <div class="pl-pager">
                 <div class="pl-pager-row">
@@ -1277,6 +1311,27 @@
             v-model="SEL_EXL_COND_LIST"
             no-data-text="등록된 데이터가 없습니다."
           >
+            <template v-slot:item.EXL_COND_TEXT="{ item }">
+              <v-tooltip 
+                v-if="item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_1'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_2'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_3'"
+                content-class="pl-tooltip " bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <span
+                    v-bind="attrs"
+                    v-on="on">
+                  {{ item.EXL_COND_TEXT }}</span>
+                </template>
+                <span
+                  v-html="item.CUTT_TYPE_PATH"
+                >
+                </span>
+              </v-tooltip>
+              <span
+                v-else
+              >
+                {{ item.EXL_COND_TEXT }}
+              </span>
+            </template>
           </v-data-table>
         </template>
         <template 
@@ -1314,40 +1369,40 @@
             </template> 
           </v-data-table>
           <div class="d-flex justify-center align-center is-mt-m" style="gap: 14px">
-            <!-- arrow up 버튼 -->
-            <compo-tooltip-btn
-              TitleProp="up"
-              ClassProp="pl-tooltip-btn"
-              IconProp="pl-icon30 is-arrow-up"
-              TooltipPositionProp="bottom"
-              @btnClick="un_stng_btn()"
-              :DisabledProp="SEL_EXL_COND_TRGT_LIST.length == 0 ? true : false"
-            ></compo-tooltip-btn>
             <!-- arrow down 버튼 -->
             <compo-tooltip-btn
-              TitleProp="down"
+              TitleProp="적용하기"
               ClassProp="pl-tooltip-btn"
               IconProp="pl-icon30 is-arrow-down"
               TooltipPositionProp="bottom"
               @btnClick="stng_btn()"
               :DisabledProp="SEL_EXL_COND_TRGT_LIST.length == 0 ? true : false"
             ></compo-tooltip-btn>
+            <!-- arrow up 버튼 -->
+            <compo-tooltip-btn
+              TitleProp="적용해제"
+              ClassProp="pl-tooltip-btn"
+              IconProp="pl-icon30 is-arrow-up"
+              TooltipPositionProp="bottom"
+              @btnClick="un_stng_btn()"
+              :DisabledProp="SEL_EXL_COND_SET_TRGT_LIST.length == 0 ? true : false"
+            ></compo-tooltip-btn>
           </div>
           <v-data-table
             class="pl-grid has-control mt-2"
             :headers="EXL_COND_TRGT_HEADER_LIST"
-            :items="EXL_COND_TRGT_LIST"
+            :items="EXL_COND_SET_TRGT_LIST"
             fixed-header
             show-select
             item-key="ROW_NUMBER"
             height="300px"
-            :items-per-page="EXL_COND_TRGT_LIST.length"
-            :item-class="isExlCondTrgtActiveRow"
+            :items-per-page="EXL_COND_SET_TRGT_LIST.length"
+            :item-class="isExlCondSetTrgtActiveRow"
             hide-default-footer
             page.sync="1"
             @page-count="pageCount = $event"
-            @click:row="rowExlCondTrgtSelect"
-            v-model="SEL_EXL_COND_TRGT_LIST"
+            @click:row="rowExlCondSetTrgtSelect"
+            v-model="SEL_EXL_COND_SET_TRGT_LIST"
             no-data-text="등록된 데이터가 없습니다."
             :key="dialogTab"
           >
@@ -1360,7 +1415,7 @@
           </v-data-table>
         </template>
         <template slot="footer">
-          <span class="pl-counter">선택된 제외조건 <em class="pl-1">({{ SEL_EXL_COND_LIST.length }})</em> 건 / 제외 대상 <em class="pl-1">({{ EXL_COND_TRGT_LIST.length }})</em> 명 / 임의 적용 대상 <em class="pl-1">({{ EXL_COND_TRGT_EXL.length }})</em> 명</span>
+          <span class="pl-counter">선택된 제외조건 <em class="pl-1">({{ SEL_EXL_COND_LIST.length }})</em> 건 / 제외 대상 <em class="pl-1">({{ EXL_COND_TRGT_LIST.length }})</em> 명 / 임의 적용 대상 <em class="pl-1">({{ EXL_COND_SET_TRGT_LIST.length }})</em> 명</span>
           <v-btn v-if="dialogTab=='exlCond'" class="pl-btn is-sub ml-2" @click="mixin_hideDialog('ExlCond')">닫기</v-btn>
           <v-btn v-else class="pl-btn is-sub ml-2" @click="brforeProc()">이전</v-btn>
           <v-btn v-if="dialogTab=='exlCond'" class="pl-btn" @click="nextProc()">다음</v-btn>
@@ -1723,9 +1778,9 @@ export default {
         { text: '이름', value: 'CUST_NM', align: 'left', width: '120px'},
         { text: '전화번호', value: 'CUST_PHN_NO', align: 'left', width: '200px'},
         { text: '제외 사유', value: 'REASON', align: 'left', width: '360px'},
-        { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'center',         width: '120px' },
-        { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '120px' },
-        { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '120px' },
+        { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'center',         width: '200px' },
+        { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
+        { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
         { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
         { text: '인입번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
         { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
@@ -1737,7 +1792,13 @@ export default {
       EXL_COND_TRGT_LIST:[],   //제외조건 제외 대상자 리스트 - 제외조건으로 제외된 대상자를 보여주기위함 (적용된 제외조건과 대상을 한번에 저장)
       SEL_EXL_COND_TRGT:{},
       SEL_EXL_COND_TRGT_LIST:[],
-      EXL_COND_TRGT_EXL:[],   //제외조건 제외대상에서 제외한 대상 리스트
+      EXL_COND_SET_TRGT_LIST:[],   //제외조건 제외 대상자 리스트 - 제외조건으로 제외된 대상자를 보여주기위함 (적용된 제외조건과 대상을 한번에 저장)
+      SEL_EXL_COND_SET_TRGT:{},
+      SEL_EXL_COND_SET_TRGT_LIST:[],   //제외조건 제외대상에서 제외한 대상 리스트
+
+      CUTT_TYPE_LIST_1:[],
+      CUTT_TYPE_LIST_2:[],
+      CUTT_TYPE_LIST_3:[],
     }
   },
   watch: {
@@ -1752,6 +1813,12 @@ export default {
         let str = (i!=0 ? '<br>' : '') + (i+1) + '. ' + this.SEL_EXL_COND_LIST[i].EXL_COND_TEXT;
         this.SEL_EXL_COND_TEXT += str;
       }
+    },
+
+    SRCH_DEPT_ID(){
+      this.selectCuttTypeAll(1);
+      this.selectCuttTypeAll(2);
+      this.selectCuttTypeAll(3);
     }
   },
 
@@ -1772,6 +1839,7 @@ export default {
                     ,'ANSW_SZ'      //답변 사이즈
                     ,'CUSL_PHN_NO'  //상담사 전화번호 - 문자 발신번호 목록에 추가됨
                     ,'EXL_COND_TY', 'EXL_COND', 'USE_WT'
+                    , 'CVC', 'PCMC'
                   ];
     this.common_code = await this.mixin_common_code_get_all(codeName, 'Y');
 
@@ -1887,9 +1955,9 @@ export default {
 
       //설문 제외조건
       const gridDataHeaders3 = [
-        { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'center',         width: '120px' },
-        { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '120px' },
-        { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '120px' },
+        { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'center',         width: '200px' },
+        { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
+        { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
         { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
         { text: '인입번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
         { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
@@ -2033,7 +2101,7 @@ export default {
         this.tab4Init();
 
         this.SRVY_NM = '';
-        this.srvyNmItems = resData.DATA.map(item => ({ text: this.mixin_decode(item.TEXT), value: item.VALUE }));
+        this.srvyNmItems = resData.DATA.map(item => ({ text: this.mixin_decode(item.TEXT), value: item.VALUE, vl_1: item.VL_1}));
         if (this.srvyNmItems.length > 0) this.SRVY_NM = this.mixin_decode(resData.DATA[0].VALUE);
       }
       if(!this.mixin_isEmpty(this.SRVY_NM)) this.btnSelectList();
@@ -2054,7 +2122,7 @@ export default {
       let resData = await this.common_postCall(sUrl, postParam, headParam );
 
       if (!resData.HEADER.ERROR_FLAG) {
-        this.srvyNmItems = resData.DATA.map(item => ({ text: this.mixin_decode(item.TEXT), value: item.VALUE }));
+        this.srvyNmItems = resData.DATA.map(item => ({ text: this.mixin_decode(item.TEXT), value: item.VALUE, vl_1: item.VL_1 }));
       }
     },
 
@@ -2065,6 +2133,13 @@ export default {
       this.tab2SelectList(false);
       this.tab3SelectList();
       this.tab4SelectList();
+
+      for(let i=0;i<this.srvyNmItems.length;i++){
+        if(this.srvyNmItems[i].value == this.SRVY_NM){
+          this.SRCH_DEPT_ID = this.srvyNmItems[i].vl_1;
+          return;
+        }
+      }
     },
     //설문지 생성 조회
     async tab1SelectList(){
@@ -4532,6 +4607,16 @@ export default {
       this.SEL_EXL_COND_TRGT = item
     },
 
+    isExlCondSetTrgtActiveRow(item){
+      const activeClass = item === this.SEL_EXL_COND_SET_TRGT ? "active" : "";
+      return activeClass;
+    },
+
+    rowExlCondSetTrgtSelect(item){
+      this.SEL_EXL_COND_SET_TRGT = item
+    },
+    
+
     nextProc(){
       if(this.dialogTab=='exlCond'){
         this.dialogTab = 'exlTrgt';
@@ -4574,28 +4659,62 @@ export default {
                 }
                 break;
               case '동일':
-                if(data[exlCond]==condVl){
-                  for(let j =0;j<trgtList.length;j++){
-                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
-                      trgtList[j]['REASON'] += '<br>' + condReason;
-                      trgt = false
+                if(exlCond=='CNSLT_DIV_CD_1'||exlCond=='CNSLT_DIV_CD_2'||exlCond=='CNSLT_DIV_CD_3'){
+                  let condVlArr = condVl.split(',')
+                  for(let q=0;q<condVlArr.length;q++){
+                    if(data[exlCond]==condVlArr[q]){
+                      for(let j =0;j<trgtList.length;j++){
+                        if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                          trgtList[j]['REASON'] += '<br>' + condReason;
+                          trgt = false
+                        }
+                      }
+                      if(trgt){
+                        trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                      }
                     }
                   }
-                  if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                }else{
+                  if(data[exlCond]==condVl){
+                    for(let j =0;j<trgtList.length;j++){
+                      if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                        trgtList[j]['REASON'] += '<br>' + condReason;
+                        trgt = false
+                      }
+                    }
+                    if(trgt){
+                      trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    }
                   }
                 }
                 break;
               case '동일 제외':
-                if(data[exlCond]!=condVl){
-                  for(let j =0;j<trgtList.length;j++){
-                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
-                      trgtList[j]['REASON'] += '<br>' + condReason;
-                      trgt = false
+                if(exlCond=='CNSLT_DIV_CD_1'||exlCond=='CNSLT_DIV_CD_2'||exlCond=='CNSLT_DIV_CD_3'){
+                  let condVlArr = condVl.split(',')
+                  for(let q=0;q<condVlArr.length;q++){
+                    if(data[exlCond]==condVlArr[q]){
+                      for(let j =0;j<trgtList.length;j++){
+                        if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                          trgtList[j]['REASON'] += '<br>' + condReason;
+                          trgt = false
+                        }
+                      }
+                      if(trgt){
+                        trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                      }
                     }
                   }
-                  if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                }else{
+                  if(data[exlCond]!=condVl){
+                    for(let j =0;j<trgtList.length;j++){
+                      if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                        trgtList[j]['REASON'] += '<br>' + condReason;
+                        trgt = false
+                      }
+                    }
+                    if(trgt){
+                      trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    }
                   }
                 }
                 break;
@@ -4684,6 +4803,13 @@ export default {
           }
         }
         this.EXL_COND_TRGT_LIST = trgtList;
+      }else if(this.dialogTab=='exlTrgt'){
+        const selectedRowNumbers = this.EXL_COND_SET_TRGT_LIST.map(item => item.ROW_NUMBER);
+        this.gridDataText = this.gridDataText.filter(
+          row => !selectedRowNumbers.includes(row.ROW_NUMBER)
+        );
+        this.dialogTab = 'exlCond'
+        this.mixin_hideDialog('ExlCond')
       }
     },
 
@@ -4714,6 +4840,88 @@ export default {
       temp = temp.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '');
 
       return temp;
+    },
+
+    
+
+    async selectCuttTypeAll(type){
+      let custco = '1'
+      custco = this.SRCH_DEPT_ID == '2'?'1'/*마이홈*/
+        :(this.SRCH_DEPT_ID == '3'?'4'/*바로처리*/
+        :(this.SRCH_DEPT_ID == '4'||this.SRCH_DEPT_ID == '7'/*렌트홈*/||this.SRCH_DEPT_ID == '8'/*유스타트*/?'3'/*전세임대*/
+        :(this.SRCH_DEPT_ID == '5'?'2'/*공가해소?*/
+        :(this.SRCH_DEPT_ID == '6'?'5'/*공동주택?*/
+        :'1'/*기본값*/
+      ))))
+      let sUrl = '/api/svy/exclusion/selectCuttTypeAll';
+      let postParam = {
+        SRCH_CUSTCO_ID: custco
+        , SRCH_CUTT_TYPE: type
+      }
+
+      let headParam = {
+        head : {
+        }
+      }
+
+      let response = await this.common_postCall(sUrl, postParam, headParam);
+
+      if(!response.HEADER.ERROR_FLAG) {
+        if(type=='1'){
+          this.CUTT_TYPE_LIST_1 = response.DATA;
+        } else if(type=='2') {
+          this.CUTT_TYPE_LIST_2 = response.DATA;
+        } else if(type=='3') {
+          this.CUTT_TYPE_LIST_3 = response.DATA;
+        }
+      } else {
+      }
+    },
+
+    extractCodes(str) {
+      // 작은따옴표 안에 있는 코드값만 추출
+      const match = str.match(/'([^']+)'/g);
+
+      if (!match || match.length < 2) return [];
+
+      // 두 번째 작은따옴표 부분만 가져와서 배열로 변환
+      return match[1]
+        .replace(/'/g, '')      // 작은따옴표 제거
+        .trim()                 // 공백 제거
+        .split(',')             // 쉼표로 분리
+        .map(v => v.trim());    // 각 요소 공백 제거
+    },
+
+    stng_btn() {
+      // 선택된 요소 복사
+      const selected = [...this.SEL_EXL_COND_TRGT_LIST];
+
+      // 1) 아래 리스트에 추가
+      this.EXL_COND_SET_TRGT_LIST.push(...selected);
+
+      // 2) 위쪽 리스트에서 제거
+      this.EXL_COND_TRGT_LIST = this.EXL_COND_TRGT_LIST.filter(
+        item => !selected.includes(item)
+      );
+
+      // 선택 초기화
+      this.SEL_EXL_COND_TRGT_LIST = [];
+    },
+
+    /** 위 리스트로 이동 **/
+    un_stng_btn() {
+      const selected = [...this.SEL_EXL_COND_SET_TRGT_LIST];
+
+      // 1) 위로 이동
+      this.EXL_COND_TRGT_LIST.push(...selected);
+
+      // 2) 아래에서 제거
+      this.EXL_COND_SET_TRGT_LIST = this.EXL_COND_SET_TRGT_LIST.filter(
+        item => !selected.includes(item)
+      );
+
+      // 선택 초기화
+      this.SEL_EXL_COND_SET_TRGT_LIST = [];
     }
   },
 };
