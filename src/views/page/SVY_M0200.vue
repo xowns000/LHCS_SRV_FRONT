@@ -1189,7 +1189,7 @@
       @closeDialog="closeSttsUpdate"
     />
     
-    <!-- 전체보기 dialog -->
+    <!-- 제외조건 적용 dialog -->
     <v-dialog
       v-model="dialogExlCond"
       content-class="dialog-draggable is-lg"
