@@ -106,7 +106,7 @@
       <div class="pl-card-body">
         <div class="pl-grid-top">
           <div class="pl-grid-top-left">
-            <v-btn class="pl-btn is-icon is-sub" @click="mixin_showDialog('RegExlCond')" :disabled="selectedRow.ROW_NUMBER != undefined ? false : true">
+            <v-btn class="pl-btn is-icon is-sub" @click="beforeFetchDetail" :disabled="selectedRow.ROW_NUMBER != undefined ? false : true">
               <span class="pl-icon20 document"></span>
               선택항목 상세
             </v-btn>
@@ -116,9 +116,8 @@
           </div>
         </div>
         <v-data-table
-          class="pl-grid has-control"
+          class="pl-grid"
           style="cursor:pointer;"
-          show-select
           :headers="gridDataHeaders"
           :items="gridItems"
           fixed-header
@@ -130,8 +129,9 @@
           :page.sync="page"
           @page-count="pageCount = $event"
           @click:row="rowSelect"
-          @dblclick:row="mixin_showDialog('RegExlCond')"
+          @dblclick:row="beforeFetchDetail"
           v-model="selectedData"
+          :loading="isLoading"
           no-data-text="등록된 데이터가 없습니다."
         >
         </v-data-table>
@@ -170,97 +170,124 @@
 
     <!-- dialog -->
     <v-dialog
-      v-model="dialogRegExlCond"
-      content-class="dialog-draggable"
+      v-model="dialogExlHstryDtl"
+      content-class="dialog-draggable is-scroll"
       hide-overlay
+      width='750px'
       :retain-focus="false">
       <div class="draggable-area">drag area</div>
       <compo-dialog
-        :headerTitle="SRVY_EXL_COND_ID=='' ? '제외조건 등록' : '제외조건 수정'"
-        @hide="mixin_hideDialog('RegExlCond')">
+        headerTitle="제외 이력 상세"
+        @hide="mixin_hideDialog('ExlHstryDtl')">
         <template slot="body">
-          <v-form ref="form">
-            <div class="pl-form-inline-wrap vertical mt-2">
-              <div class="pl-form-inline">
-                <span class="pl-label">
-                  센터 구분
-                  <v-icon class="pl-icon20 required"></v-icon>
-                </span>
-                <div class="pl-desc">
-                  <v-select
-                    class="pl-form"
-                    :items="DEPT_LIST"
-                    placeholder="선택하세요"
-                    v-model="DEPT_ID"
-                    :rules="detailValidateRules.DEPT_ID"
-                  ></v-select>
+          <div class="pl-card">
+            <h2 class="pl-subtit pb-1">고객정보</h2>
+            <div class="pl-card is-border pt-1">
+              <div class="pl-form-inline-wrap vertical">
+                <div class="pl-form-inline">
+                  <span class="pl-label">고객명</span>
+                  <div class="pl-desc">{{ exlHstryDtl.CUST_NM }}</div>
                 </div>
-              </div>
-              <div class="pl-form-inline">
-                <span class="pl-label">
-                  제외조건 구분
-                  <v-icon class="pl-icon20 required"></v-icon>
-                </span>
-                <div class="pl-desc">
-                  <v-select
-                    class="pl-form"
-                    :items="this.mixin_common_code_get(this.common_code, 'EXL_COND_TY')"
-                    placeholder="선택하세요"
-                    v-model="EXL_COND_SE_CD"
-                    :rules="detailValidateRules.EXL_COND_SE_CD"
-                  ></v-select>
+                <div class="pl-form-inline">
+                  <span class="pl-label">고객ID</span>
+                  <div class="pl-desc">{{ exlHstryDtl.CUST_ID }}</div>
                 </div>
-              </div>
-              <div class="pl-form-inline">
-                <span class="pl-label">
-                  제외조건
-                  <v-icon class="pl-icon20 required"></v-icon>
-                </span>
-                <div class="pl-desc">
-                  <v-select
-                    class="pl-form"
-                    :items="this.mixin_common_code_get(this.common_code, 'EXL_COND')"
-                    placeholder="선택하세요"
-                    v-model="EXL_COND_CD"
-                    :rules="detailValidateRules.EXL_COND_CD"
-                  ></v-select>
-                </div>
-              </div>
-              <div class="pl-form-inline">
-                <span class="pl-label">
-                  제외조건 값
-                  <v-icon class="pl-icon20 required"></v-icon>
-                </span>
-                  <div class="pl-desc">
-                    <v-text-field
-                    class="pl-form is-lg"
-                    placeholder="검색어 입력"
-                    v-model="EXL_COND_CN"
-                    :rules="detailValidateRules.EXL_COND_CN"
-                  />
-                </div>
-              </div>
-              <div class="pl-form-inline">
-                <span class="pl-label">
-                  사용여부
-                  <v-icon class="pl-icon20 required"></v-icon>
-                </span>
-                <div class="pl-desc">
-                  <v-select
-                    class="pl-form"
-                    :items="this.mixin_common_code_get(this.common_code, 'USE_WT')"
-                    placeholder="선택하세요"
-                    v-model="USE_YN"
-                    :rules="detailValidateRules.USE_YN"
-                  ></v-select>
+                <div class="pl-form-inline">
+                  <span class="pl-label">고객 전화번호</span>
+                  <div class="pl-desc">{{ exlHstryDtl.CUST_PHN_NO }}</div>
                 </div>
               </div>
             </div>
-          </v-form>
+          </div>
+          <div class="pl-card">
+            <h2 class="pl-subtit pb-1">설문조사정보</h2>
+            <div class="pl-card is-border pt-1">
+              <div class="pl-form-inline-wrap vertical">
+                <div class="pl-form-inline">
+                  <span class="pl-label">설문연도</span>
+                  <div class="pl-desc">{{ exlHstryDtl.CUST_NM }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">계획 구분</span>
+                  <div class="pl-desc">{{ exlHstryDtl.SRVY_SE_NM }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">고객 전화번호</span>
+                  <div class="pl-desc">{{exlHstryDtl.SRVY_NM }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pl-card">
+            <h2 class="pl-subtit pb-1">제외조건 정보</h2>
+            <div class="pl-card is-border pt-1">
+              <div class="pl-form-inline-wrap vertical">
+                <div class="pl-form-inline">
+                  <span class="pl-label">조건 구분</span>
+                  <div class="pl-desc">{{ exlHstryDtl.EXL_COND_NM+ ' ('+ exlHstryDtl.EXL_COND_SE_CD +')' }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">제외 조건</span>
+                  <div class="pl-desc">{{ exlHstryDtl.EXL_COND_SE_NM+ ' ('+ exlHstryDtl.EXL_COND_CD +')' }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">조건 값</span>
+                  <div class="pl-desc">{{ exlHstryDtl.EXL_COND_CN }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">조건 사유</span>
+                  <div class="pl-desc">{{ exlHstryDtl.EXL_COND_TEXT }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pl-card">
+            <h2 class="pl-subtit pb-1">상담 정보</h2>
+            <div class="pl-card is-border pt-1">
+              <div class="pl-form-inline-wrap vertical">
+                <div class="pl-form-inline">
+                  <span class="pl-label">상담 센터</span>
+                  <div class="pl-desc">{{ exlHstryDtl.DEPT_NM}}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">인입 구분</span>
+                  <div class="pl-desc">{{ exlHstryDtl.DRWI_SE_CD ==='IN'?'인바운드':'아웃바운드' }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">접수 채널</span>
+                  <div class="pl-desc">{{ exlHstryDtl.RCPT_CHN_NM }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">처리 방법</span>
+                  <div class="pl-desc">{{ exlHstryDtl.PRCS_CHN_NM }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">상담사명</span>
+                  <div class="pl-desc">{{ exlHstryDtl.CUSL_NM }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">개인정보동의여부</span>
+                  <div class="pl-desc">{{ exlHstryDtl.PRVC_CLCT_AGRE_YN }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">상담일시</span>
+                  <div class="pl-desc">{{ mixin_convertDate(exlHstryDtl.CUTT_REG_DT,'yyyy-MM-dd HH:mm:ss') }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">상담유형</span>
+                  <div class="pl-desc">{{ exlHstryDtl.CNSLT_DIV_CD_1_NM +'>'+ exlHstryDtl.CNSLT_DIV_CD_2_NM +'>'+ exlHstryDtl.CNSLT_DIV_CD_3_NM }}</div>
+                </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">상담메모</span>
+                  <div class="pl-desc">{{ exlHstryDtl.CUTT_CN }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </template>
         <template slot="footer">
-          <v-btn class="pl-btn is-sub" @click="mixin_hideDialog('RegExlCond')">닫기</v-btn>
-          <v-btn class="pl-btn" @click="saveBtn()">저장</v-btn>
+          <v-btn class="pl-btn is-sub" @click="mixin_hideDialog('ExlHstryDtl')">닫기</v-btn>
         </template>
       </compo-dialog>
     </v-dialog>
@@ -333,20 +360,21 @@ export default {
       nextDisabled: false,
       gridItems: [],
       gridTotalCnt: 0,
+      isLoading : false,
 
       gridDataHeaders: [
           { text: '번호', value: 'ROW_NUMBER', align: 'center', width: '80px' },
-          { text: '부서', value: 'DEPT_NM', align: 'left', width: '120px'},
-          { text: '조건 구분', value: 'EXL_COND_SE_NM', align: 'center', width: '200px'},
-          { text: '조건', value: 'EXL_COND_NM', align: 'left', width: '200px' },
-          { text: '조건 값', value: 'EXL_COND_CN', align: 'left', width: '300px'},
-          { text: '등록자', value: 'RGTR_NM', align: 'left', width: '120px'},
-          { text: '등록일', value: 'REG_DT_F', align: 'left', width: '120px'},
-          { text: '수정자', value: 'MDFR_NM', align: 'left', width: '120px'},
-          { text: '수정일', value: 'MDFCN_DT_F', align: 'left', width: '120px'},
+          { text: '부서', value: 'DEPT_NM', align: 'left', width: '80px'},
+          { text: '설문연도', value: 'SRVY_YR', align: 'left', width: '100px' },
+          { text: '설문명', value: 'SRVY_NM', align: 'left', width: '200px'},
+          { text: '고객명', value: 'CUST_NM', align: 'left', width: '100px'},
+          { text: '고객 전화번호', value: 'CUST_PHN_NO', align: 'left', width: '120px'},
+          { text: '제외 사유', value: 'EXL_COND_TEXT', align: 'center', width: '300px'},
+          { text: '등록일', value: 'REG_DT', align: 'left', width: '120px'},
       ],
 
-      dialogRegExlCond:false,
+      dialogExlHstryDtl:false,
+      exlHstryDtl : {},
     }
   },
   watch: {
@@ -381,7 +409,7 @@ export default {
     }
     this.SRCH_SRVY_YR =  curYear.toString();
   },
-  
+
   methods: {
     async getDeptList(){
       this.SRCH_DEPT_LIST=[{
@@ -402,16 +430,10 @@ export default {
 
     rowSelect(item){
       this.selectedRow = item;
-      this.SRVY_EXL_COND_ID = item.SRVY_EXL_COND_ID;
-      
-      this.DEPT_ID=item.DEPT_ID;
-      this.EXL_COND_SE_CD=item.EXL_COND_SE_CD;
-      this.EXL_COND_CD=item.EXL_COND_CD;
-      this.EXL_COND_CN=item.EXL_COND_CN;
-      this.USE_YN=item.USE_YN;
     },
-    
+
     async getGridList(next){
+      this.isLoading = true;
       //다음버튼 클릭 유무
       if (!next){
         this.pagination.page = 1; //페이징 처리 초기화
@@ -419,14 +441,12 @@ export default {
         this.gridTotalCnt = 0;
       }
 
-      let sUrl = '/api/svy/exclusion/selectConditionList';
+      let sUrl = '/api/svy/exclusion/history/selectHistory';
       let postParam = {
-        DEPT_ID: this.SRCH_DEPT_ID
-        , EXL_COND_SE_CD: this.SRCH_EXL_COND_SE_CD
-        , EXL_COND_CD : this.SRCH_EXL_COND_CD
-        , EXL_COND_CN : this.SRCH_EXL_COND_CN
-        , USE_YN : this.SRCH_USE_YN
-        , DEL_YN : this.SRCH_DEL_YN
+        SRCH_DEPT_ID: this.SRCH_DEPT_ID
+        , SRCH_EXL_COND_SE_CD: this.SRCH_EXL_COND_SE_CD
+        , SRCH_EXL_COND_CD : this.SRCH_EXL_COND_CD
+        , SRCH_EXL_COND_CN : this.SRCH_EXL_COND_CN
       }
 
       let headParam = {
@@ -440,18 +460,23 @@ export default {
       let response = await this.common_postCall(sUrl, postParam, headParam);
 
       if(!response.HEADER.ERROR_FLAG) {
+        let tempDataText = [];
+        tempDataText = response.DATA.map(item => {
+          item.REG_DT = this.mixin_convertDate(item.REG_DT, 'yyyy-MM-dd HH:mm:ss')
+          item.CUST_PHN_NO = this.mixin_setPhoneNo(item.CUST_PHN_NO);
+          return item;
+        })
         if(next){
           // 다음검색
-          let tempDataText = response.DATA;
           let idx = this.gridItems.length + 1;
-          for(let i in tempDataText){
-            tempDataText[i]["ROW_NUMBER"]= idx++;
-          }
           this.gridItems = [...this.gridItems, ...tempDataText];
-          
+
         }else{
+          this.gridItems = [];
           // 조회
-          this.gridItems = response.DATA;
+          this.gridItems = tempDataText;
+
+          console.log("this.gridItems", this.gridItems)
         }
         // 전체 건수
         if(this.gridItems.length > 0) this.gridTotalCnt = response.DATA[0].TWB_PAGING_TOT_COUNT;
@@ -468,86 +493,102 @@ export default {
         this.pagination.page += 1;
         // this.page=1;
       }
+      this.isLoading = false;
+    },
+    beforeFetchDetail(){
+      let srvyExlHstryId = this.selectedRow.SRVY_EXL_HSTRY_ID;
+      this.getExlHstryDtl(srvyExlHstryId);
     },
 
-    regBtn(){
-      this.initSel();
-      this.mixin_showDialog('RegExlCond');
+    async getExlHstryDtl(srvyExlHstryId){
+      console.log("srvyExlHstryId  ", srvyExlHstryId)
+      let sUrl = '/api/svy/exclusion/history/selectHistoryDtl';
+      let postParam = {
+        SRVY_EXL_HSTRY_ID : srvyExlHstryId
+      }
+      const response = await this.common_postCall(sUrl, postParam,{head:{}})
+      console.log("response.DATA[0]",response.DATA[0])
+      if(!response.HEADER.ERROR_FLAG && response.DATA[0]){
+        this.initDtl()
+        this.exlHstryDtl = response.DATA[0]
+        this.mixin_showDialog('ExlHstryDtl')
+      }else{
+        this.showToastCaution({msg : '조회 중 오류가 발생했습니다.'})
+      }
+    },
+    initDtl(){
+      this.exlHstryDtl = {
+        CAUTION_CUST_REG_DT: ''
+        , CAUTION_CUST_YN: ''
+        , CLCT_CUST_INFO_ID: ''
+        , CLCT_REG_DT: ''
+        , CNSLT_DIV_CD_1: ''
+        , CNSLT_DIV_CD_2: ''
+        , CNSLT_DIV_CD_3: ''
+        , CNSLT_DIV_CD_1_NM: ''
+        , CNSLT_DIV_CD_2_NM: ''
+        , CNSLT_DIV_CD_3_NM: ''
+        , CUSL_NM: ''
+        , CUSTCO_ID: ''
+        , CUST_ID: ''
+        , CUST_NM: ''
+        , CUST_PHN_NO: ''
+        , CUTT_CN: ''
+        , CUTT_REG_DT: ''
+        , DEPT_ID: ''
+        , DEPT_NM: ''
+        , DRWI_SE_CD: ''
+        , EML: ''
+        , EXL_COND_CD: ''
+        , EXL_COND_CN: ''
+        , EXL_COND_NM: ''
+        , EXL_COND_SE_CD: ''
+        , EXL_COND_SE_NM: ''
+        , EXL_COND_TEXT: ''
+        , PRCS_CHN_CD: ''
+        , PRVC_CLCT_AGRE_YN: ''
+        , RCPT_CHN_CD: ''
+        , REG_DT: ''
+        , RGTR_ID: ''
+        , SRVY_SE_NM: ''
+        , SRVY_EXL_HSTRY_ID: ''
+        , SRVY_NM: ''
+        , SRVY_YR: ''
+        ,RCPT_CHN_NM : ''
+        ,PRCS_CHN_NM : ''
+      }
     },
 
-    deleteBtn(){
-
-    },
-
-    initSel(){
-      this.selectedRow = {};
-      this.SRVY_EXL_COND_ID = '';
-
-      this.DEPT_ID='';
-      this.EXL_COND_SE_CD='';
-      this.EXL_COND_CD='';
-      this.EXL_COND_CN='';
-      this.USE_YN='Y';
-    },
-    
     //row 선택 활성화
     isActiveRow(item) {
       const activeClass = item === this.selectedRow ? "active" : "";
       return activeClass;
     },
 
-    //저장버튼 클릭
-    async saveBtn(){
-      let sUrl = '/api/svy/exclusion/mergeCondition';
-      let postParam = {
-        SRVY_EXL_COND_ID: this.SRVY_EXL_COND_ID
-        , DEPT_ID: this.DEPT_ID
-        , EXL_COND_SE_CD: this.EXL_COND_SE_CD
-        , EXL_COND_CD : this.EXL_COND_CD
-        , EXL_COND_CN : this.EXL_COND_CN
-        , USE_YN : this.USE_YN
-      }
-
-      let headParam = {
-        head : {
-        }
-      }
-
-      let response = await this.common_postCall(sUrl, postParam, headParam);
-
-      if(!response.HEADER.ERROR_FLAG) {
-        this.mixin_hideDialog('RegExlCond');
-        this.getGridList();
-        this.showToast({  msg: '처리가 완료되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 2000 })
-      }
-    },
-    async getSrvyNm(){
+    async getSrvyNm() {
       const sUrl = '/api/svy/makeitems/selectcombomakeitems';
       const postParam = {
-        SRVY_YR : this.SRVY_YR             //진행년도
-        ,STTS_CD : this.STTS_CD         //진행상태
-        ,SRVY_SE_CD : this.SRVY_SE_CD        //계획구분
+        SRVY_YR: this.SRVY_YR             //진행년도
+        , STTS_CD: this.STTS_CD         //진행상태
+        , SRVY_SE_CD: this.SRVY_SE_CD        //계획구분
       }
       const headParam = {
         head: {
-          'SERVICE' : 'svy.plan.selectcombomakeitems',
-          'METHOD' : 'selectcombomakeitems',
-          'TYPE' : 'BIZ_SERVICE',
+          'SERVICE': 'svy.plan.selectcombomakeitems',
+          'METHOD': 'selectcombomakeitems',
+          'TYPE': 'BIZ_SERVICE',
         }
       }
 
-      let resData = await this.common_postCall(sUrl, postParam, headParam );
+      let resData = await this.common_postCall(sUrl, postParam, headParam);
 
 
-      if (resData.HEADER.ERROR_FLAG)
-      {
+      if (resData.HEADER.ERROR_FLAG) {
         this.setErrMsg(resData);
-      }
-      else
-      {
+      } else {
 
         this.SRCH_SRVY_NM = {};
-        this.srvyNmItems = resData.DATA.map(item => ({ text: this.mixin_decode(item.TEXT), value: item.VALUE }));
+        this.srvyNmItems = resData.DATA.map(item => ({text: this.mixin_decode(item.TEXT), value: item.VALUE}));
         if (this.srvyNmItems.length > 0) this.SRCH_SRVY_NM = this.mixin_decode(resData.DATA[0].VALUE);
       }
     },
