@@ -173,7 +173,7 @@
       v-model="dialogExlHstryDtl"
       content-class="dialog-draggable is-scroll"
       hide-overlay
-      width='750px'
+      width='780px'
       :retain-focus="false">
       <div class="draggable-area">drag area</div>
       <compo-dialog
@@ -279,7 +279,14 @@
                 </div>
                 <div class="pl-form-inline">
                   <span class="pl-label">상담메모</span>
-                  <div class="pl-desc">{{ exlHstryDtl.CUTT_CN }}</div>
+                  <div class="pl-desc">
+                    <v-textarea
+                        class="pl-form is-noresize"
+                        v-model="exlHstryDtl.CUTT_CN"
+                        readonly
+                  >
+                  </v-textarea>
+                  </div>
                 </div>
               </div>
             </div>
