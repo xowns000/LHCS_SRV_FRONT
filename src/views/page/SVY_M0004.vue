@@ -219,25 +219,26 @@
             </div>
           </div>
           <div class="pl-card">
-            <h2 class="pl-subtit pb-1">제외조건 정보</h2>
+            <h2 class="pl-subtit pb-1">제외조건 정보({{exlHstryDtl?.exlList?.length}}건)</h2>
             <div class="pl-card is-border pt-1">
-              <div class="pl-form-inline-wrap vertical">
+              <div class="pl-form-inline-wrap vertical" v-for="(item,idx) in exlHstryDtl.exlList">
                 <div class="pl-form-inline">
                   <span class="pl-label">조건 구분</span>
-                  <div class="pl-desc">{{ exlHstryDtl.EXL_COND_NM+ ' ('+ exlHstryDtl.EXL_COND_SE_CD +')' }}</div>
+                  <div class="pl-desc">{{ item.EXL_COND_NM+ ' ('+ item.EXL_COND_SE_CD +')' }}</div>
                 </div>
                 <div class="pl-form-inline">
                   <span class="pl-label">제외 조건</span>
-                  <div class="pl-desc">{{ exlHstryDtl.EXL_COND_SE_NM+ ' ('+ exlHstryDtl.EXL_COND_CD +')' }}</div>
+                  <div class="pl-desc">{{ item.EXL_COND_SE_NM+ ' ('+ item.EXL_COND_CD +')' }}</div>
                 </div>
                 <div class="pl-form-inline">
                   <span class="pl-label">조건 값</span>
-                  <div class="pl-desc">{{ exlHstryDtl.EXL_COND_CN }}</div>
+                  <div class="pl-desc">{{ item.EXL_COND_CN }}</div>
                 </div>
                 <div class="pl-form-inline">
                   <span class="pl-label">조건 사유</span>
-                  <div class="pl-desc">{{ exlHstryDtl.EXL_COND_TEXT }}</div>
+                  <div class="pl-desc">{{ item.EXL_COND_TEXT }}</div>
                 </div>
+                <v-divider v-if="idx+1 !== exlHstryDtl.exlList.length"/>
               </div>
             </div>
           </div>
@@ -376,7 +377,7 @@ export default {
           { text: '설문명', value: 'SRVY_NM', align: 'left', width: '200px'},
           { text: '고객명', value: 'CUST_NM', align: 'left', width: '100px'},
           { text: '고객 전화번호', value: 'CUST_PHN_NO', align: 'left', width: '120px'},
-          { text: '제외 사유', value: 'EXL_COND_TEXT', align: 'center', width: '300px'},
+          { text: '제외 사유', value: 'EXL_COND_TEXT', align: 'left', width: '300px'},
           { text: '등록일', value: 'REG_DT', align: 'left', width: '120px'},
       ],
 
@@ -503,21 +504,31 @@ export default {
       this.isLoading = false;
     },
     beforeFetchDetail(){
-      let srvyExlHstryId = this.selectedRow.SRVY_EXL_HSTRY_ID;
-      this.getExlHstryDtl(srvyExlHstryId);
+      this.getExlHstryDtl(this.selectedRow);
     },
 
-    async getExlHstryDtl(srvyExlHstryId){
-      console.log("srvyExlHstryId  ", srvyExlHstryId)
+    async getExlHstryDtl(srvyExlHstry){
+      console.log("srvyExlHstryId  ", srvyExlHstry.SRVY_ID)
       let sUrl = '/api/svy/exclusion/history/selectHistoryDtl';
       let postParam = {
-        SRVY_EXL_HSTRY_ID : srvyExlHstryId
+        SRVY_ID : srvyExlHstry.SRVY_ID,
+        CLCT_CUST_INFO_ID : srvyExlHstry.CLCT_CUST_INFO_ID,
       }
       const response = await this.common_postCall(sUrl, postParam,{head:{}})
       console.log("response.DATA[0]",response.DATA[0])
       if(!response.HEADER.ERROR_FLAG && response.DATA[0]){
         this.initDtl()
         this.exlHstryDtl = response.DATA[0]
+        this.exlHstryDtl.exlList = response.DATA.map(item =>{
+          return {
+            EXL_COND_NM : item.EXL_COND_NM,
+            EXL_COND_SE_CD : item.EXL_COND_SE_CD,
+            EXL_COND_SE_NM : item.EXL_COND_SE_NM,
+            EXL_COND_CD : item.EXL_COND_CD,
+            EXL_COND_CN : item.EXL_COND_CN,
+            EXL_COND_TEXT : item.EXL_COND_TEXT,
+          }
+        })
         this.mixin_showDialog('ExlHstryDtl')
       }else{
         this.showToastCaution({msg : '조회 중 오류가 발생했습니다.'})
