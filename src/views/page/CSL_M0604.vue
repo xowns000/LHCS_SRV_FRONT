@@ -852,7 +852,7 @@ export default {
     PHONE_NUMBER : [],
 
     // 즉시 발송 체크 여부
-    IS_SEND_ATONCE : true,
+    IS_SEND_ATONCE : false,
 
     // 발송자 정보
     SENDER : [],

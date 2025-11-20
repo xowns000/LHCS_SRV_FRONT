@@ -1687,7 +1687,7 @@ export default {
       SEND_MESSAGE : "",
 
       // 즉시 발송 체크 여부
-      IS_SEND_ATONCE : true,
+      IS_SEND_ATONCE : false,
       TRAN_SEND: false, // 전환전송 여부
 
       //문자 발송 유형
