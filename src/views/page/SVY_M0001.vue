@@ -426,6 +426,7 @@ export default {
         { text: '설문발송일자', value: 'MSG_DT_F', align: 'left', width: '120px'},
         { text: '발송구분', value: 'SNDNG_SE_CD', align: 'left', width: '120px'},
         { text: '전환전송', value: 'ATALK_TRAN_SNDNG_CD', align: 'left', width: '120px'},
+        { text: '설문참여일자', value: 'SRVY_RSPNS_DT_F', align: 'left', width: '120px'},
       ],
 
       dialogExlCond:false,
