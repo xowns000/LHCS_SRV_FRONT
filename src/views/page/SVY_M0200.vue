@@ -1667,7 +1667,7 @@ export default {
 
       SEND_INTERVAL_PEOPLE_LIST : [1000, 2000, 3000, 5000, 7500, 10000],
       SEND_INTERVAL_MIN_LIST : [5, 10, 15, 20, 25, 30, 35, 40, 45, 60, 55, 60],
-      SEND_INTERVAL_PEOPLE : 1000,
+      SEND_INTERVAL_PEOPLE : 2000,
       SEND_INTERVAL_MIN : 5,
       // 발송자 번호 선택 상자
       CUSTCO_TEL_LIST : [],
