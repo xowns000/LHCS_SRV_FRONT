@@ -1253,12 +1253,53 @@
                 제외조건 값
               </span>
               <div class="pl-desc">
+                <!-- 
+                  텍스트 입력
+                  인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
+                -->
                 <v-text-field
+                  v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM'"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
-                  @keydown.enter="getGridList()"
+                  @keydown.enter="getGridList(false)"
                 />
+                <!-- 상담유형 처리 -->
+                 <template
+                  v-else-if="SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
+                 >
+                  <compo-tooltip-btn
+                    TitleProp="조건 선택하기"
+                    ClassProp="pl-tooltip-btn"
+                    IconProp="pl-icon20 parts-check"
+                    TooltipPositionProp="bottom"
+                    @btnClick="btnCuttType('SRCH')"
+                  ></compo-tooltip-btn>
+                  <v-text-field
+                    class="pl-form"
+                    placeholder="검색어 입력"
+                    v-model="SRCH_EXL_COND_CN_CUTT_TYPE.ROW"
+                    readonly
+                  />
+                  <compo-tooltip-btn
+                    :TitleProp="SRCH_EXL_COND_CN_CUTT_TYPE.TEXT"
+                    ClassProp="pl-tooltip-btn flex-grow-0"
+                    IconProp="pl-icon20 paste-board"
+                    TooltipPositionProp="bottom"
+                  ></compo-tooltip-btn>
+                 </template>
+                <!-- 
+                  접수채널 / 처리방법
+                -->
+                <v-select
+                  v-else
+                  class="pl-form is-lg"
+                  :items="SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
+                    : (SRCH_EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN' ? [{text:'전체',value:''},{text:'Y',value:'Y'}, {text:'N',value:'N'}] 
+                    : (this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_SE_CD' ? 'CVC' : 'PCMC', '전체')))"
+                  placeholder="선택하세요"
+                  v-model="SRCH_EXL_COND_CN"
+                ></v-select>
               </div>
             </div>
           </div>
@@ -1301,7 +1342,7 @@
             fixed-header
             show-select
             item-key="ROW_NUMBER"
-            height="580px"
+            height="535px"
             :items-per-page="EXL_COND_LIST.length"
             :item-class="isExlCondActiveRow"
             hide-default-footer
@@ -1333,6 +1374,36 @@
               </span>
             </template>
           </v-data-table>
+          <div class="pl-pager">
+            <div class="pl-pager-row">
+              <span>페이지당 항목 수</span>
+              <v-select
+                class="pl-form"
+                :value="ROW_PER_PAGE"
+                :items="perPage"
+                :item-text="toString(ROW_PER_PAGE)"
+                @change="ROW_PER_PAGE = parseInt($event, 10);"
+              ></v-select>
+            </div>
+            <v-pagination
+              v-model="page"
+              :length="pageCount"
+              circle
+              :total-visible="7">
+            </v-pagination>
+
+            <span class="pl-pager-period">
+              보기 {{ mixin_getPagePeriod(EXL_COND_LIST, page) }} / {{ EXL_COND_LIST.length }}
+              <compo-tooltip-btn
+                TitleProp="다음 검색"
+                ClassProp="pl-tooltip-btn is-line"
+                IconProp="pl-icon20 arrow-next-paging"
+                TooltipPositionProp="bottom"
+                :DisabledProp = "nextDisabled"
+                @btnClick="getGridList(true)"
+              ></compo-tooltip-btn>
+            </span>
+          </div>
         </template>
         <template 
           v-else-if="dialogTab=='exlTrgt'"
@@ -1340,7 +1411,7 @@
           <div class="pl-form-inline-wrap">
             <div class="pl-form-inline">
               제외 대상자를 선택한 후 [적용]버튼을 눌러 대상자를 확정해주세요<br>
-              적용 후에는 다시 대상자를 되돌릴 수 없습니다
+              적용 후에는 즉시 제외이력에 등록되고 다시 대상자를 되돌릴 수 없습니다
             </div>
           </div>
           <v-data-table
@@ -1420,6 +1491,122 @@
           <v-btn v-else class="pl-btn is-sub ml-2" @click="brforeProc()">이전</v-btn>
           <v-btn v-if="dialogTab=='exlCond'" class="pl-btn" @click="nextProc()">다음</v-btn>
           <v-btn v-else class="pl-btn type-exl" @click="nextProc()">적용</v-btn>
+        </template>
+      </compo-dialog>
+    </v-dialog>
+    
+    <!-- 상담유형선택 dialog -->
+    <v-dialog
+      v-model="dialogCuttType"
+      content-class="dialog-draggable is-lg"
+      fullscreen
+      hide-overlay
+      :retain-focus="false">
+      <div class="draggable-area">drag area</div>
+      <compo-dialog
+        :headerTitle="'상담유형 선택'"
+        @hide="mixin_hideDialog('CuttType')">
+        <template
+          v-if="CUTT_TYPE_MODE=='SRCH'"
+          slot="body">
+          <div class="pl-form-inline-wrap">
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                검색
+              </span>
+              <div class="pl-desc">
+                <v-text-field
+                  class="pl-form"
+                  placeholder="검색어 입력"
+                  v-model="SRCH_CUTT_TYPE"
+                />
+              </div>
+            </div>
+            <div class="pl-form-inline ml-auto">
+              <span class="pl-label">
+                {{ srchSelectedCuttTypeData.length+' / '+srchGridCuttTypeItems.length }}
+              </span>
+            </div>
+          </div>
+          <span
+            v-if="LOADING"
+            class="mt-2"
+          >
+            조회중입니다{{ dots }}
+          </span>
+          <v-data-table
+            v-else
+            class="pl-grid has-control is-rowspan mt-2"
+            show-select
+            :headers="gridCuttTypeHeaders"
+            :items="srchGridCuttTypeItems"
+            fixed-header
+            item-key="CUTT_TYPE_ID"
+            height="665px"
+            :items-per-page="srchGridCuttTypeItems.length"
+            @click:row="rowCuttTypeSelect"
+            :item-class="isCuttTypeActiveRow"
+            hide-default-footer
+            page.sync="1"
+            @page-count="pageCount = $event"
+            no-data-text="등록된 데이터가 없습니다."
+            v-model="srchSelectedCuttTypeData"
+            :search="SRCH_CUTT_TYPE"
+          >
+          </v-data-table>
+        </template>
+        <template
+          v-else
+          slot="body">
+          <div class="pl-form-inline-wrap">
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                검색
+              </span>
+              <div class="pl-desc">
+                <v-text-field
+                  class="pl-form"
+                  placeholder="검색어 입력"
+                  v-model="SRCH_CUTT_TYPE"
+                />
+              </div>
+            </div>
+            <div class="pl-form-inline ml-auto">
+              <span class="pl-label">
+                {{ selectedCuttTypeData.length+' / '+gridCuttTypeItems.length }}
+              </span>
+            </div>
+          </div>
+          <span
+            v-if="LOADING"
+            class="mt-2"
+          >
+            조회중입니다{{ dots }}
+          </span>
+          <v-data-table
+            v-else
+            class="pl-grid has-control is-rowspan mt-2"
+            show-select
+            :headers="gridCuttTypeHeaders"
+            :items="gridCuttTypeItems"
+            fixed-header
+            item-key="CUTT_TYPE_ID"
+            height="665px"
+            :items-per-page="gridCuttTypeItems.length"
+            @click:row="rowCuttTypeSelect"
+            :item-class="isCuttTypeActiveRow"
+            hide-default-footer
+            page.sync="1"
+            @page-count="pageCount = $event"
+            no-data-text="등록된 데이터가 없습니다."
+            v-model="selectedCuttTypeData"
+            :search="SRCH_CUTT_TYPE"
+          >
+          </v-data-table>
+        </template>
+        <template slot="footer">
+          <v-btn class="pl-btn is-sub" @click="mixin_hideDialog('CuttType')">닫기</v-btn>
+          <v-btn class="pl-btn" @click="setCuttType(CUTT_TYPE_MODE)">적용</v-btn>
         </template>
       </compo-dialog>
     </v-dialog>
@@ -1507,7 +1694,7 @@ export default {
       page: 1,
       pageCount: 0,
       perPage: [15,30,50,100],
-      ROW_PER_PAGE: -1,
+      ROW_PER_PAGE: 15,
       pageTrgt: 1,
       pageCountTrgt: 0,
       ROW_PER_PAGE_TRGT: 15,
@@ -1768,6 +1955,7 @@ export default {
       SRCH_EXL_COND_SE_CD:'',
       SRCH_EXL_COND_CD:'', 
       SRCH_EXL_COND_CN:'',
+      SRCH_EXL_COND_CN_CUTT_TYPE:{},
       SRCH_USE_YN:'Y',
       SRCH_DEL_YN:'N',
       SEL_EXL_COND:{},    // 선택 제외조건
@@ -1799,6 +1987,25 @@ export default {
       CUTT_TYPE_LIST_1:[],
       CUTT_TYPE_LIST_2:[],
       CUTT_TYPE_LIST_3:[],
+
+      LOADING:false,
+      gridCuttTypeHeaders:[
+        { text: '상담유형명', value: 'CUTT_TYPE_NM', align: 'left'},
+        { text: '대', value: 'PATH_1', align: 'left'},
+        { text: '중', value: 'PATH_2', align: 'left'},
+        { text: '소', value: 'PATH_3', align: 'left'},
+        { text: '전체', value: 'PATH', align: 'left'},
+      ],
+      srchGridCuttTypeItems:[],
+      gridCuttTypeItems:[],
+      selectedCuttTypeRow:{},
+      srchSelectedCuttTypeData: [],
+      selectedCuttTypeData: [],
+      dialogCuttType: false,
+      SRCH_CUTT_TYPE:'',
+      dots: "",
+      dotInterval: null,
+      CUTT_TYPE_MODE:'SRCH',
     }
   },
   watch: {
@@ -1816,9 +2023,14 @@ export default {
     },
 
     SRCH_DEPT_ID(){
-      this.selectCuttTypeAll(1);
-      this.selectCuttTypeAll(2);
-      this.selectCuttTypeAll(3);
+      this.selectCuttTypeAll(1,'grid');
+      this.selectCuttTypeAll(2,'grid');
+      this.selectCuttTypeAll(3,'grid');
+    },
+
+    SRCH_EXL_COND_SE_CD(){
+      this.SRCH_EXL_COND_CN = '';
+      this.SRCH_EXL_COND_CN_CUTT_TYPE = {};
     }
   },
 
@@ -4543,6 +4755,7 @@ export default {
     btnExlCond(){
       this.dialogTab = 'exlCond'
       this.getDeptList();
+      this.getGridList(false);
       this.mixin_showDialog('ExlCond');
     },
 
@@ -4561,8 +4774,14 @@ export default {
       }
     },
 
-    async getGridList(){
+    async getGridList(next){
       this.SEL_EXL_COND_LIST = [];
+      //다음버튼 클릭 유무
+      if (!next){
+        this.pagination.page = 1; //페이징 처리 초기화
+        this.selectedData = [];
+        this.gridTotalCnt = 0;
+      }
 
       let sUrl = '/api/svy/exclusion/selectConditionList';
       let postParam = {
@@ -4577,15 +4796,41 @@ export default {
       let headParam = {
         head : {
           PAGING: 'Y',
-          ROW_CNT: 5000,
-          PAGES_CNT: 1
+          ROW_CNT: this.pagination.rowsPerPage,
+          PAGES_CNT: this.pagination.page
         }
       }
 
       let response = await this.common_postCall(sUrl, postParam, headParam);
 
       if(!response.HEADER.ERROR_FLAG) {
-        this.EXL_COND_LIST = response.DATA;
+        if(next){
+          // 다음검색
+          let tempDataText = response.DATA;
+          let idx = this.EXL_COND_LIST.length + 1;
+          for(let i in tempDataText){
+            tempDataText[i]["ROW_NUMBER"]= idx++;
+          }
+          this.EXL_COND_LIST = [...this.EXL_COND_LIST, ...tempDataText];
+          
+        }else{
+          // 조회
+          this.EXL_COND_LIST = response.DATA;
+        }
+        // 전체 건수
+        if(this.EXL_COND_LIST.length > 0) this.gridTotalCnt = response.DATA[0].TWB_PAGING_TOT_COUNT;
+
+        // 다음검색 버튼 활성화 여부
+        if(response.HEADER.next !== null && response.HEADER.next !== undefined){
+          if(response.HEADER.next === true){
+            this.nextDisabled = false // 버튼 활성화
+          }else{
+            this.nextDisabled = true  // 버튼 비활성화
+          }
+        }
+
+        this.pagination.page += 1;
+        // this.page=1;
       }
     },
 
@@ -4808,8 +5053,12 @@ export default {
         this.gridDataText = this.gridDataText.filter(
           row => !selectedRowNumbers.includes(row.ROW_NUMBER)
         );
-        this.dialogTab = 'exlCond'
-        this.mixin_hideDialog('ExlCond')
+        this.dialogTab = 'exlCond';
+        this.mixin_hideDialog('ExlCond');
+
+        this.EXL_COND_SET_TRGT_LIST = [];
+        this.SEL_EXL_COND_SET_TRGT_LIST = []; //초기화 전 제외조건 이력에 넣기
+        this.SEL_EXL_COND_LIST = [];
       }
     },
 
@@ -4844,19 +5093,38 @@ export default {
 
     
 
-    async selectCuttTypeAll(type){
+    async selectCuttTypeAll(type,where){
+      this.LOADING = true;
+      this.startDotAnimation();
       let custco = '1'
-      custco = this.SRCH_DEPT_ID == '2'?'1'/*마이홈*/
-        :(this.SRCH_DEPT_ID == '3'?'4'/*바로처리*/
-        :(this.SRCH_DEPT_ID == '4'||this.SRCH_DEPT_ID == '7'/*렌트홈*/||this.SRCH_DEPT_ID == '8'/*유스타트*/?'3'/*전세임대*/
-        :(this.SRCH_DEPT_ID == '5'?'2'/*공가해소?*/
-        :(this.SRCH_DEPT_ID == '6'?'5'/*공동주택?*/
-        :'1'/*기본값*/
-      ))))
+      let seCd = ''
+      if(where=='grid'){
+        seCd = type;
+      } else {
+        if(type=='SRCH'){
+          custco = this.SRCH_DEPT_ID == '2'?'1'/*마이홈*/
+            :(this.SRCH_DEPT_ID == '3'?'4'/*바로처리*/
+            :(this.SRCH_DEPT_ID == '4'||this.SRCH_DEPT_ID == '7'/*렌트홈*/||this.SRCH_DEPT_ID == '8'/*유스타트*/?'3'/*전세임대*/
+            :(this.SRCH_DEPT_ID == '5'?'2'/*공가해소?*/
+            :(this.SRCH_DEPT_ID == '6'?'5'/*공동주택?*/
+            :'1'/*기본값*/
+          ))))
+          seCd = this.SRCH_EXL_COND_SE_CD.replaceAll('CNSLT_DIV_CD_','')
+        } else {
+          custco = this.DEPT_ID == '2'?'1'/*마이홈*/
+            :(this.DEPT_ID == '3'?'4'/*바로처리*/
+            :(this.DEPT_ID == '4'||this.DEPT_ID == '7'/*렌트홈*/||this.DEPT_ID == '8'/*유스타트*/?'3'/*전세임대*/
+            :(this.DEPT_ID == '5'?'2'/*공가해소?*/
+            :(this.DEPT_ID == '6'?'5'/*공동주택?*/
+            :'1'/*기본값*/
+          ))))
+          seCd = this.EXL_COND_SE_CD.replaceAll('CNSLT_DIV_CD_','')
+        }
+      }
       let sUrl = '/api/svy/exclusion/selectCuttTypeAll';
       let postParam = {
         SRCH_CUSTCO_ID: custco
-        , SRCH_CUTT_TYPE: type
+        , SRCH_CUTT_TYPE: seCd
       }
 
       let headParam = {
@@ -4867,14 +5135,28 @@ export default {
       let response = await this.common_postCall(sUrl, postParam, headParam);
 
       if(!response.HEADER.ERROR_FLAG) {
-        if(type=='1'){
-          this.CUTT_TYPE_LIST_1 = response.DATA;
-        } else if(type=='2') {
-          this.CUTT_TYPE_LIST_2 = response.DATA;
-        } else if(type=='3') {
-          this.CUTT_TYPE_LIST_3 = response.DATA;
+        if(where=='grid'){
+          if(seCd=='1'){
+            this.CUTT_TYPE_LIST_1 = response.DATA;
+          } else if(seCd=='2') {
+            this.CUTT_TYPE_LIST_2 = response.DATA;
+          } else if(seCd=='3') {
+            this.CUTT_TYPE_LIST_3 = response.DATA;
+          }
+        } else {
+          if(type=='SRCH'){
+            this.srchSelectedCuttTypeData = [];
+            this.srchGridCuttTypeItems = response.DATA;
+          } else {
+            this.selectedCuttTypeData = [];
+            this.gridCuttTypeItems = response.DATA;
+          }
         }
+        this.LOADING = false;
+        clearInterval(this.dotInterval);
       } else {
+        this.LOADING = false;
+        clearInterval(this.dotInterval);
       }
     },
 
@@ -4922,6 +5204,76 @@ export default {
 
       // 선택 초기화
       this.SEL_EXL_COND_SET_TRGT_LIST = [];
+    },
+
+    btnCuttType(type){
+      this.CUTT_TYPE_MODE = type;
+      this.SRCH_CUTT_TYPE = '';
+      this.selectCuttTypeAll(type);
+      this.mixin_showDialog('CuttType');
+    },
+    
+    rowCuttTypeSelect(item){
+      this.selectedCuttTypeRow = item;
+    },
+
+    isCuttTypeActiveRow(item){
+      const activeClass = item === this.selectedCuttTypeRow ? "active" : "";
+      return activeClass;
+    },
+
+    startDotAnimation() {
+      // 기존 인터벌 제거
+      if (this.dotInterval) {
+        clearInterval(this.dotInterval);
+      }
+
+      // 0.1초마다 dots 생성
+      this.dotInterval = setInterval(() => {
+        if (this.dots.length >= 12) {
+          this.dots = "";
+        } else {
+          this.dots += "...";
+        }
+      }, 100);
+    },
+
+    setCuttType(type){
+      let dataArr = [];
+      if(type=='SRCH'){
+        for(let i=0;i<this.srchSelectedCuttTypeData.length;i++){
+          dataArr.push(this.srchSelectedCuttTypeData[i].CUTT_TYPE_EXPLN);
+          if(i==0){
+            this.SRCH_EXL_COND_CN_CUTT_TYPE.TEXT = this.srchSelectedCuttTypeData[i].PATH
+          } else {
+            this.SRCH_EXL_COND_CN_CUTT_TYPE.TEXT = this.SRCH_EXL_COND_CN_CUTT_TYPE.TEXT + '<br>' +this.srchSelectedCuttTypeData[i].PATH
+          }
+        }
+        this.SRCH_EXL_COND_CN = dataArr.toString();
+        this.SRCH_EXL_COND_CN_CUTT_TYPE.ROW = dataArr.length+'개의 상담유형';
+      } else {
+        for(let i=0;i<this.selectedCuttTypeData.length;i++){
+          dataArr.push(this.selectedCuttTypeData[i].CUTT_TYPE_EXPLN);
+          if(i==0){
+            this.EXL_COND_CN_CUTT_TYPE.TEXT = this.selectedCuttTypeData[i].PATH
+          } else {
+            this.EXL_COND_CN_CUTT_TYPE.TEXT = this.EXL_COND_CN_CUTT_TYPE.TEXT + '<br>' +this.selectedCuttTypeData[i].PATH
+          }
+        }
+        this.EXL_COND_CN = dataArr.toString();
+        this.EXL_COND_CN_CUTT_TYPE.ROW = dataArr.length+'개의 상담유형';
+      }
+      this.mixin_hideDialog('CuttType')
+    },
+
+    initSrch(){
+      this.SRCH_DEPT_ID='';
+      this.SRCH_EXL_COND_SE_CD='';
+      this.SRCH_EXL_COND_CN_CUTT_TYPE='';
+      this.SRCH_EXL_COND_CD='';
+      this.SRCH_EXL_COND_CN='';
+      this.SRCH_USE_YN='Y';
+      this.SRCH_DEL_YN='N';
     }
   },
 };
