@@ -430,18 +430,21 @@
             </template>
             <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
               <div
+                style="font-size: 11px;"
                 v-html="sanitizeContent(item.CNSLT_DIV_CD_1)"
               >
               </div>
             </template>
             <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
               <div
+                style="font-size: 11px;"
                 v-html="sanitizeContent(item.CNSLT_DIV_CD_2)"
               >
               </div>
             </template>
             <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
               <div
+                style="font-size: 11px;"
                 v-html="sanitizeContent(item.CNSLT_DIV_CD_3)"
               >
               </div>
@@ -747,7 +750,7 @@ export default {
   },
   watch: {
     SRCH_EXL_COND_SE_CD(){
-      this.SRCH_EXL_COND_CN = {};
+      this.SRCH_EXL_COND_CN = '';
       this.SRCH_EXL_COND_CN_CUTT_TYPE = {};
     }
   },

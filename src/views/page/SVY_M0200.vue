@@ -4869,6 +4869,7 @@ export default {
         this.EXL_COND_TRGT_LIST = [];
         let trgtList = [];
         for(let i=0;i<this.SEL_EXL_COND_LIST.length;i++){
+          let id = this.SEL_EXL_COND_LIST[i].SRVY_EXL_COND_ID;
           let exlCond = this.SEL_EXL_COND_LIST[i].EXL_COND_SE_CD;
           let cond = this.SEL_EXL_COND_LIST[i].EXL_COND_NM;
           let condVl = this.SEL_EXL_COND_LIST[i].EXL_COND_CN;
@@ -4882,11 +4883,12 @@ export default {
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
                       trgt = false
                     }
                   }
                   if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                   }
                 }
                 break;
@@ -4895,11 +4897,12 @@ export default {
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
                       trgt = false
                     }
                   }
                   if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                   }
                 }
                 break;
@@ -4911,11 +4914,12 @@ export default {
                       for(let j =0;j<trgtList.length;j++){
                         if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                           trgtList[j]['REASON'] += '<br>' + condReason;
+                          trgtList[j]['REASON_CD'] += ',' + id;
                           trgt = false
                         }
                       }
                       if(trgt){
-                        trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                        trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                       }
                     }
                   }
@@ -4924,11 +4928,12 @@ export default {
                     for(let j =0;j<trgtList.length;j++){
                       if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                         trgtList[j]['REASON'] += '<br>' + condReason;
+                        trgtList[j]['REASON_CD'] += ',' + id;
                         trgt = false
                       }
                     }
                     if(trgt){
-                      trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                      trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                     }
                   }
                 }
@@ -4941,11 +4946,12 @@ export default {
                       for(let j =0;j<trgtList.length;j++){
                         if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                           trgtList[j]['REASON'] += '<br>' + condReason;
+                          trgtList[j]['REASON_CD'] += ',' + id;
                           trgt = false
                         }
                       }
                       if(trgt){
-                        trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                        trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                       }
                     }
                   }
@@ -4954,11 +4960,12 @@ export default {
                     for(let j =0;j<trgtList.length;j++){
                       if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                         trgtList[j]['REASON'] += '<br>' + condReason;
+                        trgtList[j]['REASON_CD'] += ',' + id;
                         trgt = false
                       }
                     }
                     if(trgt){
-                      trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                      trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                     }
                   }
                 }
@@ -4968,11 +4975,12 @@ export default {
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
                       trgt = false
                     }
                   }
                   if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                   }
                 }
                 break;
@@ -4981,11 +4989,12 @@ export default {
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
                       trgt = false
                     }
                   }
                   if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                   }
                 }
                 break;
@@ -4994,11 +5003,12 @@ export default {
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
                       trgt = false
                     }
                   }
                   if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                   }
                 }
                 break;
@@ -5007,11 +5017,12 @@ export default {
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
                       trgt = false
                     }
                   }
                   if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                   }
                 }
                 break;
@@ -5020,11 +5031,12 @@ export default {
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
                       trgt = false
                     }
                   }
                   if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                   }
                 }
                 break;
@@ -5033,12 +5045,13 @@ export default {
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
                       trgt = false
                       break;
                     }
                   }
                   if(trgt){
-                    trgtList.push(Object.assign({}, data, { REASON: condReason }));
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
                   }
                 }
                 break;
@@ -5049,16 +5062,7 @@ export default {
         }
         this.EXL_COND_TRGT_LIST = trgtList;
       }else if(this.dialogTab=='exlTrgt'){
-        const selectedRowNumbers = this.EXL_COND_SET_TRGT_LIST.map(item => item.ROW_NUMBER);
-        this.gridDataText = this.gridDataText.filter(
-          row => !selectedRowNumbers.includes(row.ROW_NUMBER)
-        );
-        this.dialogTab = 'exlCond';
-        this.mixin_hideDialog('ExlCond');
-
-        this.EXL_COND_SET_TRGT_LIST = [];
-        this.SEL_EXL_COND_SET_TRGT_LIST = []; //초기화 전 제외조건 이력에 넣기
-        this.SEL_EXL_COND_LIST = [];
+        this.insertExlHst();
       }
     },
 
@@ -5274,6 +5278,72 @@ export default {
       this.SRCH_EXL_COND_CN='';
       this.SRCH_USE_YN='Y';
       this.SRCH_DEL_YN='N';
+    },
+
+    async insertExlHst(){
+      this.openProgressBar();
+      let URLData = '/api/svy/exclusion/insertExlHst';
+
+      let exlTrgtList = [];
+      console.log("this.EXL_COND_SET_TRGT_LIST",this.EXL_COND_SET_TRGT_LIST);
+      for(let i=0;i<this.EXL_COND_SET_TRGT_LIST.length;i++){
+        let resCdArr = this.EXL_COND_SET_TRGT_LIST[i].REASON_CD.split(',');
+        if(resCdArr.length == 1){
+          exlTrgtList.push({
+            SRVY_EXL_COND_ID: resCdArr[0]
+            , CUST_PHN_NO: this.EXL_COND_SET_TRGT_LIST[i].CUST_PHN_NO
+            , CUST_NM: this.EXL_COND_SET_TRGT_LIST[i].CUST_NM
+            , EML: this.EXL_COND_SET_TRGT_LIST[i].EML
+          });
+        } else if (resCdArr.length > 1){
+          for(let n=0;n<resCdArr.length;n++){
+            exlTrgtList.push({
+              SRVY_EXL_COND_ID: resCdArr[n]
+              , CUST_PHN_NO: this.EXL_COND_SET_TRGT_LIST[i].CUST_PHN_NO
+              , CUST_NM: this.EXL_COND_SET_TRGT_LIST[i].CUST_NM
+              , EML: this.EXL_COND_SET_TRGT_LIST[i].EML
+            });
+          }
+        }
+      }
+      console.log(exlTrgtList);
+      if(exlTrgtList.length == 0){
+        return;
+      }
+      let postParam = {
+        EXL_TRGT_LIST: exlTrgtList
+        , SRVY_ID: this.SRVY_NM
+      }
+      let headParam = {
+        head : {
+          DATA_OBJECT: "EXL_TRGT_LIST",
+        },
+        timeout: 100000
+      };
+
+      let response = await this.common_postCall(URLData, postParam, headParam);
+
+      if (!response.HEADER.ERROR_FLAG) {
+        this.closeProgressBar();
+        this.showToast({msg: this.EXL_COND_SET_TRGT_LIST.length+'명의 참여자가 제외되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 2000});
+
+        // 참여자 리스트에서 제외
+        const selectedRowNumbers = this.EXL_COND_SET_TRGT_LIST.map(item => item.ROW_NUMBER);
+        this.gridDataText = this.gridDataText.filter(
+          row => !selectedRowNumbers.includes(row.ROW_NUMBER)
+        );
+        // 탭 초기화
+        this.dialogTab = 'exlCond';
+        // 탭닫기
+        this.mixin_hideDialog('ExlCond');
+        // 파라미터 초기화
+        this.EXL_COND_TRGT_LIST = [];
+        this.EXL_COND_SET_TRGT_LIST = [];
+        this.SEL_EXL_COND_LIST = [];
+      } else {
+        this.closeProgressBar();
+        this.showAlert(this.MESSAGE.ERROR.ERROR);
+      }
     }
   },
 };
