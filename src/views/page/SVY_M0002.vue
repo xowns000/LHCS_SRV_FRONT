@@ -1094,4 +1094,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .pl-grid.is-rowspan table colgroup col:nth-child(2) {
+  width: 100px !important;
+}
+::v-deep .pl-grid.is-rowspan table colgroup col:nth-child(3) {
+  width: 200px !important;
+}
+::v-deep .pl-grid.is-rowspan table colgroup col:nth-child(4) {
+  width: 300px !important;
+}
 </style>
