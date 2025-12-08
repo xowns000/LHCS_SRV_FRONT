@@ -482,7 +482,7 @@
                 {{ mixin_getCustcoSetting('ENV_PHNNO_MASKING_YN') ? mixin_mask_num(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) : mixin_setPhoneNo(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) }}
               </template>
               <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
-                <v-select
+                <!-- <v-select
                   class="pl-form"
                   :value="item.CNSLT_DIV_CD_1"
                   :items="CUTT_TYPE_LIST_1"
@@ -490,10 +490,11 @@
                   item-value="VALUE"
                   readonly
                 >
-                </v-select>
+                </v-select> -->
+                {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
               </template>
               <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
-                <v-select
+                <!-- <v-select
                   class="pl-form"
                   :value="item.CNSLT_DIV_CD_2"
                   :items="CUTT_TYPE_LIST_2"
@@ -501,10 +502,11 @@
                   item-value="VALUE"
                   readonly
                 >
-                </v-select>
+                </v-select> -->
+                {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
               </template>
               <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
-                <v-select
+                <!-- <v-select
                   class="pl-form"
                   :value="item.CNSLT_DIV_CD_3"
                   :items="CUTT_TYPE_LIST_3"
@@ -512,7 +514,8 @@
                   item-value="VALUE"
                   readonly
                 >
-                </v-select>
+                </v-select> -->
+                {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
               </template>
               
               </v-data-table>
@@ -5055,6 +5058,40 @@ export default {
                   }
                 }
                 break;
+              // case '이내':
+              //   if(data[exlCond]){
+              //     if(this.isWithinOutNDays(data[exlCond],condVl,'in')){
+              //       for(let j =0;j<trgtList.length;j++){
+              //         if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+              //           trgtList[j]['REASON'] += '<br>' + condReason;
+              //           trgtList[j]['REASON_CD'] += ',' + id;
+              //           trgt = false
+              //           break;
+              //         }
+              //       }
+              //       if(trgt){
+              //         trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
+              //       }
+              //     }
+              //   }
+              //   break;
+              // case '이후':
+              //   if(data[exlCond]){
+              //     if(this.isWithinOutNDays(data[exlCond],condVl,'out')){
+              //       for(let j =0;j<trgtList.length;j++){
+              //         if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+              //           trgtList[j]['REASON'] += '<br>' + condReason;
+              //           trgtList[j]['REASON_CD'] += ',' + id;
+              //           trgt = false
+              //           break;
+              //         }
+              //       }
+              //       if(trgt){
+              //         trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
+              //       }
+              //     }
+              //   }
+              //   break;
               default:
                 break;
             }
@@ -5064,6 +5101,25 @@ export default {
       }else if(this.dialogTab=='exlTrgt'){
         this.insertExlHst();
       }
+    },
+
+    //날짜 이내 계산
+    isWithinOutNDays(dateStr,days,inout){
+      const year = parseInt(dateStr.substring(0, 4));
+      const month = parseInt(dateStr.substring(4, 6)) - 1;
+      const day = parseInt(dateStr.substring(6, 8));
+      const hour = parseInt(dateStr.substring(8, 10));
+      const minute = parseInt(dateStr.substring(10, 12));
+      const second = parseInt(dateStr.substring(12, 14));
+
+      const targetDate = new Date(year, month, day, hour, minute, second);
+      const now = new Date();
+
+      const diffMs = now - targetDate;
+      const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+      
+      return inout=='in' ? diffDays <= days : diffDays >= days;
     },
 
     brforeProc(){
