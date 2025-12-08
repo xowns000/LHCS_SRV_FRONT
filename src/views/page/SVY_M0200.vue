@@ -1441,6 +1441,15 @@
               >
               </div>
             </template> 
+            <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
+              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
+            </template>
+            <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
+              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
+            </template>
+            <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
+              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
+            </template>
           </v-data-table>
           <div class="d-flex justify-center align-center is-mt-m" style="gap: 14px">
             <!-- arrow down 버튼 -->
@@ -1486,6 +1495,15 @@
               >
               </div>
             </template> 
+            <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
+              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
+            </template>
+            <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
+              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
+            </template>
+            <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
+              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
+            </template>
           </v-data-table>
         </template>
         <template slot="footer">
@@ -1975,7 +1993,7 @@ export default {
         { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
         { text: '인입번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
         { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
-        { text: '인입유형',         value: 'DRWI_TYPE_CD',             align: 'left',          width: '120px' },
+        { text: '인입유형',         value: /*'DRWI_TYPE_CD'*/'DRWI_SE_CD',             align: 'left',          width: '120px' },
         { text: '처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
         { text: '개인정보수집동의',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
         { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
@@ -2169,19 +2187,19 @@ export default {
       this.gridDataHeaders.push(...gridDataHeaders2);
 
       //설문 제외조건
-      const gridDataHeaders3 = [
-        { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'center',         width: '200px' },
-        { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
-        { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
-        { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
-        { text: '인입번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
-        { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
-        { text: '인입유형',         value: 'DRWI_TYPE_CD',             align: 'left',          width: '120px' },
-        { text: '처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
-        { text: '개인정보수집동의',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
-        { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
-      ];
-      this.gridDataHeaders.push(...gridDataHeaders3);
+      // const gridDataHeaders3 = [
+      //   { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
+      //   { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
+      //   { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
+      //   { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
+      //   { text: '인입번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
+      //   { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
+      //   { text: '인입유형',         value: 'DRWI_TYPE_CD',             align: 'left',          width: '120px' },
+      //   { text: '처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
+      //   { text: '개인정보수집동의',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
+      //   { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
+      // ];
+      // this.gridDataHeaders.push(...gridDataHeaders3);
 
       //엑셀 양식 확장 항목 추가.
       this.excelTemplateHeaders = [
@@ -5125,6 +5143,9 @@ export default {
     brforeProc(){
       if(this.dialogTab=='exlTrgt'){
         this.dialogTab = 'exlCond';
+
+        this.EXL_COND_TRGT_LIST = [];
+        this.EXL_COND_SET_TRGT_LIST = [];
       }
     },
 
@@ -5341,7 +5362,6 @@ export default {
       let URLData = '/api/svy/exclusion/insertExlHst';
 
       let exlTrgtList = [];
-      console.log("this.EXL_COND_SET_TRGT_LIST",this.EXL_COND_SET_TRGT_LIST);
       for(let i=0;i<this.EXL_COND_SET_TRGT_LIST.length;i++){
         let resCdArr = this.EXL_COND_SET_TRGT_LIST[i].REASON_CD.split(',');
         if(resCdArr.length == 1){
@@ -5362,7 +5382,6 @@ export default {
           }
         }
       }
-      console.log(exlTrgtList);
       if(exlTrgtList.length == 0){
         return;
       }

@@ -54,7 +54,7 @@
                   인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
                 -->
                 <v-text-field
-                  v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM'"
+                  v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM' || SRCH_EXL_COND_SE_CD=='MSG_DT'"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
@@ -314,7 +314,7 @@
                       인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
                     -->
                     <v-text-field
-                      v-if="EXL_COND_SE_CD=='CUST_PHN_NO' || EXL_COND_SE_CD=='CUTT_CN' || EXL_COND_SE_CD=='USER_NM'"
+                      v-if="EXL_COND_SE_CD=='CUST_PHN_NO' || EXL_COND_SE_CD=='CUTT_CN' || EXL_COND_SE_CD=='USER_NM' || EXL_COND_SE_CD=='MSG_DT'"
                       class="pl-form is-lg"
                       placeholder="검색어 입력"
                       v-model="EXL_COND_CN"
