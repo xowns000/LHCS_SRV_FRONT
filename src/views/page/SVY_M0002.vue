@@ -90,9 +90,9 @@
                 <v-select
                   v-else
                   class="pl-form is-lg"
-                  :items="SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
+                  :items="SRCH_EXL_COND_SE_CD=='DRWI_SE_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
                     : (SRCH_EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN' ? [{text:'전체',value:''},{text:'Y',value:'Y'}, {text:'N',value:'N'}] 
-                    : (this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_SE_CD' ? 'CVC' : 'PCMC', '전체')))"
+                    : (this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD' ? 'CVC' : 'PCMC', '전체')))"
                   placeholder="선택하세요"
                   v-model="SRCH_EXL_COND_CN"
                 ></v-select>
@@ -344,9 +344,9 @@
                     <v-select
                       v-else
                       class="pl-form"
-                      :items="EXL_COND_SE_CD=='RCPT_CHN_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
+                      :items="EXL_COND_SE_CD=='DRWI_SE_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
                         : (EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN' ? [{text:'전체',value:''},{text:'Y',value:'Y'}, {text:'N',value:'N'}] 
-                        : (this.mixin_common_code_get(this.common_code, EXL_COND_SE_CD=='DRWI_SE_CD' ? 'CVC' : 'PCMC', '전체')))"
+                        : (this.mixin_common_code_get(this.common_code, EXL_COND_SE_CD=='RCPT_CHN_CD' ? 'CVC' : 'PCMC', '전체')))"
                       placeholder="선택하세요"
                       v-model="EXL_COND_CN"
                       :rules="detailValidateRules.EXL_COND_CN"
@@ -414,9 +414,9 @@
                   <th rowspan="2" width="360px" class="text-center"><span>상담메모</span></th>
                   <th rowspan="2" width="200px" class="text-center"><span>인입번호</span></th>
                   <th rowspan="2" width="150px" class="text-center"><span>상담채널</span></th>
-                  <th rowspan="2" width="150px" class="text-center"><span>상담경로</span></th>
-                  <th rowspan="2" width="150px" class="text-center"><span>처리방법</span></th>
-                  <th rowspan="2" width="150px" class="text-center"><span>개인정보</span></th>
+                  <th rowspan="2" width="200px" class="text-center"><span>상담경로</span></th>
+                  <th rowspan="2" width="200px" class="text-center"><span>처리방법</span></th>
+                  <th rowspan="2" width="150px" class="text-center"><span>개인정보수집<br>동의여부</span></th>
                   <th rowspan="2" width="150px" class="text-center"><span>인입번호</span></th>
                   <th rowspan="2" width="100px" class="text-center"><span>접수자명</span></th>
                   <th rowspan="2" width="150px" class="text-center"><span>비고</span></th>
@@ -720,8 +720,8 @@ export default {
         { text: '소', value: 'CNSLT_DIV_CD_3'},
         { text: '상담메모', value: 'CUTT_CN'},
         { text: '인입번호', value: 'CUST_PHN_NO'},
-        { text: '상담채널', value: 'RCPT_CHN_CD'},
-        { text: '상담경로', value: 'DRWI_SE_CD'},
+        { text: '상담채널', value: 'DRWI_SE_CD'},
+        { text: '상담경로', value: 'RCPT_CHN_CD'},
         { text: '처리방법', value: 'PRCS_CHN_CD'},
         { text: '개인정보', value: 'PRVC_CLCT_AGRE_YN'},
         { text: '인입번호', value: '1111'},
