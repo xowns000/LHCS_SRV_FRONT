@@ -1424,17 +1424,25 @@
             fixed-header
             show-select
             item-key="ROW_NUMBER"
-            height="300px"
-            :items-per-page="EXL_COND_TRGT_LIST.length"
+            height="258px"
+            :items-per-page="ROW_PER_PAGE_2"
             :item-class="isExlCondTrgtActiveRow"
             hide-default-footer
-            page.sync="1"
-            @page-count="pageCount = $event"
+            disable-select-all="true"
+            :page.sync="page2"
+            @page-count="pageCount2 = $event"
             @click:row="rowExlCondTrgtSelect"
             v-model="SEL_EXL_COND_TRGT_LIST"
             no-data-text="등록된 데이터가 없습니다."
             :key="dialogTab"
           >
+            <template v-slot:header.data-table-select >
+              <v-checkbox 
+                class="pl-check is-chk-center"
+                v-model="isSelectedAllTrgt2" 
+                @click="toggleSelectAllTrgt('2')"
+              ></v-checkbox>
+            </template>
             <template v-slot:item.REASON="{ item }">
               <div
                 v-html="sanitizeContent(item.REASON)"
@@ -1451,6 +1459,34 @@
               {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
             </template>
           </v-data-table>
+          <div class="pl-pager">
+            <div class="pl-pager-row">
+              <span>페이지당 항목 수</span>
+              <v-select
+                class="pl-form"
+                :value="ROW_PER_PAGE_2"
+                :items="perPage"
+                :item-text="toString(ROW_PER_PAGE_2)"
+                @change="ROW_PER_PAGE_2 = parseInt($event, 10);"
+              ></v-select>
+            </div>
+            <v-pagination
+              v-model="page2"
+              :length="pageCount2"
+              circle
+              :total-visible="10">
+            </v-pagination>
+
+            <span class="pl-pager-period">
+              <!-- 보기 {{ mixin_getPagePeriod(gridDataText, page) }} / {{ gridDataText.length }}
+              <v-btn
+                class="pl-btn is-sub"
+                :disabled = "nextDisabled"
+                @click="tab2SelectList(true)"
+              >다음 검색
+              </v-btn> -->
+            </span>
+          </div>
           <div class="d-flex justify-center align-center is-mt-m" style="gap: 14px">
             <!-- arrow down 버튼 -->
             <compo-tooltip-btn
@@ -1478,17 +1514,25 @@
             fixed-header
             show-select
             item-key="ROW_NUMBER"
-            height="300px"
-            :items-per-page="EXL_COND_SET_TRGT_LIST.length"
+            height="258px"
+            :items-per-page="ROW_PER_PAGE_3"
             :item-class="isExlCondSetTrgtActiveRow"
+            disable-select-all="true"
             hide-default-footer
-            page.sync="1"
-            @page-count="pageCount = $event"
+            :page.sync="page3"
+            @page-count="pageCount3 = $event"
             @click:row="rowExlCondSetTrgtSelect"
             v-model="SEL_EXL_COND_SET_TRGT_LIST"
             no-data-text="등록된 데이터가 없습니다."
             :key="dialogTab"
           >
+            <template v-slot:header.data-table-select >
+              <v-checkbox 
+                class="pl-check is-chk-center"
+                v-model="isSelectedAllTrgt3" 
+                @click="toggleSelectAllTrgt('3')"
+              ></v-checkbox>
+            </template>
             <template v-slot:item.REASON="{ item }">
               <div
                 v-html="sanitizeContent(item.REASON)"
@@ -1505,6 +1549,34 @@
               {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
             </template>
           </v-data-table>
+          <div class="pl-pager">
+            <div class="pl-pager-row">
+              <span>페이지당 항목 수</span>
+              <v-select
+                class="pl-form"
+                :value="ROW_PER_PAGE_3"
+                :items="perPage"
+                :item-text="toString(ROW_PER_PAGE_3)"
+                @change="ROW_PER_PAGE_3 = parseInt($event, 10);"
+              ></v-select>
+            </div>
+            <v-pagination
+              v-model="page3"
+              :length="pageCount3"
+              circle
+              :total-visible="10">
+            </v-pagination>
+
+            <span class="pl-pager-period">
+              <!-- 보기 {{ mixin_getPagePeriod(gridDataText, page) }} / {{ gridDataText.length }}
+              <v-btn
+                class="pl-btn is-sub"
+                :disabled = "nextDisabled"
+                @click="tab2SelectList(true)"
+              >다음 검색
+              </v-btn> -->
+            </span>
+          </div>
         </template>
         <template slot="footer">
           <span class="pl-counter">선택된 제외조건 <em class="pl-1">({{ SEL_EXL_COND_LIST.length }})</em> 건 / 제외 대상 <em class="pl-1">({{ EXL_COND_TRGT_LIST.length }})</em> 명 / 임의 적용 대상 <em class="pl-1">({{ EXL_COND_SET_TRGT_LIST.length }})</em> 명</span>
@@ -1710,12 +1782,30 @@ export default {
         sortBy: "",
         descending: ""
       }, //그리드 페이지속성정의
+      pagination2: {
+        page: 1,
+        rowsPerPage: 500,
+        sortBy: "",
+        descending: ""
+      }, //그리드 페이지속성정의
+      pagination3: {
+        page: 1,
+        rowsPerPage: 500,
+        sortBy: "",
+        descending: ""
+      }, //그리드 페이지속성정의
       nextDisabled:false,  //검색건수가 페이지 제한 건수보다 많을 때 사용하는 다음버튼
       //참여자 설정
       page: 1,
+      page2: 1,
+      page3: 1,
       pageCount: 0,
+      pageCount2: 0,
+      pageCount3: 0,
       perPage: [15,30,50,100],
       ROW_PER_PAGE: 15,
+      ROW_PER_PAGE_2: 15,
+      ROW_PER_PAGE_3: 15,
       pageTrgt: 1,
       pageCountTrgt: 0,
       ROW_PER_PAGE_TRGT: 15,
@@ -1733,6 +1823,8 @@ export default {
       isPassCheckCustPhnNo: false,
 
       isSelectedAllTrgt: false,
+      isSelectedAllTrgt2: false,
+      isSelectedAllTrgt3: false,
       gridDataHeaders: [],
       gridDataText: [],
       gridSelectedData: [],// 그리드 체크박스 값
@@ -4764,12 +4856,25 @@ export default {
       this.$store.dispatch("commonStore/AC_COMMON_PROGRESS_BAR", false);
     },
 
-    toggleSelectAllTrgt() {
-      //this.isSelectedAllTrgt = !this.isSelectedAllTrgt;
-      if (this.isSelectedAllTrgt) {
-        this.gridSelectedData = [...this.gridDataText];
+    toggleSelectAllTrgt(grid) {
+      if(grid == '2'){
+        if (this.isSelectedAllTrgt2) {
+          this.SEL_EXL_COND_TRGT_LIST = [...this.EXL_COND_TRGT_LIST];
+        } else {
+          this.SEL_EXL_COND_TRGT_LIST = [];
+        }
+      } else if (grid == '3'){
+        if (this.isSelectedAllTrgt3) {
+          this.SEL_EXL_COND_SET_TRGT_LIST = [...this.EXL_COND_SET_TRGT_LIST];
+        } else {
+          this.SEL_EXL_COND_SET_TRGT_LIST = [];
+        }
       } else {
-        this.gridSelectedData = [];
+        if (this.isSelectedAllTrgt) {
+          this.gridSelectedData = [...this.gridDataText];
+        } else {
+          this.gridSelectedData = [];
+        }
       }
     },
 
@@ -5209,7 +5314,7 @@ export default {
       }
 
       let headParam = {
-        head : {
+        head : {      
         }
       }
 
@@ -5269,6 +5374,8 @@ export default {
 
       // 선택 초기화
       this.SEL_EXL_COND_TRGT_LIST = [];
+      this.isSelectedAllTrgt2 = false;
+      this.isSelectedAllTrgt3 = false;
     },
 
     /** 위 리스트로 이동 **/
@@ -5285,6 +5392,8 @@ export default {
 
       // 선택 초기화
       this.SEL_EXL_COND_SET_TRGT_LIST = [];
+      this.isSelectedAllTrgt2 = false;
+      this.isSelectedAllTrgt3 = false;
     },
 
     btnCuttType(type){
@@ -5361,6 +5470,7 @@ export default {
       this.openProgressBar();
       let URLData = '/api/svy/exclusion/insertExlHst';
 
+      //java head 메모리 이슈로 리스트를 5000건씩 짤라서 api 호출
       let exlTrgtList = [];
       for(let i=0;i<this.EXL_COND_SET_TRGT_LIST.length;i++){
         let resCdArr = this.EXL_COND_SET_TRGT_LIST[i].REASON_CD.split(',');
@@ -5382,44 +5492,67 @@ export default {
           }
         }
       }
-      if(exlTrgtList.length == 0){
+      let leng = exlTrgtList.length;
+      if(leng == 0){
         return;
       }
-      let postParam = {
-        EXL_TRGT_LIST: exlTrgtList
-        , SRVY_ID: this.SRVY_NM
+
+      let chunks = [];
+      for (let i = 0; i < leng; i += 5000) {
+        chunks.push(exlTrgtList.slice(i, i + 5000));
       }
-      let headParam = {
-        head : {
-          DATA_OBJECT: "EXL_TRGT_LIST",
-        },
-        timeout: 100000
-      };
+      const now = new Date();
 
-      let response = await this.common_postCall(URLData, postParam, headParam);
+      const yyyy = now.getFullYear();
+      const MM = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mi = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
 
-      if (!response.HEADER.ERROR_FLAG) {
-        this.closeProgressBar();
-        this.showToast({msg: this.EXL_COND_SET_TRGT_LIST.length+'명의 참여자가 제외되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 2000});
+      for (let idx = 0; idx < chunks.length; idx++) {
+        this.openProgressBar();
+        let postParam = {
+          EXL_TRGT_LIST: chunks[idx]
+          , SRVY_ID: this.SRVY_NM
+          , NOW_DT: yyyy+MM+dd+hh+mi+ss
+        };
 
-        // 참여자 리스트에서 제외
-        const selectedRowNumbers = this.EXL_COND_SET_TRGT_LIST.map(item => item.ROW_NUMBER);
-        this.gridDataText = this.gridDataText.filter(
-          row => !selectedRowNumbers.includes(row.ROW_NUMBER)
-        );
-        // 탭 초기화
-        this.dialogTab = 'exlCond';
-        // 탭닫기
-        this.mixin_hideDialog('ExlCond');
-        // 파라미터 초기화
-        this.EXL_COND_TRGT_LIST = [];
-        this.EXL_COND_SET_TRGT_LIST = [];
-        this.SEL_EXL_COND_LIST = [];
-      } else {
-        this.closeProgressBar();
-        this.showAlert(this.MESSAGE.ERROR.ERROR);
+        let headParam = {
+          head: { 
+            DATA_OBJECT: "EXL_TRGT_LIST" 
+          },
+          timeout: 100000
+        };
+
+        let response = await this.common_postCall(URLData, postParam, headParam);
+
+        if (!response.HEADER.ERROR_FLAG) {
+          //마지막반복일 때
+          if(idx==chunks.length-1){
+            this.closeProgressBar();
+            this.showToast({msg: this.EXL_COND_SET_TRGT_LIST.length+'명의 참여자가 제외되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 3000});
+
+            // 참여자 리스트에서 제외
+            const selectedRowNumbers = this.EXL_COND_SET_TRGT_LIST.map(item => item.ROW_NUMBER);
+            this.gridDataText = this.gridDataText.filter(
+              row => !selectedRowNumbers.includes(row.ROW_NUMBER)
+            );
+            // 탭 초기화
+            this.dialogTab = 'exlCond';
+            // 탭닫기
+            this.mixin_hideDialog('ExlCond');
+            // 파라미터 초기화
+            this.EXL_COND_TRGT_LIST = [];
+            this.EXL_COND_SET_TRGT_LIST = [];
+            this.SEL_EXL_COND_LIST = [];
+          }
+        } else {
+          this.closeProgressBar();
+          this.showAlert(this.MESSAGE.ERROR.ERROR);
+        }
       }
-    }
+    },
   },
 };
 </script>
