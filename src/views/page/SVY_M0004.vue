@@ -249,6 +249,10 @@
                   <span class="pl-label">조건 사유</span>
                   <div class="pl-desc">{{ item.EXL_COND_TEXT }}</div>
                 </div>
+                <div class="pl-form-inline">
+                  <span class="pl-label">등록일자</span>
+                  <div class="pl-desc">{{ convertDateForm(item.REG_DT) }}</div>
+                </div>
                 <v-divider v-if="idx+1 !== exlHstryDtl.exlList.length"/>
               </div>
             </div>
@@ -490,6 +494,7 @@ export default {
             EXL_COND_CN : item.EXL_COND_CN,
             EXL_COND_TEXT : item.EXL_COND_TEXT,
             CUTT_TYPE_PATH : item.CUTT_TYPE_PATH,
+            REG_DT : item.REG_DT,
           }
         })
         this.mixin_showDialog('ExlHstryDtl')
@@ -598,6 +603,13 @@ export default {
 
       return temp;
     },
+
+    //YYYYMMDDHH24MISS 형식의 날짜 데이터를 YYYY-MM-DD HH:24MI:SS로 변환
+    convertDateForm(str){
+      let date = ''
+      date = str.substr(0,4)+'-'+str.substr(4,2)+'-'+str.substr(6,2)+' '+str.substr(8,2)+':'+str.substr(10,2)+':'+str.substr(12,2);
+      return date
+    }
   },
 }
 </script>
