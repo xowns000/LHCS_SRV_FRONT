@@ -7,19 +7,6 @@
           <div class="pl-form-inline-wrap">
             <div class="pl-form-inline">
               <span class="pl-label">
-                센터구분
-              </span>
-              <div class="pl-desc">
-                <v-select
-                  class="pl-form"
-                  :items="SRCH_DEPT_LIST"
-                  placeholder="선택하세요"
-                  v-model="SRCH_DEPT_ID"
-                ></v-select>
-              </div>
-            </div>
-            <div class="pl-form-inline">
-              <span class="pl-label">
                 진행 년도
               </span>
               <div class="pl-desc">
@@ -46,13 +33,27 @@
             <div class="pl-form-inline">
               <span class="pl-label">설문조사 명</span>
               <div class="pl-desc">
-                <v-select class="pl-form is-mid"
-                          :items="srvyNmItems"
-                          v-model="SRCH_SRVY_NM"
-                          return-object
-                          placeholder="선택하세요"
+                <v-select
+                    class="pl-form is-mid"
+                    :items="srvyNmItems"
+                    v-model="SRCH_SRVY_NM"
+                    return-object
+                    placeholder="선택하세요"
                 >
                 </v-select>
+              </div>
+            </div>
+            <div class="pl-form-inline">
+              <span class="pl-label">
+                센터구분
+              </span>
+              <div class="pl-desc">
+                <v-select
+                    class="pl-form"
+                    :items="SRCH_DEPT_LIST"
+                    placeholder="선택하세요"
+                    v-model="SRCH_DEPT_ID"
+                ></v-select>
               </div>
             </div>
             <div class="pl-form-inline">
@@ -242,57 +243,6 @@
               </div>
             </div>
           </div>
-          <div class="pl-card">
-            <h2 class="pl-subtit pb-1">상담 정보</h2>
-            <div class="pl-card is-border pt-1">
-              <div class="pl-form-inline-wrap vertical">
-                <div class="pl-form-inline">
-                  <span class="pl-label">상담 센터</span>
-                  <div class="pl-desc">{{ exlHstryDtl.DEPT_NM}}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">인입 구분</span>
-                  <div class="pl-desc">{{ exlHstryDtl.DRWI_SE_CD ==='IN'?'인바운드':'아웃바운드' }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">접수 채널</span>
-                  <div class="pl-desc">{{ exlHstryDtl.RCPT_CHN_NM }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">처리 방법</span>
-                  <div class="pl-desc">{{ exlHstryDtl.PRCS_CHN_NM }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">상담사명</span>
-                  <div class="pl-desc">{{ exlHstryDtl.CUSL_NM }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">개인정보동의여부</span>
-                  <div class="pl-desc">{{ exlHstryDtl.PRVC_CLCT_AGRE_YN }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">상담일시</span>
-                  <div class="pl-desc">{{ mixin_convertDate(exlHstryDtl.CUTT_REG_DT,'yyyy-MM-dd HH:mm:ss') }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">상담유형</span>
-                  <div class="pl-desc">{{ exlHstryDtl.CNSLT_DIV_CD_1_NM +'>'+ exlHstryDtl.CNSLT_DIV_CD_2_NM +'>'+ exlHstryDtl.CNSLT_DIV_CD_3_NM }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">상담메모</span>
-                  <div class="pl-desc">
-                    <v-textarea
-                        class="pl-form is-noresize"
-                        v-model="exlHstryDtl.CUTT_CN"
-                        readonly
-                  >
-                  </v-textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </template>
         <template slot="footer">
           <v-btn class="pl-btn is-sub" @click="mixin_hideDialog('ExlHstryDtl')">닫기</v-btn>
@@ -455,6 +405,8 @@ export default {
         , SRCH_EXL_COND_SE_CD: this.SRCH_EXL_COND_SE_CD
         , SRCH_EXL_COND_CD : this.SRCH_EXL_COND_CD
         , SRCH_EXL_COND_CN : this.SRCH_EXL_COND_CN
+        , SRCH_SRVY_ID : this.SRCH_SRVY_NM?.value
+        , SRCH_SRVY_YR : this.SRCH_SRVY_YR
       }
 
       let headParam = {
@@ -512,7 +464,7 @@ export default {
       let sUrl = '/api/svy/exclusion/history/selectHistoryDtl';
       let postParam = {
         SRVY_ID : srvyExlHstry.SRVY_ID,
-        CLCT_CUST_INFO_ID : srvyExlHstry.CLCT_CUST_INFO_ID,
+        CUST_PHN_NO : srvyExlHstry.CUST_PHN_NO,
       }
       const response = await this.common_postCall(sUrl, postParam,{head:{}})
       console.log("response.DATA[0]",response.DATA[0])
@@ -584,30 +536,36 @@ export default {
     },
 
     async getSrvyNm() {
-      const sUrl = '/api/svy/makeitems/selectcombomakeitems';
-      const postParam = {
-        SRVY_YR: this.SRVY_YR             //진행년도
-        , STTS_CD: this.STTS_CD         //진행상태
-        , SRVY_SE_CD: this.SRVY_SE_CD        //계획구분
-      }
-      const headParam = {
-        head: {
-          'SERVICE': 'svy.plan.selectcombomakeitems',
-          'METHOD': 'selectcombomakeitems',
-          'TYPE': 'BIZ_SERVICE',
-        }
-      }
-
-      let resData = await this.common_postCall(sUrl, postParam, headParam);
-
-
-      if (resData.HEADER.ERROR_FLAG) {
-        this.setErrMsg(resData);
+      if (!this.SRCH_SRVY_SE_CD) {
+        this.SRCH_SRVY_NM = {}
+        this.srvyNmItems = []
       } else {
 
-        this.SRCH_SRVY_NM = {};
-        this.srvyNmItems = resData.DATA.map(item => ({text: this.mixin_decode(item.TEXT), value: item.VALUE}));
-        if (this.srvyNmItems.length > 0) this.SRCH_SRVY_NM = this.mixin_decode(resData.DATA[0].VALUE);
+        const sUrl = '/api/svy/makeitems/selectcombomakeitems';
+        const postParam = {
+          SRVY_YR: this.SRVY_YR             //진행년도
+          , STTS_CD: this.STTS_CD         //진행상태
+          , SRVY_SE_CD: this.SRVY_SE_CD        //계획구분
+        }
+        const headParam = {
+          head: {
+            'SERVICE': 'svy.plan.selectcombomakeitems',
+            'METHOD': 'selectcombomakeitems',
+            'TYPE': 'BIZ_SERVICE',
+          }
+        }
+
+        let resData = await this.common_postCall(sUrl, postParam, headParam);
+
+
+        if (resData.HEADER.ERROR_FLAG) {
+          this.setErrMsg(resData);
+        } else {
+
+          this.SRCH_SRVY_NM = {};
+          this.srvyNmItems = resData.DATA.map(item => ({text: this.mixin_decode(item.TEXT), value: item.VALUE}));
+          if (this.srvyNmItems.length > 0) this.SRCH_SRVY_NM = this.mixin_decode(resData.DATA[0].VALUE);
+        }
       }
     },
   },
