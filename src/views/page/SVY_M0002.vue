@@ -198,6 +198,11 @@
               </span>
             </v-tooltip>
             <span
+              v-else-if="item.EXL_COND_SE_CD == 'RCPT_CHN_CD' || item.EXL_COND_SE_CD == 'PRCS_CHN_CD'"
+            >
+              {{ item.EXL_COND_CN_NM }}
+            </span>
+            <span
               v-else
             >
               {{ item.EXL_COND_CN }}
