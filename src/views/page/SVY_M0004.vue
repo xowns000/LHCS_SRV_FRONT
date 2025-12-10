@@ -233,7 +233,17 @@
                 </div>
                 <div class="pl-form-inline">
                   <span class="pl-label">조건 값</span>
-                  <div class="pl-desc">{{ item.EXL_COND_CN }}</div>
+                  <div
+                    v-if="item.EXL_COND_SE_CD=='CNSLT_DIV_CD_1'||item.EXL_COND_SE_CD=='CNSLT_DIV_CD_2'||item.EXL_COND_SE_CD=='CNSLT_DIV_CD_3'" 
+                    class="pl-desc"
+                    v-html="sanitizeContent(item.CUTT_TYPE_PATH)"
+                  >
+                  </div>
+                  <div
+                    v-else
+                    class="pl-desc">
+                    {{ item.EXL_COND_CN }}
+                  </div>
                 </div>
                 <div class="pl-form-inline">
                   <span class="pl-label">조건 사유</span>
@@ -479,6 +489,7 @@ export default {
             EXL_COND_CD : item.EXL_COND_CD,
             EXL_COND_CN : item.EXL_COND_CN,
             EXL_COND_TEXT : item.EXL_COND_TEXT,
+            CUTT_TYPE_PATH : item.CUTT_TYPE_PATH,
           }
         })
         this.mixin_showDialog('ExlHstryDtl')
@@ -567,6 +578,25 @@ export default {
           if (this.srvyNmItems.length > 0) this.SRCH_SRVY_NM = this.mixin_decode(resData.DATA[0].VALUE);
         }
       }
+    },
+
+    sanitizeContent(content) {
+      if (!content) return '';
+
+      // 1️⃣ <br>, <br/> 태그는 임시 치환
+      let temp = content.replace(/<br\s*\/?>/gi, '[[BR]]');
+
+      // 2️⃣ 나머지 HTML 태그 제거
+      temp = temp.replace(/<[^>]*>/g, '');
+
+      // 3️⃣ 다시 [[BR]] → <br> 복원
+      temp = temp.replace(/\[\[BR\]\]/g, '<br>');
+
+      // 4️⃣ script, iframe 등 보안 위험 요소 제거 (추가 안전망)
+      temp = temp.replace(/<script[^>]*>.*?<\/script>/gi, '');
+      temp = temp.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '');
+
+      return temp;
     },
   },
 }
