@@ -621,6 +621,7 @@ export default {
         , SRVY_EXL_COND_ID: this.SRCH_EXL_COND.VALUE
         , CUST_PHN_NO : this.SRCH_CUST_PHN_NO
         , SRVY_ID: this.SRCH_SRVY_ID
+        , MSG_DT_YN : ''
       }
 
       let headParam = {
@@ -648,6 +649,11 @@ export default {
     },
 
     setExlCond(){
+      this.SRCH_EXL_COND = {
+        TEXT:''
+        , ROW:''
+        , VALUE:''
+      };
       for(let i=0;i<this.SEL_EXL_COND_LIST.length;i++){
         let text = (i!=0 ? '<br>' : '') + this.SEL_EXL_COND_LIST[i].EXL_COND_TEXT;
         this.SRCH_EXL_COND.TEXT += text;

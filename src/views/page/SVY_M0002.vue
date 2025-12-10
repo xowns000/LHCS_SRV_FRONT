@@ -420,6 +420,7 @@
                   <th rowspan="2" width="150px" class="text-center"><span>인입번호</span></th>
                   <th rowspan="2" width="100px" class="text-center"><span>접수자명</span></th>
                   <th rowspan="2" width="150px" class="text-center"><span>비고</span></th>
+                  <th rowspan="2" width="250px" class="text-center"><span>중복발송</span></th>
                 </tr>
                 <tr>
                   <th class="text-center" style="white-space: nowrap;"><span>대</span></th>
@@ -491,7 +492,7 @@
               >
               </div>
             </template> -->
-            <template v-slot:item.USER_NM="{ item }">
+            <template v-slot:item.CUSL_NM="{ item }">
               <div
                 v-html="sanitizeContent(item.USER_NM)"
               >
@@ -503,6 +504,12 @@
               >
               </div>
             </template> -->
+            <template v-slot:item.MSG_DT="{ item }">
+              <div
+                v-html="sanitizeContent(item.MSG_DT)"
+              >
+              </div>
+            </template>
           </v-data-table>
         </template>
         <template slot="footer">
@@ -718,8 +725,9 @@ export default {
         { text: '처리방법', value: 'PRCS_CHN_CD'},
         { text: '개인정보', value: 'PRVC_CLCT_AGRE_YN'},
         { text: '인입번호', value: '1111'},
-        { text: '접수자명', value: 'USER_NM'},
+        { text: '접수자명', value: 'CUSL_NM'},
         { text: '비고', value: '2222'},
+        { text: '중복발송', value: 'MSG_DT'},
       ],
       gridDetailItems:[],
       selectedDetailRow: {},
@@ -843,6 +851,7 @@ export default {
         , EXL_COND_CN : this.SRCH_EXL_COND_CN
         , USE_YN : this.SRCH_USE_YN
         , DEL_YN : this.SRCH_DEL_YN
+        , MSG_DT_YN : ''
       }
 
       let headParam = {

@@ -1435,6 +1435,7 @@
             v-model="SEL_EXL_COND_TRGT_LIST"
             no-data-text="등록된 데이터가 없습니다."
             :key="dialogTab"
+            :search="SRCH_EXL_COND_TRGT_LIST"
           >
             <template v-slot:header.data-table-select >
               <v-checkbox 
@@ -1485,6 +1486,11 @@
                 @click="tab2SelectList(true)"
               >다음 검색
               </v-btn> -->
+              <v-text-field
+                class="pl-form ml-auto"
+                placeholder="검색어 입력"
+                v-model="SRCH_EXL_COND_TRGT_LIST"
+              />
             </span>
           </div>
           <div class="d-flex justify-center align-center is-mt-m" style="gap: 14px">
@@ -1525,6 +1531,7 @@
             v-model="SEL_EXL_COND_SET_TRGT_LIST"
             no-data-text="등록된 데이터가 없습니다."
             :key="dialogTab"
+            :search="SRCH_EXL_COND_SET_TRGT_LIST"
           >
             <template v-slot:header.data-table-select >
               <v-checkbox 
@@ -1575,6 +1582,11 @@
                 @click="tab2SelectList(true)"
               >다음 검색
               </v-btn> -->
+              <v-text-field
+                class="pl-form ml-auto"
+                placeholder="검색어 입력"
+                v-model="SRCH_EXL_COND_SET_TRGT_LIST"
+              />
             </span>
           </div>
         </template>
@@ -1583,7 +1595,7 @@
           <v-btn v-if="dialogTab=='exlCond'" class="pl-btn is-sub ml-2" @click="mixin_hideDialog('ExlCond')">닫기</v-btn>
           <v-btn v-else class="pl-btn is-sub ml-2" @click="brforeProc()">이전</v-btn>
           <v-btn v-if="dialogTab=='exlCond'" class="pl-btn" @click="nextProc()">다음</v-btn>
-          <v-btn v-else class="pl-btn type-exl" @click="nextProc()">적용</v-btn>
+          <v-btn v-else class="pl-btn type-exl" :disabled="EXL_COND_SET_TRGT_LIST.length==0" @click="nextProc()">적용</v-btn>
         </template>
       </compo-dialog>
     </v-dialog>
@@ -2091,9 +2103,11 @@ export default {
         { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
       ],
       EXL_COND_TRGT_LIST:[],   //제외조건 제외 대상자 리스트 - 제외조건으로 제외된 대상자를 보여주기위함 (적용된 제외조건과 대상을 한번에 저장)
+      SRCH_EXL_COND_TRGT_LIST:'',
       SEL_EXL_COND_TRGT:{},
       SEL_EXL_COND_TRGT_LIST:[],
       EXL_COND_SET_TRGT_LIST:[],   //제외조건 제외 대상자 리스트 - 제외조건으로 제외된 대상자를 보여주기위함 (적용된 제외조건과 대상을 한번에 저장)
+      SRCH_EXL_COND_SET_TRGT_LIST:'',
       SEL_EXL_COND_SET_TRGT:{},
       SEL_EXL_COND_SET_TRGT_LIST:[],   //제외조건 제외대상에서 제외한 대상 리스트
 
@@ -2144,6 +2158,13 @@ export default {
     SRCH_EXL_COND_SE_CD(){
       this.SRCH_EXL_COND_CN = '';
       this.SRCH_EXL_COND_CN_CUTT_TYPE = {};
+    },
+
+    dialogExlCond(){
+      if(!this.dialogExlCond){
+        this.EXL_COND_TRGT_LIST = [];
+        this.EXL_COND_SET_TRGT_LIST = [];
+      }
     }
   },
 
@@ -4917,6 +4938,7 @@ export default {
         , EXL_COND_CN : this.SRCH_EXL_COND_CN
         , USE_YN : this.SRCH_USE_YN
         , DEL_YN : this.SRCH_DEL_YN
+        , MSG_DT_YN : 'N'
       }
 
       let headParam = {
@@ -5550,6 +5572,7 @@ export default {
         } else {
           this.closeProgressBar();
           this.showAlert(this.MESSAGE.ERROR.ERROR);
+          return;
         }
       }
     },
