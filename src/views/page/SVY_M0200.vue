@@ -468,56 +468,34 @@
                 @dblclick:row="mixin_showDialog('AddSomeone')"
                 :item-class="isActiveRow"
               >
-              <template v-slot:header.data-table-select >
-                <v-checkbox 
-                  class="pl-check is-chk-center"
-                  v-model="isSelectedAllTrgt" 
-                  @click="toggleSelectAllTrgt()"
-                ></v-checkbox>
-              </template>
-              <template v-slot:item.CUST_NM="{ item }">
-                {{ mixin_getCustcoSetting('ENV_CUSTNM_MASKING_YN') ? mixin_mask_name(item.CUST_NM) : item.CUST_NM }}
-              </template>
-              <template v-slot:item.CUST_PHN_NO="{ item }">
-                {{ mixin_getCustcoSetting('ENV_PHNNO_MASKING_YN') ? mixin_mask_num(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) : mixin_setPhoneNo(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) }}
-              </template>
-              <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
-                <!-- <v-select
-                  class="pl-form"
-                  :value="item.CNSLT_DIV_CD_1"
-                  :items="CUTT_TYPE_LIST_1"
-                  item-text="TEXT"
-                  item-value="VALUE"
-                  readonly
-                >
-                </v-select> -->
-                {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
-              </template>
-              <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
-                <!-- <v-select
-                  class="pl-form"
-                  :value="item.CNSLT_DIV_CD_2"
-                  :items="CUTT_TYPE_LIST_2"
-                  item-text="TEXT"
-                  item-value="VALUE"
-                  readonly
-                >
-                </v-select> -->
-                {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
-              </template>
-              <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
-                <!-- <v-select
-                  class="pl-form"
-                  :value="item.CNSLT_DIV_CD_3"
-                  :items="CUTT_TYPE_LIST_3"
-                  item-text="TEXT"
-                  item-value="VALUE"
-                  readonly
-                >
-                </v-select> -->
-                {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
-              </template>
-              
+                <template v-slot:header.data-table-select >
+                  <v-checkbox 
+                    class="pl-check is-chk-center"
+                    v-model="isSelectedAllTrgt" 
+                    @click="toggleSelectAllTrgt()"
+                  ></v-checkbox>
+                </template>
+                <template v-slot:item.CUST_NM="{ item }">
+                  {{ mixin_getCustcoSetting('ENV_CUSTNM_MASKING_YN') ? mixin_mask_name(item.CUST_NM) : item.CUST_NM }}
+                </template>
+                <template v-slot:item.CUST_PHN_NO="{ item }">
+                  {{ mixin_getCustcoSetting('ENV_PHNNO_MASKING_YN') ? mixin_mask_num(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) : mixin_setPhoneNo(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) }}
+                </template>
+                <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
+                  {{ mixin_convertListCdNm(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
+                </template>
+                <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
+                  {{ mixin_convertListCdNm(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
+                </template>
+                <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
+                  {{ mixin_convertListCdNm(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
+                </template>
+                <template v-slot:item.RCPT_CHN_CD="{ item }">
+                  {{ mixin_convertListCdNm(RCPT_CHN_CD_LIST,item.RCPT_CHN_CD) }}
+                </template>
+                <template v-slot:item.PRCS_CHN_CD="{ item }">
+                  {{ mixin_convertListCdNm(PRCS_CHN_CD_LIST,item.PRCS_CHN_CD) }}
+                </template>
               </v-data-table>
               <div class="pl-pager">
                 <div class="pl-pager-row">
@@ -1297,9 +1275,9 @@
                 <v-select
                   v-else
                   class="pl-form is-lg"
-                  :items="SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD'? [{text:'전체',value:''},{text:'IN',value:'IN'}, {text:'OUT',value:'OUT'}] 
+                  :items="SRCH_EXL_COND_SE_CD=='DRWI_SE_CD'? DRWI_SE_CD_LIST
                     : (SRCH_EXL_COND_SE_CD=='PRVC_CLCT_AGRE_YN' ? [{text:'전체',value:''},{text:'Y',value:'Y'}, {text:'N',value:'N'}] 
-                    : (this.mixin_common_code_get(this.common_code, SRCH_EXL_COND_SE_CD=='DRWI_SE_CD' ? 'CVC' : 'PCMC', '전체')))"
+                    : (SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD' ? RCPT_CHN_CD_LIST : PRCS_CHN_CD_LIST))"
                   placeholder="선택하세요"
                   v-model="SRCH_EXL_COND_CN"
                 ></v-select>
@@ -1451,13 +1429,19 @@
               </div>
             </template> 
             <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
-              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
+              {{ mixin_convertListCdNm(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
             </template>
             <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
-              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
+              {{ mixin_convertListCdNm(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
             </template>
             <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
-              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
+              {{ mixin_convertListCdNm(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
+            </template>
+            <template v-slot:item.RCPT_CHN_CD="{ item }">
+              {{ mixin_convertListCdNm(RCPT_CHN_CD_LIST,item.RCPT_CHN_CD) }}
+            </template>
+            <template v-slot:item.PRCS_CHN_CD="{ item }">
+              {{ mixin_convertListCdNm(PRCS_CHN_CD_LIST,item.PRCS_CHN_CD) }}
             </template>
           </v-data-table>
           <div class="pl-pager">
@@ -1547,13 +1531,19 @@
               </div>
             </template> 
             <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
-              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
+              {{ mixin_convertListCdNm(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
             </template>
             <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
-              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
+              {{ mixin_convertListCdNm(CUTT_TYPE_LIST_2,item.CNSLT_DIV_CD_2) }}
             </template>
             <template v-slot:item.CNSLT_DIV_CD_3="{ item }">
-              {{ mixin_cuttTypeSel(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
+              {{ mixin_convertListCdNm(CUTT_TYPE_LIST_3,item.CNSLT_DIV_CD_3) }}
+            </template>
+            <template v-slot:item.RCPT_CHN_CD="{ item }">
+              {{ mixin_convertListCdNm(RCPT_CHN_CD_LIST,item.RCPT_CHN_CD) }}
+            </template>
+            <template v-slot:item.PRCS_CHN_CD="{ item }">
+              {{ mixin_convertListCdNm(PRCS_CHN_CD_LIST,item.PRCS_CHN_CD) }}
             </template>
           </v-data-table>
           <div class="pl-pager">
@@ -2096,12 +2086,19 @@ export default {
         { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
         { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
         { text: '인입번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
-        { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
-        { text: '인입유형',         value: /*'DRWI_TYPE_CD'*/'DRWI_SE_CD',             align: 'left',          width: '120px' },
+        { text: '인입유형',         value: /*'DRWI_TYPE_CD'*/'DRWI_SE_CD',              align: 'left',          width: '120px' },
+        { text: '접수채널',         value: 'RCPT_CHN_CD',             align: 'left',          width: '120px' },
         { text: '처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
         { text: '개인정보수집동의',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
         { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
       ],
+      DRWI_SE_CD_LIST:[
+        {text:'전체',value:''}
+        ,{text:'IN',value:'IN'}
+        , {text:'OUT',value:'OUT'}
+      ],
+      RCPT_CHN_CD_LIST:[],
+      PRCS_CHN_CD_LIST:[],
       EXL_COND_TRGT_LIST:[],   //제외조건 제외 대상자 리스트 - 제외조건으로 제외된 대상자를 보여주기위함 (적용된 제외조건과 대상을 한번에 저장)
       SRCH_EXL_COND_TRGT_LIST:'',
       SEL_EXL_COND_TRGT:{},
@@ -2188,7 +2185,8 @@ export default {
                     , 'CVC', 'PCMC'
                   ];
     this.common_code = await this.mixin_common_code_get_all(codeName, 'Y');
-
+    this.RCPT_CHN_CD_LIST = this.mixin_common_code_get(this.common_code, 'CVC', '전체');
+    this.PRCS_CHN_CD_LIST = this.mixin_common_code_get(this.common_code, 'PCMC', '전체');
     //진행년도 설정(금년기준 -5, +5)
     const date = new Date();
     const curYear = date.getFullYear();

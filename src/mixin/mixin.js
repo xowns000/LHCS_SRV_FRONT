@@ -3412,11 +3412,11 @@ export const mixin = {
     },
 
     //상담유형 리스트(select items)에서 상담유형 코드를 넣어 상담유형명을 반환
-    mixin_cuttTypeSel(list,cd){
+    mixin_convertListCdNm(list,cd){
       let text = '';
       for(let i=0;i<list.length;i++){
-        if(list[i].VALUE == cd){
-          text = list[i].TEXT;
+        if(list[i].VALUE == cd || list[i].value == cd ){
+          text = list[i].TEXT ? list[i].TEXT : list[i].text;
           break;
         }
       }
