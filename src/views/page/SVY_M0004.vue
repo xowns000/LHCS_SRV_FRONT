@@ -213,7 +213,7 @@
                   <div class="pl-desc">{{ exlHstryDtl.SRVY_SE_NM }}</div>
                 </div>
                 <div class="pl-form-inline">
-                  <span class="pl-label">고객 전화번호</span>
+                  <span class="pl-label">설문 명</span>
                   <div class="pl-desc">{{exlHstryDtl.SRVY_NM }}</div>
                 </div>
               </div>
