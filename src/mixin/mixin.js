@@ -3403,8 +3403,7 @@ export const mixin = {
         //조직 Tree 데이터
         if(response){
           response.unshift({DEPT_NM:'전체', DEPT_ID : ''})
-          console.log(response)
-          if( this.$store.getters["commonStore/GE_COMMON_OGNZ_LIST"].length < 1 ) {
+          if( this.$store.getters["commonStore/GE_COMMON_OGNZ_LIST"].length < 2 ) {
             this.$store.dispatch("commonStore/AC_COMMON_SETTING_OGNZ_LIST", response);
           }
         }
