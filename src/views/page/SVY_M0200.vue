@@ -1246,9 +1246,17 @@
                   @keydown.enter="getGridList(false)"
                 />
                 <!-- 상담유형 처리 -->
-                 <template
+                 <v-text-field
+                  v-else-if="(SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3') 
+                    && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col ILIKE (\'%str%\')')"
+                  class="pl-form is-lg"
+                  placeholder="검색어 입력"
+                  v-model="SRCH_EXL_COND_CN"
+                  @keydown.enter="getGridList(false)"
+                />
+                <template
                   v-else-if="SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
-                 >
+                >
                   <compo-tooltip-btn
                     TitleProp="조건 선택하기"
                     ClassProp="pl-tooltip-btn"
@@ -1268,7 +1276,7 @@
                     IconProp="pl-icon20 paste-board"
                     TooltipPositionProp="bottom"
                   ></compo-tooltip-btn>
-                 </template>
+                </template>
                 <!-- 
                   접수채널 / 처리방법
                 -->
@@ -1335,7 +1343,21 @@
           >
             <template v-slot:item.EXL_COND_TEXT="{ item }">
               <v-tooltip 
-                v-if="item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_1'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_2'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_3'"
+                v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col ILIKE (\'%str%\')'"
+                content-class="pl-tooltip " bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <span
+                    v-bind="attrs"
+                    v-on="on">
+                  {{ item.EXL_COND_TEXT }}</span>
+                </template>
+                <span
+                  v-html="item.EXL_COND_CN"
+                >
+                </span>
+              </v-tooltip>
+              <v-tooltip 
+                v-else-if="item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_1'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_2'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_3'"
                 content-class="pl-tooltip " bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <span
@@ -5201,6 +5223,88 @@ export default {
                   }
                 }
                 break;
+              case '다중 포함':
+                // 지정한 값 중 하나라도 포함 됨
+                let condVlArr1 = condVl.split(',')
+                let cnt1 = 0;
+                for(let q=0;q<condVlArr1.length;q++){
+                  if(data[exlCond].indexOf(condVlArr1[q])>-1){
+                    for(let j =0;j<trgtList.length;j++){
+                      if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+                        trgtList[j]['REASON'] += '<br>' + condReason;
+                        trgtList[j]['REASON_CD'] += ',' + id;
+                        trgt = false
+                      }
+                    }
+                    if(trgt){
+                      trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
+                    }
+                    break;
+                  }
+                }
+                break;
+              case '다중 미포함':
+                // 지정한 값이 하나도 포함되지 않음
+                let condVlArr2 = condVl.split(',')
+                let cnt2 = 0;
+                for(let q=0;q<condVlArr2.length;q++){
+                  if(data[exlCond].indexOf(condVlArr2[q])==1){
+                    cnt2++
+                  }
+                }
+                if(cnt2 == condVlArr2.length){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){ 
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
+                  }
+                }
+                break;
+              case '다중 동일':
+                // 지정한 값 모두 포함됨
+                let condVlArr3 = condVl.split(',')
+                let cnt3 = 0;
+                for(let q=0;q<condVlArr3.length;q++){
+                  if(data[exlCond].indexOf(condVlArr3[q])==1){
+                    cnt3++
+                  }
+                }
+                if(cnt3 == condVlArr3.length){
+                  for(let j =0;j<trgtList.length;j++){
+                    if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){ 
+                      trgtList[j]['REASON'] += '<br>' + condReason;
+                      trgtList[j]['REASON_CD'] += ',' + id;
+                      trgt = false
+                    }
+                  }
+                  if(trgt){
+                    trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
+                  }
+                }
+                break;
+              // case '다중 동일 제외':
+              //   // 지정한 값중 하나도 포함되지 않음
+              //   let condVlArr4 = condVl.split(',')
+              //   for(let q=0;q<condVlArr4.length;q++){
+              //     if(data[exlCond]==condVlArr3[q]){
+              //       for(let j =0;j<trgtList.length;j++){
+              //         if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
+              //           trgtList[j]['REASON'] += '<br>' + condReason;
+              //           trgtList[j]['REASON_CD'] += ',' + id;
+              //           trgt = false
+              //         }
+              //       }
+              //       if(trgt){
+              //         trgtList.push(Object.assign({}, data, { REASON: condReason, REASON_CD: id }));
+              //       }
+              //     }
+              //   }
+              //   break;
               // case '이내':
               //   if(data[exlCond]){
               //     if(this.isWithinOutNDays(data[exlCond],condVl,'in')){
@@ -5310,20 +5414,22 @@ export default {
         if(type=='SRCH'){
           custco = this.SRCH_DEPT_ID == '2'?'1'/*마이홈*/
             :(this.SRCH_DEPT_ID == '3'?'4'/*바로처리*/
-            :(this.SRCH_DEPT_ID == '4'||this.SRCH_DEPT_ID == '7'/*렌트홈*/||this.SRCH_DEPT_ID == '8'/*유스타트*/?'3'/*전세임대*/
-            :(this.SRCH_DEPT_ID == '5'?'2'/*공가해소?*/
-            :(this.SRCH_DEPT_ID == '6'?'5'/*공동주택?*/
+            :(this.SRCH_DEPT_ID == '4'||this.SRCH_DEPT_ID == '8'/*유스타트*/||this.SRCH_DEPT_ID == '9'/*인천검단*/?'3'/*전세임대*/
+            :(this.SRCH_DEPT_ID == '5'?'2'/*공가해소*/
+            :(this.SRCH_DEPT_ID == '7'?'5'/*렌트홈 = 주택지원*/
+            :(this.SRCH_DEPT_ID == '6'?'1'/*공동주택*/
             :'1'/*기본값*/
-          ))))
+          )))))
           seCd = this.SRCH_EXL_COND_SE_CD.replaceAll('CNSLT_DIV_CD_','')
         } else {
           custco = this.DEPT_ID == '2'?'1'/*마이홈*/
             :(this.DEPT_ID == '3'?'4'/*바로처리*/
-            :(this.DEPT_ID == '4'||this.DEPT_ID == '7'/*렌트홈*/||this.DEPT_ID == '8'/*유스타트*/?'3'/*전세임대*/
-            :(this.DEPT_ID == '5'?'2'/*공가해소?*/
-            :(this.DEPT_ID == '6'?'5'/*공동주택?*/
+            :(this.DEPT_ID == '4'||this.DEPT_ID == '8'/*유스타트*/||this.SRCH_DEPT_ID == '9'/*인천검단*/?'3'/*전세임대*/
+            :(this.DEPT_ID == '5'?'2'/*공가해소*/
+            :(this.DEPT_ID == '7'?'5'/**렌트홈 = 주택지원*/
+            :(this.DEPT_ID == '6'?'1'/*공동주택*/
             :'1'/*기본값*/
-          ))))
+          )))))
           seCd = this.EXL_COND_SE_CD.replaceAll('CNSLT_DIV_CD_','')
         }
       }

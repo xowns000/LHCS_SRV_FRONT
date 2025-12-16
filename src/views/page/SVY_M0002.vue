@@ -61,9 +61,17 @@
                   @keydown.enter="getGridList(false)"
                 />
                 <!-- 상담유형 처리 -->
-                 <template
+                <v-text-field
+                  v-else-if="(SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3') 
+                    && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col ILIKE (\'%str%\')')"
+                  class="pl-form is-lg"
+                  placeholder="검색어 입력"
+                  v-model="SRCH_EXL_COND_CN"
+                  @keydown.enter="getGridList(false)"
+                />
+                <template
                   v-else-if="SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
-                 >
+                >
                   <compo-tooltip-btn
                     TitleProp="조건 선택하기"
                     ClassProp="pl-tooltip-btn"
@@ -83,7 +91,7 @@
                     IconProp="pl-icon20 paste-board"
                     TooltipPositionProp="bottom"
                   ></compo-tooltip-btn>
-                 </template>
+                </template>
                 <!-- 
                   접수채널 / 처리방법
                 -->
@@ -184,7 +192,18 @@
         >
           <template v-slot:item.EXL_COND_CN="{ item }">
             <v-tooltip 
-              v-if="item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_1'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_2'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_3'"
+              v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col ILIKE (\'%str%\')'"
+              content-class="pl-tooltip " bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <span
+                  v-bind="attrs"
+                  v-on="on">
+                {{ item.EXL_COND_CN.split(',').length+'개의 조건 값' }}</span>
+              </template>
+              {{ item.EXL_COND_CN }}
+            </v-tooltip>
+            <v-tooltip 
+              v-else-if="item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_1'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_2'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_3'"
               content-class="pl-tooltip " bottom>
               <template v-slot:activator="{ on, attrs }">
                 <span
@@ -326,6 +345,24 @@
                       :rules="detailValidateRules.EXL_COND_CN"
                     />
                     <!-- 상담유형 처리 -->
+                    <template
+                      v-else-if="(EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || EXL_COND_SE_CD=='CNSLT_DIV_CD_3')
+                        && (EXL_COND_CD=='col IN (\'str\')'||EXL_COND_CD=='col NOT IN (\'str\')'||EXL_COND_CD=='col ILIKE (\'%str%\')')"
+                    >
+                      <v-text-field
+                        class="pl-form is-lg"
+                        placeholder="검색어 입력"
+                        v-model="EXL_COND_CN_CUTT_TYPE.ROW"
+                        readonly
+                        :rules="detailValidateRules.EXL_COND_CN"
+                      />
+                      <compo-tooltip-btn
+                        :TitleProp="EXL_COND_CN_CUTT_TYPE.TEXT"
+                        ClassProp="pl-tooltip-btn flex-grow-1"
+                        IconProp="pl-icon20 paste-board"
+                        TooltipPositionProp="bottom"
+                      ></compo-tooltip-btn>
+                    </template>
                     <template
                       v-else-if="EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
                     >
