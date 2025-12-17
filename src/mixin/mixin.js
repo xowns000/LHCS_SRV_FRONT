@@ -3404,8 +3404,7 @@ export const mixin = {
         //조직 Tree 데이터
         if(response){
           response.unshift({DEPT_NM:'전체', DEPT_ID : ''})
-          console.log(response)
-          if( this.$store.getters["commonStore/GE_COMMON_OGNZ_LIST"].length < 1 ) {
+          if( this.$store.getters["commonStore/GE_COMMON_OGNZ_LIST"].length < 2 ) {
             this.$store.dispatch("commonStore/AC_COMMON_SETTING_OGNZ_LIST", response);
           }
         }
@@ -3414,7 +3413,7 @@ export const mixin = {
 
     //상담유형 리스트(select items)에서 상담유형 코드를 넣어 상담유형명을 반환
     mixin_convertListCdNm(list,cd){
-      let text = '';
+      let text = cd;
       for(let i=0;i<list.length;i++){
         if(list[i].VALUE == cd || list[i].value == cd ){
           text = list[i].TEXT ? list[i].TEXT : list[i].text;
