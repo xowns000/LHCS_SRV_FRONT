@@ -3067,7 +3067,6 @@ export const mixin = {
         let getData = [];
         let oHeaders = _.cloneDeep(tempGridHeaders);
         oHeaders.splice(0, 1);
-
         //엑셀에 빈값이 있는경우 빈값을 셋팅한다.(빈값은 엑셀라이브러리에서 빠져버림.)
         oData.forEach(e => {
           let o = {};
@@ -3076,15 +3075,17 @@ export const mixin = {
           });
           getData.push(o);
         });
-
         if (getData.length > 0) {
           getData.map(v => {
             let map = {}
-            oHeaders.forEach((j,i) => {
-              if(j.text === Object.keys(v)[i]){
-                map[j.value] = v[Object.keys(v)[i]]
+            for(let n=0;n<Object.keys(v).length;n++){
+              for(let i=0;i<oHeaders.length;i++){
+                if(oHeaders[i].text === Object.keys(v)[n]){
+                  map[oHeaders[i].value] = v[Object.keys(v)[n]]
+                  break;
+                }
               }
-            })
+            }
             upload_bodys.push(map)
           })
         }

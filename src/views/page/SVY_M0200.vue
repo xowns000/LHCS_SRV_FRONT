@@ -481,7 +481,7 @@
                 <template v-slot:item.CUST_PHN_NO="{ item }">
                   {{ mixin_getCustcoSetting('ENV_PHNNO_MASKING_YN') ? mixin_mask_num(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) : mixin_setPhoneNo(item.CUST_PHN_NO.replace(/[^0-9]/g, "")) }}
                 </template>
-                <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
+                <!-- <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
                   {{ mixin_convertListCdNm(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
                 </template>
                 <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
@@ -495,7 +495,7 @@
                 </template>
                 <template v-slot:item.PRCS_CHN_CD="{ item }">
                   {{ mixin_convertListCdNm(PRCS_CHN_CD_LIST,item.PRCS_CHN_CD) }}
-                </template>
+                </template> -->
               </v-data-table>
               <div class="pl-pager">
                 <div class="pl-pager-row">
@@ -1428,7 +1428,7 @@
               >
               </div>
             </template> 
-            <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
+            <!-- <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
               {{ mixin_convertListCdNm(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
             </template>
             <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
@@ -1442,7 +1442,7 @@
             </template>
             <template v-slot:item.PRCS_CHN_CD="{ item }">
               {{ mixin_convertListCdNm(PRCS_CHN_CD_LIST,item.PRCS_CHN_CD) }}
-            </template>
+            </template> -->
           </v-data-table>
           <div class="pl-pager">
             <div class="pl-pager-row">
@@ -1530,7 +1530,7 @@
               >
               </div>
             </template> 
-            <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
+            <!-- <template v-slot:item.CNSLT_DIV_CD_1="{ item }">
               {{ mixin_convertListCdNm(CUTT_TYPE_LIST_1,item.CNSLT_DIV_CD_1) }}
             </template>
             <template v-slot:item.CNSLT_DIV_CD_2="{ item }">
@@ -1544,7 +1544,7 @@
             </template>
             <template v-slot:item.PRCS_CHN_CD="{ item }">
               {{ mixin_convertListCdNm(PRCS_CHN_CD_LIST,item.PRCS_CHN_CD) }}
-            </template>
+            </template> -->
           </v-data-table>
           <div class="pl-pager">
             <div class="pl-pager-row">
@@ -1813,8 +1813,8 @@ export default {
       ROW_PER_PAGE_TRGT: 15,
       gridTotalCnt: 0,
       excelTemplateHeaders: [
-        { text: '이름',           value: 'CUST_NM',             align: 'center',          width: '120px' },
-        { text: '전화번호',       value: 'CUST_PHN_NO',         align: 'center',          width: '200px' },
+        { text: /*'이름'*/'고객명',           value: 'CUST_NM',             align: 'center',          width: '120px' },
+        { text: /*'전화번호'*/'인입번호',       value: 'CUST_PHN_NO',         align: 'center',          width: '200px' },
         { text: '이메일',         value: 'EML',                 align: 'left',            width: '100%' },
       ],
       //설문 참여자 확장 항목
@@ -2273,13 +2273,18 @@ export default {
       this.gridDataText = [];
       this.gridDataHeaders = [
         { text: '번호',           value: 'ROW_NUMBER',          align: 'center',        width: '80px' },
-        { text: '*이름',           value: 'CUST_NM',             align: 'left',          width: '100px' },
-        { text: '*전화번호',       value: 'CUST_PHN_NO',         align: 'left',          width: '130px' },
+        { text: /*'이름'*/'고객명',           value: 'CUST_NM',             align: 'left',          width: '100px' },
+        { text: /*'전화번호'*/'인입번호',       value: 'CUST_PHN_NO',         align: 'left',          width: '130px' },
         { text: '이메일',         value: 'EML',                 align: 'left',          width: '200px' },
       ];
+      // 필수값 체크 빼기
       if(this.srvyExpsnAttrList.length > 0) {
         this.srvyExpsnAttrList.map(expsn => {
-          this.gridDataHeaders.push({ text: (expsn.ESNTL_YN == 'Y' ? '*' + expsn.EXPSN_ATTR_NM : expsn.EXPSN_ATTR_NM), value: expsn.EXPSN_ATTR_COL_ID, align: 'left', width: '100px' })
+          this.gridDataHeaders.push({ text: /*(expsn.ESNTL_YN == 'Y' ? '*' + expsn.EXPSN_ATTR_NM : expsn.EXPSN_ATTR_NM)*/expsn.EXPSN_ATTR_NM
+            , value: expsn.EXPSN_ATTR_COL_ID
+            , align: 'left'
+            , width: '100px' 
+          })
         })
       }
       const gridDataHeaders2 = [
@@ -2314,8 +2319,8 @@ export default {
 
       //엑셀 양식 확장 항목 추가.
       this.excelTemplateHeaders = [
-        { text: '*이름',           value: 'CUST_NM',             align: 'center',          width: '120px' },
-        { text: '*전화번호',       value: 'CUST_PHN_NO',         align: 'center',          width: '200px' },
+        { text: /*'이름'*/'고객명',           value: 'CUST_NM',             align: 'center',          width: '120px' },
+        { text: /*'전화번호'*/'인입번호',       value: 'CUST_PHN_NO',         align: 'center',          width: '200px' },
         { text: '이메일',         value: 'EML',                 align: 'left',            width: '100%' },
       ];
       if(this.srvyExpsnAttrList.length > 0) {
