@@ -1246,7 +1246,7 @@
                   @keydown.enter="getGridList(false)"
                 />
                 <!-- 상담유형 처리 -->
-                 <v-text-field
+                <v-text-field
                   v-else-if="(SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3') 
                     && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col ILIKE (\'%str%\')')"
                   class="pl-form is-lg"
@@ -4139,7 +4139,7 @@ export default {
       this.TMPL_MESSAGE_SMS = '';
       this.SRCH_TMPL = {};
       // 즉시 발송 체크 여부
-      this.IS_SEND_ATONCE = true;
+      this.IS_SEND_ATONCE = false;
       // 발신자 연락처 정보 조회
       this.selectCusRprs();
       this.getTempleInfo();

@@ -63,7 +63,7 @@
                 <!-- 상담유형 처리 -->
                 <v-text-field
                   v-else-if="(SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3') 
-                    && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col ILIKE (\'%str%\')')"
+                    && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col LIKE (\'%str%\')')"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
@@ -162,7 +162,7 @@
               <span class="pl-icon20 circle-plus"></span>
               등록
             </v-btn>
-            <v-btn class="pl-btn is-icon is-sub" @click="deleteBtn" :disabled="selectedData.length != 0 ? false : true">
+            <v-btn class="pl-btn is-icon is-sub" @click="delAlert()" :disabled="selectedData.length != 0 ? false : true">
               <span class="pl-icon20 trash"></span>
               삭제
             </v-btn>
@@ -186,7 +186,7 @@
           :page.sync="page"
           @page-count="pageCount = $event"
           @click:row="rowSelect"
-          @dblclick:row="mixin_showDialog('RegExlCond')"
+          @dblclick:row="selectExlCondHstry(),mixin_showDialog('RegExlCond')"
           v-model="selectedData"
           no-data-text="등록된 데이터가 없습니다."
         >
@@ -323,14 +323,14 @@
                 <span class="pl-label">
                   제외조건 값
                   <v-icon class="pl-icon20 required"></v-icon>
-                  <compo-tooltip-btn
+                  <!-- <compo-tooltip-btn
                     v-if="EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
                     TitleProp="조건 선택하기"
                     ClassProp="pl-tooltip-btn"
                     IconProp="pl-icon20 parts-check"
                     TooltipPositionProp="bottom"
                     @btnClick="btnCuttType()"
-                  ></compo-tooltip-btn>
+                  ></compo-tooltip-btn> -->
                 </span>
                   <div class="pl-desc">
                     <!-- 
@@ -345,25 +345,15 @@
                       :rules="detailValidateRules.EXL_COND_CN"
                     />
                     <!-- 상담유형 처리 -->
-                    <template
+                    <v-text-field
                       v-else-if="(EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || EXL_COND_SE_CD=='CNSLT_DIV_CD_3')
-                        && (EXL_COND_CD=='col IN (\'str\')'||EXL_COND_CD=='col NOT IN (\'str\')'||EXL_COND_CD=='col ILIKE (\'%str%\')')"
-                    >
-                      <v-text-field
-                        class="pl-form is-lg"
-                        placeholder="검색어 입력"
-                        v-model="EXL_COND_CN_CUTT_TYPE.ROW"
-                        readonly
-                        :rules="detailValidateRules.EXL_COND_CN"
-                      />
-                      <compo-tooltip-btn
-                        :TitleProp="EXL_COND_CN_CUTT_TYPE.TEXT"
-                        ClassProp="pl-tooltip-btn flex-grow-1"
-                        IconProp="pl-icon20 paste-board"
-                        TooltipPositionProp="bottom"
-                      ></compo-tooltip-btn>
-                    </template>
-                    <template
+                        && (EXL_COND_CD=='col IN (\'str\')'||EXL_COND_CD=='col NOT IN (\'str\')'||EXL_COND_CD=='col LIKE (\'%str%\')')"
+                      class="pl-form is-lg"
+                      placeholder="검색어 입력"
+                      v-model="EXL_COND_CN"
+                      :rules="detailValidateRules.EXL_COND_CN"
+                    />
+                    <!-- <template
                       v-else-if="EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
                     >
                       <v-text-field
@@ -379,7 +369,7 @@
                         IconProp="pl-icon20 paste-board"
                         TooltipPositionProp="bottom"
                       ></compo-tooltip-btn>
-                    </template>
+                    </template> -->
                     <!-- 
                       접수채널 / 처리방법
                     -->
@@ -409,6 +399,65 @@
                     :rules="detailValidateRules.USE_YN"
                   ></v-select>
                 </div>
+              </div>
+            </div>
+            <div 
+              v-if="EXL_COND_HSTRY_ITEMS.length>0"  
+              class="is-border mt-2"
+            >
+              <h2 class="pl-subtit pb-2">제외조건 변경이력</h2>
+              <div class="pl-form-inline-wrap vertical">
+                <v-data-table
+                  class="pl-grid"
+                  :headers="EXL_COND_HSTRY_HEADER"
+                  :items="EXL_COND_HSTRY_ITEMS"
+                  fixed-header
+                  item-key="ROW_NUMBER"
+                  height="200px"
+                  :items-per-page="EXL_COND_HSTRY_ITEMS.length"
+                  :item-class="isActiveHstryRow"
+                  hide-default-footer
+                  @click:row="hstryRowSelect"
+                  no-data-text="등록된 데이터가 없습니다."
+                >
+                  <template v-slot:item.EXL_COND_CN="{ item }">
+                    <v-tooltip 
+                      v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col ILIKE (\'%str%\')'"
+                      content-class="pl-tooltip " bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <span
+                          v-bind="attrs"
+                          v-on="on">
+                        {{ item.EXL_COND_CN.split(',').length+'개의 조건 값' }}</span>
+                      </template>
+                      {{ item.EXL_COND_CN }}
+                    </v-tooltip>
+                    <v-tooltip 
+                      v-else-if="item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_1'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_2'||item.EXL_COND_SE_CD == 'CNSLT_DIV_CD_3'"
+                      content-class="pl-tooltip " bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <span
+                          v-bind="attrs"
+                          v-on="on">
+                        {{ item.EXL_COND_CN.split(',').length+'개의 상담유형' }}</span>
+                      </template>
+                      <span
+                        v-html="item.CUTT_TYPE_PATH"
+                      >
+                      </span>
+                    </v-tooltip>
+                    <span
+                      v-else-if="item.EXL_COND_SE_CD == 'RCPT_CHN_CD' || item.EXL_COND_SE_CD == 'PRCS_CHN_CD'"
+                    >
+                      {{ item.EXL_COND_CN_NM }}
+                    </span>
+                    <span
+                      v-else
+                    >
+                      {{ item.EXL_COND_CN }}
+                    </span>
+                  </template>
+                </v-data-table>
               </div>
             </div>
           </v-form>
@@ -796,6 +845,16 @@ export default {
       EXL_COND_CN_CUTT_TYPE:{},
 
       CUTT_TYPE_MODE:'SRCH',
+
+      EXL_COND_HSTRY_HEADER:[
+        { text: '조건 구분', value: 'EXL_COND_SE_NM', align: 'left', width: '120px'},
+        { text: '조건', value: 'EXL_COND_NM', align: 'left', width: '120px' },
+        { text: '조건 값', value: 'EXL_COND_CN', align: 'left', width: '150px'},
+        { text: '수정자', value: 'RGTR_NM', align: 'left', width: '100px'},
+        { text: '수정일', value: 'REG_DT_F', align: 'left', width: '120px'},
+      ],
+      EXL_COND_HSTRY_ITEMS:[],
+      selectedHstryRow:{},
     }
   },
   watch: {
@@ -942,7 +1001,48 @@ export default {
       this.mixin_showDialog('RegExlCond');
     },
 
-    deleteBtn(){
+    //삭제 팝업
+    delAlert(){
+      this.showAlert({
+          alertDialogToggle: true
+          , msg: this.selectedData.length+'개의 제외조건을 삭제하시겠습니까?'
+          , iconClass: 'is-info'
+          , type: 'confirm'
+          , callYes: () => {
+            this.deleteBtn();
+          }
+          , callNo: () => {
+            this.$store.commit("alertStore/hideAlert");
+          }
+      });
+    },
+
+    async deleteBtn(){
+      let sUrl = '/api/svy/exclusion/deleteCondition';
+      let delList = ''
+      for(let i=0;i<this.selectedData.length;i++){
+        if(i==0){
+          delList = this.selectedData[i].SRVY_EXL_COND_ID;
+        } else {
+          delList = delList + ',' + this.selectedData[i].SRVY_EXL_COND_ID;
+        }
+      }
+      let postParam = {
+        delList : delList
+      }
+
+      let headParam = {
+        head : {
+        }
+      }
+
+      let response = await this.common_postCall(sUrl, postParam, headParam);
+
+      if(!response.HEADER.ERROR_FLAG) {
+        this.$store.commit("alertStore/hideAlert");
+        this.getGridList();
+        this.showToast({  msg: '삭제가 완료되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 2000 })
+      }
     },
 
     initSel(){
@@ -1142,7 +1242,42 @@ export default {
       this.SRCH_EXL_COND_CN='';
       this.SRCH_USE_YN='Y';
       this.SRCH_DEL_YN='N';
-    }
+    },
+
+    async selectExlCondHstry(){
+      let sUrl = '/api/svy/exclusion/selectConditionList';
+      let postParam = {
+        DEPT_ID: ''
+        , EXL_COND_SE_CD: ''
+        , EXL_COND_CD : ''
+        , EXL_COND_CN : ''
+        , USE_YN : ''
+        , DEL_YN : ''
+        , MSG_DT_YN : ''
+        , SRVY_EXL_COND_HSTRY_ID: this.SRVY_EXL_COND_ID
+      }
+
+      let headParam = {
+        head : {
+          PAGING: 'Y',
+          ROW_CNT: 500,
+          PAGES_CNT: 1
+        }
+      }
+
+      let response = await this.common_postCall(sUrl, postParam, headParam);
+
+      if(!response.HEADER.ERROR_FLAG) {
+        this.EXL_COND_HSTRY_ITEMS = response.DATA;
+      }
+    },
+    isActiveHstryRow(item) {
+      const activeClass = item === this.selectedHstryRow ? "active" : "";
+      return activeClass;
+    },
+    hstryRowSelect(item){
+      this.selectedHstryRow = item;
+    },
   },
 }
 </script>
