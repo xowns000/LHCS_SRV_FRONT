@@ -1054,6 +1054,8 @@ export default {
       this.EXL_COND_CD='';
       this.EXL_COND_CN='';
       this.USE_YN='Y';
+
+      this.EXL_COND_HSTRY_ITEMS = [];
     },
     
     //row 선택 활성화
