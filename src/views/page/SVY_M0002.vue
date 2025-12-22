@@ -54,7 +54,7 @@
                   인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
                 -->
                 <v-text-field
-                  v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM' || SRCH_EXL_COND_SE_CD=='MSG_DT'"
+                  v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM' || SRCH_EXL_COND_SE_CD=='MSG_DT' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
@@ -62,36 +62,35 @@
                 />
                 <!-- 상담유형 처리 -->
                 <v-text-field
-                  v-else-if="(SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3') 
-                    && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col LIKE (\'%str%\')')"
+                  v-else-if="(SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col LIKE (\'%str%\')') || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
                   @keydown.enter="getGridList(false)"
                 />
-                <template
-                  v-else-if="SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
-                >
-                  <compo-tooltip-btn
-                    TitleProp="조건 선택하기"
-                    ClassProp="pl-tooltip-btn"
-                    IconProp="pl-icon20 parts-check"
-                    TooltipPositionProp="bottom"
-                    @btnClick="btnCuttType('SRCH')"
-                  ></compo-tooltip-btn>
-                  <v-text-field
-                    class="pl-form"
-                    placeholder="검색어 입력"
-                    v-model="SRCH_EXL_COND_CN_CUTT_TYPE.ROW"
-                    readonly
-                  />
-                  <compo-tooltip-btn
-                    :TitleProp="SRCH_EXL_COND_CN_CUTT_TYPE.TEXT"
-                    ClassProp="pl-tooltip-btn flex-grow-0"
-                    IconProp="pl-icon20 paste-board"
-                    TooltipPositionProp="bottom"
-                  ></compo-tooltip-btn>
-                </template>
+<!--                <template-->
+<!--                  v-else-if="SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"-->
+<!--                >-->
+<!--                  <compo-tooltip-btn-->
+<!--                    TitleProp="조건 선택하기"-->
+<!--                    ClassProp="pl-tooltip-btn"-->
+<!--                    IconProp="pl-icon20 parts-check"-->
+<!--                    TooltipPositionProp="bottom"-->
+<!--                    @btnClick="btnCuttType('SRCH')"-->
+<!--                  ></compo-tooltip-btn>-->
+<!--                  <v-text-field-->
+<!--                    class="pl-form"-->
+<!--                    placeholder="검색어 입력"-->
+<!--                    v-model="SRCH_EXL_COND_CN_CUTT_TYPE.ROW"-->
+<!--                    readonly-->
+<!--                  />-->
+<!--                  <compo-tooltip-btn-->
+<!--                    :TitleProp="SRCH_EXL_COND_CN_CUTT_TYPE.TEXT"-->
+<!--                    ClassProp="pl-tooltip-btn flex-grow-0"-->
+<!--                    IconProp="pl-icon20 paste-board"-->
+<!--                    TooltipPositionProp="bottom"-->
+<!--                  ></compo-tooltip-btn>-->
+<!--                </template>-->
                 <!-- 
                   접수채널 / 처리방법
                 -->
@@ -338,12 +337,21 @@
                       인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
                     -->
                     <v-text-field
-                      v-if="EXL_COND_SE_CD=='CUST_PHN_NO' || EXL_COND_SE_CD=='CUTT_CN' || EXL_COND_SE_CD=='USER_NM' || EXL_COND_SE_CD=='MSG_DT'"
+                      v-if="EXL_COND_SE_CD=='CUST_PHN_NO' || EXL_COND_SE_CD=='CUTT_CN' || EXL_COND_SE_CD=='USER_NM' || EXL_COND_SE_CD=='MSG_DT' || EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || EXL_COND_SE_CD=='CNSLT_DIV_CD_3'"
                       class="pl-form is-lg"
                       placeholder="검색어 입력"
                       v-model="EXL_COND_CN"
                       :rules="detailValidateRules.EXL_COND_CN"
-                    />
+                    >
+                      <template v-slot:append>
+                      <compo-tooltip-btn
+                          TitleProp="📍쉼표(,)로 구분하면 여러 건을 한 번에 등록할 수 있습니다. 예) 사과,바나나,오렌지<br>📍띄어쓰기와 철자가 정확히 같아야 적용됩니다."
+                          ClassProp="pl-tooltip-btn"
+                          IconProp="pl-icon20 question"
+                          TooltipPositionProp="bottom"
+                      ></compo-tooltip-btn>
+                      </template>
+                    </v-text-field>
                     <!-- 상담유형 처리 -->
                     <v-text-field
                       v-else-if="(EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || EXL_COND_SE_CD=='CNSLT_DIV_CD_3')
@@ -1054,6 +1062,8 @@ export default {
       this.EXL_COND_CD='';
       this.EXL_COND_CN='';
       this.USE_YN='Y';
+
+      this.$refs.form?.resetValidation();
 
       this.EXL_COND_HSTRY_ITEMS = [];
     },
