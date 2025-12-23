@@ -376,8 +376,12 @@
                   </v-btn>
                    <!-- :disabled="stts_head === 'TERMIAT' ? true:false" -->
                   <v-btn class="pl-btn is-icon is-sub" @click="btnExlCond">
-                    <span class="pl-icon20 reject"></span>
+                    <span class="pl-icon20 erase"></span>
                     제외조건 적용
+                  </v-btn>
+                  <v-btn class="pl-btn is-icon is-sub" @click="ExlCustco">
+                    <span class="pl-icon20 pass-msg"></span>
+                    타센터 제외하기
                   </v-btn>
                   <v-btn class="pl-btn is-icon is-sub" @click="btnSaveTab2" :disabled="stts_head === 'TERMIAT' ? true:false">
                     <span class="pl-icon20 save"></span>
@@ -1239,7 +1243,7 @@
                   인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
                 -->
                 <v-text-field
-                  v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM'"
+                  v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM' || SRCH_EXL_COND_SE_CD=='CUSTCO'"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
@@ -2342,6 +2346,7 @@ export default {
         ];
       } else {
         gridDataHeaders3 = [
+          { text: '접속정보',   value: 'CUSTCO',       align: 'left',         width: '200px' },
           { text: '대분류(상담카테고리)',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
           { text: '중분류(상담카테고리)',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
           { text: '소분류(상담카테고리)',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
@@ -5702,6 +5707,48 @@ export default {
         }
       }
     },
+
+    ExlCustco(){
+      let notCustcoList = [];
+      for(let n=0;n<this.gridDataText.length;n++){
+        let data = this.gridDataText[n];
+        // 전세임대센터 유스타트 인천검단 구분
+        if(this.SRCH_DEPT_ID == '4'){
+          //전세임대
+          if(data.CUSTCO == '인천검단센터' || data.CUSTCO=='유스타트센터' ){
+            notCustcoList.push(data);
+          }
+        } else if(this.SRCH_DEPT_ID == '8'){
+          //유스타트
+          if(data.CUSTCO != '유스타트센터'){
+            notCustcoList.push(data);
+          }
+        } else if(this.SRCH_DEPT_ID == '9'){
+          //인천검단
+          if(data.CUSTCO != '인천검단센터'){
+            notCustcoList.push(data);
+          }
+        }
+      }
+
+      this.showAlert(
+        {
+          alertDialogToggle: true,
+          msg: notCustcoList.length+"명의 참여자를 제외하시겠습니까?",
+          iconClass: 'is-info',
+          type: 'confirm',
+          callYes: async () => {
+            const selectedRowNumbers = notCustcoList.map(item => item.ROW_NUMBER);
+            this.gridDataText = this.gridDataText.filter(
+              row => !selectedRowNumbers.includes(row.ROW_NUMBER)
+            );
+            this.closeMsg();
+            this.showToast({msg: notCustcoList.length+'명의 참여자가 제외되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 3000});
+          },
+          callNo: this.closeMsg
+        }
+      )
+    }
   },
 };
 </script>
