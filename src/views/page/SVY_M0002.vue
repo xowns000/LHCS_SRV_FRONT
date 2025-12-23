@@ -191,7 +191,7 @@
         >
           <template v-slot:item.EXL_COND_CN="{ item }">
             <v-tooltip 
-              v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col ILIKE (\'%str%\')'"
+              v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col LIKE (\'%str%\')'"
               content-class="pl-tooltip " bottom>
               <template v-slot:activator="{ on, attrs }">
                 <span
@@ -430,7 +430,7 @@
                 >
                   <template v-slot:item.EXL_COND_CN="{ item }">
                     <v-tooltip 
-                      v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col ILIKE (\'%str%\')'"
+                      v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col LIKE (\'%str%\')'"
                       content-class="pl-tooltip " bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <span

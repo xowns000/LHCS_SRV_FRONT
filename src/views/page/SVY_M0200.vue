@@ -1248,7 +1248,7 @@
                 <!-- 상담유형 처리 -->
                 <v-text-field
                   v-else-if="(SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3') 
-                    && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col ILIKE (\'%str%\')')"
+                    && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col LIKE (\'%str%\')')"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
@@ -1343,7 +1343,7 @@
           >
             <template v-slot:item.EXL_COND_TEXT="{ item }">
               <v-tooltip 
-                v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col ILIKE (\'%str%\')'"
+                v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col LIKE (\'%str%\')'"
                 content-class="pl-tooltip " bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <span
@@ -2295,7 +2295,7 @@ export default {
       this.gridDataText = [];
       this.gridDataHeaders = [
         { text: '번호',           value: 'ROW_NUMBER',          align: 'center',        width: '80px' },
-        { text: /*'이름'*/'고객명',           value: 'CUST_NM',             align: 'left',          width: '100px' },
+        { text: /*'이름'*/this.SRCH_DEPT_ID == '6' ? ' 고객명' : '고객명',           value: 'CUST_NM',             align: 'left',          width: '100px' },
         { text: /*'전화번호'*/'인입번호',       value: 'CUST_PHN_NO',         align: 'left',          width: '130px' },
         { text: '이메일',         value: 'EML',                 align: 'left',          width: '200px' },
       ];
@@ -2325,19 +2325,36 @@ export default {
       this.gridDataHeaders.push(...gridDataHeaders2);
 
       //설문 제외조건
-      // const gridDataHeaders3 = [
-      //   { text: '상담유형_대',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
-      //   { text: '상담유형_중',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
-      //   { text: '상담유형_소',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
-      //   { text: '상담메모',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
-      //   { text: '인입번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
-      //   { text: '접수채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
-      //   { text: '인입유형',         value: 'DRWI_TYPE_CD',             align: 'left',          width: '120px' },
-      //   { text: '처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
-      //   { text: '개인정보수집동의',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
-      //   { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
-      // ];
-      // this.gridDataHeaders.push(...gridDataHeaders3);
+      let gridDataHeaders3 = [];
+      if(this.SRCH_DEPT_ID == '6'){
+        //공동주택센터일 경우
+        gridDataHeaders3 = [
+          { text: ' 상담유형(대)',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
+          { text: ' 상담유형(중)',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
+          { text: ' 상담유형(소)',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
+          { text: ' 상담내용',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
+          { text: ' 전화번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
+          { text: ' 상담채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
+          { text: ' 인아웃',         value: 'DRWI_SE_CD',             align: 'left',          width: '120px' },
+          { text: ' 처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
+          { text: ' 개인정보_동의여부',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
+          { text: ' 접수자',         value: 'USER_NM',             align: 'left',          width: '120px' },
+        ];
+      } else {
+        gridDataHeaders3 = [
+          { text: '대분류(상담카테고리)',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
+          { text: '중분류(상담카테고리)',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
+          { text: '소분류(상담카테고리)',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
+          { text: '상담메모(내용)',   value: 'CUTT_CN',       align: 'left',         width: '360px' },
+          { text: '인입번호',         value: 'CUST_PHN_NO',       align: 'left',          width: '160px' },
+          { text: '상담채널',         value: 'RCPT_CHN_CD',              align: 'left',          width: '120px' },
+          { text: '상담경로(IN/OUT)',         value: 'DRWI_SE_CD',             align: 'left',          width: '120px' },
+          { text: '처리방법',         value: 'PRCS_CHN_CD',             align: 'left',          width: '120px' },
+          { text: '개인정보_동의여부',         value: 'PRVC_CLCT_AGRE_YN',             align: 'left',          width: '120px' },
+          { text: '접수자명',         value: 'USER_NM',             align: 'left',          width: '120px' },
+        ];
+      }
+      this.gridDataHeaders.push(...gridDataHeaders3);
 
       //엑셀 양식 확장 항목 추가.
       this.excelTemplateHeaders = [
@@ -5253,7 +5270,7 @@ export default {
                 let condVlArr2 = condVl.split(',')
                 let cnt2 = 0;
                 for(let q=0;q<condVlArr2.length;q++){
-                  if(data[exlCond].indexOf(condVlArr2[q])==1){
+                  if(data[exlCond].indexOf(condVlArr2[q])==-1){
                     cnt2++
                   }
                 }
@@ -5275,7 +5292,7 @@ export default {
                 let condVlArr3 = condVl.split(',')
                 let cnt3 = 0;
                 for(let q=0;q<condVlArr3.length;q++){
-                  if(data[exlCond].indexOf(condVlArr3[q])==1){
+                  if(data[exlCond] == condVlArr3[q]){
                     cnt3++
                   }
                 }
