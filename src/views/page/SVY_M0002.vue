@@ -411,7 +411,6 @@
               </div>
             </div>
             <div 
-              v-if="EXL_COND_HSTRY_ITEMS.length>0"  
               class="is-border mt-2"
             >
               <h2 class="pl-subtit pb-2">제외조건 변경이력</h2>
@@ -422,12 +421,12 @@
                   :items="EXL_COND_HSTRY_ITEMS"
                   fixed-header
                   item-key="ROW_NUMBER"
-                  height="200px"
+                  height="115px"
                   :items-per-page="EXL_COND_HSTRY_ITEMS.length"
                   :item-class="isActiveHstryRow"
                   hide-default-footer
                   @click:row="hstryRowSelect"
-                  no-data-text="등록된 데이터가 없습니다."
+                  no-data-text="변경이력이 없습니다"
                 >
                   <template v-slot:item.EXL_COND_CN="{ item }">
                     <v-tooltip 
@@ -1246,6 +1245,7 @@ export default {
     },
 
     async selectExlCondHstry(){
+      this.EXL_COND_HSTRY_ITEMS = [];
       let sUrl = '/api/svy/exclusion/selectConditionList';
       let postParam = {
         DEPT_ID: ''
