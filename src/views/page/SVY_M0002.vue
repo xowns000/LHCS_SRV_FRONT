@@ -99,6 +99,7 @@
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
+                  @keydown.enter="getGridList(false)"
                 />
               </div>
             </div>
