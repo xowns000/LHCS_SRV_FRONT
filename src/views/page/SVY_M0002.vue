@@ -512,9 +512,7 @@
                   <th rowspan="2" width="200px" class="text-center"><span>상담경로</span></th>
                   <th rowspan="2" width="200px" class="text-center"><span>처리방법</span></th>
                   <th rowspan="2" width="150px" class="text-center"><span>개인정보수집<br>동의여부</span></th>
-                  <th rowspan="2" width="150px" class="text-center"><span>인입번호</span></th>
-                  <th rowspan="2" width="100px" class="text-center"><span>접수자명</span></th>
-                  <th rowspan="2" width="150px" class="text-center"><span>비고</span></th>
+                  <th rowspan="2" width="150px" class="text-center"><span>접수자명</span></th>
                   <th rowspan="2" width="250px" class="text-center"><span>중복발송</span></th>
                 </tr>
                 <tr>
@@ -587,25 +585,13 @@
               >
               </div>
             </template>
-            <!-- <template v-slot:item.1111="{ item }">
-              <div
-                v-html="sanitizeContent(item.1111)"
-              >
-              </div>
-            </template> -->
-            <template v-slot:item.CUSL_NM="{ item }">
+            <template v-slot:item.USER_NM="{ item }">
               <div
                 style="font-size: 11px;"
                 v-html="sanitizeContent(item.USER_NM)"
               >
               </div>
             </template>
-            <!-- <template v-slot:item.2222="{ item }">
-              <div
-                v-html="sanitizeContent(item.2222)"
-              >
-              </div>
-            </template> -->
             <template v-slot:item.MSG_DT="{ item }">
               <div
                 style="font-size: 11px;"
@@ -828,9 +814,7 @@ export default {
         { text: '상담경로', value: 'RCPT_CHN_CD'},
         { text: '처리방법', value: 'PRCS_CHN_CD'},
         { text: '개인정보', value: 'PRVC_CLCT_AGRE_YN'},
-        { text: '인입번호', value: '1111'},
-        { text: '접수자명', value: 'CUSL_NM'},
-        { text: '비고', value: '2222'},
+        { text: '접수자명', value: 'USER_NM'},
         { text: '중복발송', value: 'MSG_DT'},
       ],
       gridDetailItems:[],
