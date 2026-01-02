@@ -1238,18 +1238,13 @@
                 제외조건 값
               </span>
               <div class="pl-desc">
-                <!-- 
-                  텍스트 입력
-                  인입번호 / 상담메모 / 접수채널 / 접수자명 / 개인정보수집동의여부
-                -->
-                <v-text-field
+                <!-- <v-text-field
                   v-if="SRCH_EXL_COND_SE_CD=='CUST_PHN_NO' || SRCH_EXL_COND_SE_CD=='CUTT_CN' || SRCH_EXL_COND_SE_CD=='USER_NM' || SRCH_EXL_COND_SE_CD=='CUSTCO'"
                   class="pl-form is-lg"
                   placeholder="검색어 입력"
                   v-model="SRCH_EXL_COND_CN"
                   @keydown.enter="getGridList(false)"
                 />
-                <!-- 상담유형 처리 -->
                 <v-text-field
                   v-else-if="(SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_1' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_2' || SRCH_EXL_COND_SE_CD=='CNSLT_DIV_CD_3') 
                     && (SRCH_EXL_COND_CD=='col IN (\'str\')'||SRCH_EXL_COND_CD=='col NOT IN (\'str\')'||SRCH_EXL_COND_CD=='col LIKE (\'%str%\')')"
@@ -1281,9 +1276,6 @@
                     TooltipPositionProp="bottom"
                   ></compo-tooltip-btn>
                 </template>
-                <!-- 
-                  접수채널 / 처리방법
-                -->
                 <v-select
                   v-else
                   class="pl-form is-lg"
@@ -1292,7 +1284,13 @@
                     : (SRCH_EXL_COND_SE_CD=='RCPT_CHN_CD' ? RCPT_CHN_CD_LIST : PRCS_CHN_CD_LIST))"
                   placeholder="선택하세요"
                   v-model="SRCH_EXL_COND_CN"
-                ></v-select>
+                ></v-select> -->
+                <v-text-field
+                  class="pl-form is-lg"
+                  placeholder="검색어 입력"
+                  v-model="SRCH_EXL_COND_CN"
+                  @keydown.enter="getGridList(false)"
+                />
               </div>
             </div>
           </div>
@@ -1370,7 +1368,7 @@
                   {{ item.EXL_COND_TEXT }}</span>
                 </template>
                 <span
-                  v-html="item.CUTT_TYPE_PATH"
+                  v-html="item.EXL_COND_LIST"
                 >
                 </span>
               </v-tooltip>

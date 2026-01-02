@@ -161,7 +161,7 @@
               ClassProp="pl-tooltip-btn is-line"
               IconProp="pl-icon20 arrow-next-paging"
               TooltipPositionProp="bottom"
-              :DisabledProp = "nextDisabled"
+              :DisabledProp = "nextDisabled || isLoading"
               @btnClick="getGridList(true)"
             ></compo-tooltip-btn>
           </span>
@@ -234,9 +234,9 @@
                 <div class="pl-form-inline">
                   <span class="pl-label">조건 값</span>
                   <div
-                    v-if="item.EXL_COND_SE_CD=='CNSLT_DIV_CD_1'||item.EXL_COND_SE_CD=='CNSLT_DIV_CD_2'||item.EXL_COND_SE_CD=='CNSLT_DIV_CD_3'" 
+                    v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col LIKE (\'%str%\')'" 
                     class="pl-desc"
-                    v-html="sanitizeContent(item.CUTT_TYPE_PATH)"
+                    v-html="sanitizeContent(item.EXL_COND_LIST)"
                   >
                   </div>
                   <div
@@ -493,7 +493,7 @@ export default {
             EXL_COND_CD : item.EXL_COND_CD,
             EXL_COND_CN : item.EXL_COND_CN,
             EXL_COND_TEXT : item.EXL_COND_TEXT,
-            CUTT_TYPE_PATH : item.CUTT_TYPE_PATH,
+            EXL_COND_LIST : item.EXL_COND_LIST,
             REG_DT : item.REG_DT,
           }
         })

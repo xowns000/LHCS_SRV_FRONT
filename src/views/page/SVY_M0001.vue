@@ -215,7 +215,7 @@
               ClassProp="pl-tooltip-btn is-line"
               IconProp="pl-icon20 arrow-next-paging"
               TooltipPositionProp="bottom"
-              :DisabledProp = "nextDisabled"
+              :DisabledProp = "nextDisabled || LOADING"
               @btnClick="selectList(true)"
             ></compo-tooltip-btn>
           </span>
@@ -354,7 +354,7 @@
                   {{ item.EXL_COND_TEXT }}</span>
                 </template>
                 <span
-                  v-html="item.CUTT_TYPE_PATH"
+                  v-html="item.EXL_COND_LIST"
                 >
                 </span>
               </v-tooltip>
@@ -531,7 +531,6 @@ export default {
     async selectList(next){
       this.LOADING = true;
       this.startDotAnimation();
-      this.nextDisabled = true //로딩중 다음버튼 클릭 불가처리
       //다음버튼 클릭 유무
       if (!next){
         this.pagination.page = 1; //페이징 처리 초기화
@@ -586,7 +585,6 @@ export default {
       } else {
         this.LOADING = false;
         clearInterval(this.dotInterval);
-        this.nextDisabled = false //로딩중 다음버튼 클릭 불가처리
       }
     },
 
