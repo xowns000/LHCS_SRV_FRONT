@@ -5220,7 +5220,7 @@ export default {
                 }
                 break;
               case '자릿수':
-                if(!data[exlCond].length==condVl){
+                if(data[exlCond].length==condVl){
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
@@ -5234,7 +5234,7 @@ export default {
                 }
                 break;
               case '자릿수 아님':
-                if(!data[exlCond].length!=condVl){
+                if(data[exlCond].length!=condVl){
                   for(let j =0;j<trgtList.length;j++){
                     if(trgtList[j]['ROW_NUMBER'] == data['ROW_NUMBER']){
                       trgtList[j]['REASON'] += '<br>' + condReason;
