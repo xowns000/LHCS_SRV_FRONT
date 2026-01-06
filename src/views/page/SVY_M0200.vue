@@ -2969,12 +2969,13 @@ export default {
             let CUST_NM = e.CUST_NM;
             let msg = ` (${i+1}번째 행)`;
             //이름이 없으면 오류
-            if(this.mixin_isEmpty(CUST_NM)){
-              this.MESSAGE.ALERT.ETC15_WARNING.msg = `이름이 없는 항목이 존재합니다.${msg}`;
-              this.showAlert(this.MESSAGE.ALERT.ETC15_WARNING);
-              eFlag = true;
-              break;
-            }else{
+            // if(this.mixin_isEmpty(CUST_NM)){
+              //고객명 체크하지 않도록 변경
+              // this.MESSAGE.ALERT.ETC15_WARNING.msg = `이름이 없는 항목이 존재합니다.${msg}`;
+              // this.showAlert(this.MESSAGE.ALERT.ETC15_WARNING);
+              // eFlag = true;
+              // break;
+            // }else{
               let CUST_PHN_NO = e.CUST_PHN_NO;
               if(this.mixin_isEmpty(CUST_PHN_NO)){
                 this.MESSAGE.ALERT.ETC13_WARNING.msg = `전화번호가 없는 항목이 존재합니다.${msg}`;
@@ -3004,7 +3005,7 @@ export default {
                   eFlag = false;
                 }
               }
-            }
+            // }
           }
         break;
         case '6' : //대상지정여부 체크

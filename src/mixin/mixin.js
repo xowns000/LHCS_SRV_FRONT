@@ -3081,7 +3081,8 @@ export const mixin = {
             for(let n=0;n<Object.keys(v).length;n++){
               for(let i=0;i<oHeaders.length;i++){
                 if(oHeaders[i].text === Object.keys(v)[n]){
-                  map[oHeaders[i].value] = v[Object.keys(v)[n]]
+                  //전화번호는 '-'제거
+                  map[oHeaders[i].value] = oHeaders[i].value== 'CUST_PHN_NO' ? v[Object.keys(v)[n]].replace(/[^0-9]/g, '') : v[Object.keys(v)[n]]
                   break;
                 }
               }
