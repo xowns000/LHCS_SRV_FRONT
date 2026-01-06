@@ -3044,6 +3044,7 @@ export const mixin = {
      * 컴포넌트형이 아닌 버튼형식일때 엑셀 업로드
      * 엑셀 데이터가 공백이여도 업로드 될 수 있게 처리
     */
+    /*
     uploadExcel(file, tempGridHeaders) {
       let upload_bodys = [];
       if(!file === true){ return false}
@@ -3090,6 +3091,69 @@ export const mixin = {
             upload_bodys.push(map)
           })
         }
+        this.getExcelData(oHeaders, upload_bodys);
+      };
+      reader.readAsArrayBuffer(file);
+    },
+    */
+    //지피티 도움으로 엑셀 업로드 로직 수정함 => 5만개이상의 데이터로 성능이 무엇이 더 좋은지 테스트 해볼 것
+    uploadExcel(file, tempGridHeaders) {
+      if (!file) return false;
+      const upload_bodys = [];
+      const reader = new FileReader();
+      reader.onload = () => {
+        /* =========================
+          1. 엑셀 파싱
+        ========================= */
+        const buffer = reader.result;
+        const data = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < data.length; i++) {
+          binary += String.fromCharCode(data[i]);
+        }
+        const workbook = XLSX.read(binary, {
+          type: 'binary',
+          cellDates: true,
+        });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const oData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+        /* =========================
+          2. 헤더 정리
+        ========================= */
+        const oHeaders = _.cloneDeep(tempGridHeaders);
+        oHeaders.splice(0, 1);
+        // text → value 매핑 (성능 핵심)
+        const headerMap = {};
+        oHeaders.forEach(h => {
+          headerMap[h.text] = h.value;
+        });
+        /* =========================
+          3. 빈 값 보정 + 데이터 변환
+        ========================= */
+        oData.forEach(row => {
+          const mappedRow = {};
+          for (const key in row) {
+            const targetKey = headerMap[key];
+            if (!targetKey) continue;
+            let value = row[key] ?? '';
+            // 전화번호 숫자만 추출
+            if (targetKey === 'CUST_PHN_NO' && value) {
+              value = String(value).replace(/[^0-9]/g, '');
+            }
+            mappedRow[targetKey] = value;
+          }
+          // 엑셀에 없는 컬럼도 빈 값으로 보정
+          oHeaders.forEach(h => {
+            if (!(h.value in mappedRow)) {
+              mappedRow[h.value] = '';
+            }
+          });
+          upload_bodys.push(mappedRow);
+        });
+        /* =========================
+          4. 결과 전달
+        ========================= */
         this.getExcelData(oHeaders, upload_bodys);
       };
       reader.readAsArrayBuffer(file);
