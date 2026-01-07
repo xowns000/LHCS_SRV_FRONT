@@ -2984,12 +2984,12 @@ export default {
                 break;
               }else{
                 CUST_PHN_NO = CUST_PHN_NO.toString().replace(/[^0-9]/g, '')
-                if(CUST_PHN_NO.length < 10 || CUST_PHN_NO.length > 11){
-                  this.MESSAGE.ALERT.ETC14_WARNING.msg = `전화번호 길이 또는 형식이 맞지 않습니다.${msg}`;
-                  this.showAlert(this.MESSAGE.ALERT.ETC14_WARNING);
-                  eFlag = true;
-                  break;
-                }else{
+                // if(CUST_PHN_NO.length < 10 || CUST_PHN_NO.length > 11){
+                //   this.MESSAGE.ALERT.ETC14_WARNING.msg = `전화번호 길이 또는 형식이 맞지 않습니다.${msg}`;
+                //   this.showAlert(this.MESSAGE.ALERT.ETC14_WARNING);
+                //   eFlag = true;
+                //   break;
+                // }else{
                   //메일이 있다면 형식 체크
                   let EML = e.EML;
                   if(!this.mixin_isEmpty(EML)){
@@ -3003,7 +3003,7 @@ export default {
                   //모두 정상이면 핸드폰 숫자만 남김
                   this.gridDataText[i].CUST_PHN_NO = CUST_PHN_NO;
                   eFlag = false;
-                }
+                // }
               }
             // }
           }
@@ -3760,12 +3760,18 @@ export default {
       }
 
       postParam.sendData["oData"] = this.gridDataText;
+      this.closeMsg();
       this.openProgressBar();
       let resData = await this.common_postCall(sUrl, postParam.sendData, headParam );
       this.closeProgressBar();
       if (!resData.HEADER.ERROR_FLAG) {
-        this.closeMsg();
-        this.showToast(this.MESSAGE.TOAST.SUCCESS);
+        // this.closeMsg();
+        // this.showToast(this.MESSAGE.TOAST.SUCCESS);
+        // 토스트 메시지에서 얼럿메시지로 변경
+        let totCount = resData.DATA[0].TOT_CNT;
+        let insertCount = resData.DATA[0].INSERT_CNT;
+        let exlCount = resData.DATA[0].EXL_CNT;
+        this.showAlert({alertDialogToggle: true, msg: '저장이 완료되었습니다<br>총 참여자 : '+totCount+'<br>중복발송 제외 참여자 : '+insertCount+'<br> 저장된 참여자 : '+exlCount, iconClass: 'is-info', type: 'default'});
         this.tab2SelectList(false);
       }
     },
