@@ -3641,6 +3641,7 @@ export default {
     //전화번호 중복 체크 - 첫번째 항목만 남기고 나머지는 삭제한 후 메시지로 삭제 목록을 알려준다.
     //설문 제외 참여자 체크 - 설문 제외자 삭제 후 메시지로 삭제 목록을 알려준다.
     //checkType - upload : 엑셀 업로드, save : 저장
+    /*
     async checkExcelUploadTargetList() {
       let checkedTargetList = [];
       let dupTargetList = [];
@@ -3691,6 +3692,74 @@ export default {
 
       if(!this.mixin_isEmpty(alertMsg)) {
         this.showAlert({alertDialogToggle : true, msg:alertMsg, iconClass: 'is-info', type:'default'})
+      }
+    },
+    */
+    async checkExcelUploadTargetList() {
+      const seenPhoneSet = new Set();
+      const checkedTargetList = [];
+      const dupTargetList = [];
+
+      // 1️⃣ 중복 전화번호 제거 (O(n))
+      for (const item of this.gridDataText) {
+        if (seenPhoneSet.has(item.CUST_PHN_NO)) {
+          dupTargetList.push(item);
+        } else {
+          seenPhoneSet.add(item.CUST_PHN_NO);
+          checkedTargetList.push(item);
+        }
+      }
+
+      this.gridDataText = checkedTargetList;
+
+      // 2️⃣ 제외 대상 조회
+      await this.getExclusionTargetList();
+
+      const exclusionPhoneSet = new Set(
+        this.EXCLUSION_TARGET_LIST.map(item => item.CUST_PHN_NO)
+      );
+
+      const finalTargetList = [];
+      const exclusionTargetList = [];
+
+      // 3️⃣ 설문참여 제외자 필터링 (O(n))
+      for (const item of this.gridDataText) {
+        if (exclusionPhoneSet.has(item.CUST_PHN_NO)) {
+          exclusionTargetList.push(item);
+        } else {
+          finalTargetList.push(item);
+        }
+      }
+
+      this.gridDataText = finalTargetList;
+
+      // 4️⃣ 알림 메시지 생성
+      let alertMsg = '';
+
+      if (dupTargetList.length > 0) {
+        alertMsg += '중복된 전화번호의 참여자가 제외되었습니다.<br/>중복 참여자 목록<br/>';
+        for (const item of dupTargetList) {
+          alertMsg += `${item.CUST_NM} / ${item.CUST_PHN_NO}<br/>`;
+        }
+        if (exclusionTargetList.length > 0) {
+          alertMsg += '<br/><br/>';
+        }
+      }
+
+      if (exclusionTargetList.length > 0) {
+        alertMsg += '설문참여 제외자가 제외되었습니다.<br/>설문참여 제외자 목록<br/>';
+        for (const item of exclusionTargetList) {
+          alertMsg += `${item.CUST_NM} / ${item.CUST_PHN_NO}<br/>`;
+        }
+      }
+
+      if (!this.mixin_isEmpty(alertMsg)) {
+        this.showAlert({
+          alertDialogToggle: true,
+          msg: alertMsg,
+          iconClass: 'is-info',
+          type: 'default'
+        });
       }
     },
 
@@ -5065,7 +5134,7 @@ export default {
     nextProc(){
       if(this.dialogTab=='exlCond'){
         this.dialogTab = 'exlTrgt';
-
+        /*
         this.EXL_COND_TRGT_LIST = [];
         let trgtList = [];
         for(let i=0;i<this.SEL_EXL_COND_LIST.length;i++){
@@ -5377,6 +5446,62 @@ export default {
           }
         }
         this.EXL_COND_TRGT_LIST = trgtList;
+        */
+      
+        const conditionCheckers = {
+          '포함': (v, c) => v?.includes(c),
+          '제외': (v, c) => !v?.includes(c),
+          '동일': (v, c) => c.split(',').includes(v),
+          '동일 제외': (v, c) => !c.split(',').includes(v),
+          '시작 문자열': (v, c) => v?.startsWith(c),
+          '시작 제외 문자열': (v, c) => !v?.startsWith(c),
+          '끝 문자열': (v, c) => v?.endsWith(c),
+          '끝 제외 문자열': (v, c) => !v?.endsWith(c),
+          '자릿수': (v, c) => v?.length === Number(c),
+          '자릿수 아님': (v, c) => v?.length !== Number(c),
+          '다중 포함': (v, c) => c.split(',').some(x => v?.includes(x)),
+          '다중 미포함': (v, c) => c.split(',').every(x => !v?.includes(x)),
+          '다중 동일': (v, c) => c.split(',').includes(v)
+        };
+        const targetMap = new Map();
+
+        const addReason = (data, id, reason) => {
+          const key = data.ROW_NUMBER;
+
+          if (!targetMap.has(key)) {
+            targetMap.set(key, {
+              ...data,
+              REASON: reason,
+              REASON_CD: id
+            });
+          } else {
+            const target = targetMap.get(key);
+            target.REASON += '<br>' + reason;
+            target.REASON_CD += ',' + id;
+          }
+        };
+
+        for (const condItem of this.SEL_EXL_COND_LIST) {
+          const {
+            SRVY_EXL_COND_ID: id,
+            EXL_COND_SE_CD: field,
+            EXL_COND_NM: condType,
+            EXL_COND_CN: condValue,
+            EXL_COND_TEXT: reason
+          } = condItem;
+
+          const checker = conditionCheckers[condType];
+          if (!checker) continue;
+
+          for (const row of this.gridDataText) {
+            const cellValue = row[field];
+            if (checker(cellValue, condValue)) {
+              addReason(row, id, reason);
+            }
+          }
+        }
+
+        this.EXL_COND_TRGT_LIST = Array.from(targetMap.values());
       }else if(this.dialogTab=='exlTrgt'){
         this.insertExlHst();
       }
