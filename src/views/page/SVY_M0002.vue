@@ -792,10 +792,12 @@ export default {
 
       gridDataHeaders: [
         { text: '번호', value: 'ROW_NUMBER', align: 'center', width: '80px' },
-        { text: '부서', value: 'DEPT_NM', align: 'left', width: '120px'},
-        { text: '조건 구분', value: 'EXL_COND_SE_NM', align: 'left', width: '200px'},
-        { text: '조건', value: 'EXL_COND_NM', align: 'left', width: '200px' },
-        { text: '조건 값', value: 'EXL_COND_CN', align: 'left', width: '300px'},
+        { text: '부서', value: 'DEPT_NM', align: 'left', width: '100px'},
+        { text: '조건 구분', value: 'EXL_COND_SE_NM', align: 'left', width: '180px'},
+        { text: '조건 포함', value: 'EXL_COND_YN', align: 'left', width: '80px' },
+        { text: '조건 구분', value: 'EXL_COND_NM', align: 'left', width: '150px' },
+        { text: '조건 값', value: 'EXL_COND_CN', align: 'left', width: '150px'},
+        { text: '조건', value: 'EXL_COND_TEXT', align: 'left', width: '300px'},
         { text: '등록자', value: 'RGTR_NM', align: 'left', width: '120px'},
         { text: '등록일', value: 'REG_DT_F', align: 'left', width: '120px'},
         { text: '수정자', value: 'MDFR_NM', align: 'left', width: '120px'},
