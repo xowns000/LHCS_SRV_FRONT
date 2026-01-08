@@ -1605,6 +1605,14 @@
           </div>
         </template>
         <template slot="footer">
+          <div
+            v-if="SHOW_PERCENT" 
+            class="mr-auto progress-wrapper"
+          >
+            <div class="progress-bar" ref="progressBar">
+              <span class="ml-2 progress-text" ref="progressText">0%</span>
+            </div>
+          </div>
           <span class="pl-counter">선택된 제외조건 <em class="pl-1">({{ SEL_EXL_COND_LIST.length }})</em> 건 / 제외 대상 <em class="pl-1">({{ EXL_COND_TRGT_LIST.length }})</em> 명 / 임의 적용 대상 <em class="pl-1">({{ EXL_COND_SET_TRGT_LIST.length }})</em> 명</span>
           <v-btn v-if="dialogTab=='exlCond'" class="pl-btn is-sub ml-2" @click="mixin_hideDialog('ExlCond')">닫기</v-btn>
           <v-btn v-else class="pl-btn is-sub ml-2" @click="brforeProc()">이전</v-btn>
@@ -2154,6 +2162,8 @@ export default {
       dots: "",
       dotInterval: null,
       CUTT_TYPE_MODE:'SRCH',
+
+      SHOW_PERCENT:false,
     }
   },
   watch: {
@@ -5777,6 +5787,7 @@ export default {
       }
       let leng = exlTrgtList.length;
       if(leng == 0){
+        this.closeProgressBar();
         return;
       }
 
@@ -5794,7 +5805,18 @@ export default {
       const ss = String(now.getSeconds()).padStart(2, '0');
 
       for (let idx = 0; idx < chunks.length; idx++) {
-        this.openProgressBar();
+        if(idx==0){
+          this.SHOW_PERCENT = true;
+          setTimeout(() => {
+            this.setProgress(0);
+            if(chunks.length==1){
+              //1번 반복이면  진행상황 기본 10%로
+              this.setProgress(20);
+            }
+          }, 100);
+        } else {
+          this.openProgressBar();
+        }
         let postParam = {
           EXL_TRGT_LIST: chunks[idx]
           , SRVY_ID: this.SRVY_NM
@@ -5813,7 +5835,9 @@ export default {
         if (!response.HEADER.ERROR_FLAG) {
           //마지막반복일 때
           if(idx==chunks.length-1){
+            this.setProgress(100);
             this.closeProgressBar();
+            this.SHOW_PERCENT = false;
             this.showToast({msg: this.EXL_COND_SET_TRGT_LIST.length+'명의 참여자가 제외되었습니다.', class: 'success', hasToastIcon: true, icon: 'mdi-checkbox-marked-circle' , time: 3000});
 
             // 참여자 리스트에서 제외
@@ -5829,9 +5853,13 @@ export default {
             this.EXL_COND_TRGT_LIST = [];
             this.EXL_COND_SET_TRGT_LIST = [];
             this.SEL_EXL_COND_LIST = [];
+          } else {
+            let percent = (parseInt(idx)+1)/chunks.length*100
+            this.setProgress(percent);
           }
         } else {
           this.closeProgressBar();
+          this.SHOW_PERCENT = false;
           this.showAlert(this.MESSAGE.ERROR.ERROR);
           return;
         }
@@ -5878,6 +5906,17 @@ export default {
           callNo: this.closeMsg
         }
       )
+    },
+
+    //제외조건 등록 퍼센트
+    setProgress(percent) {
+      if (!this.$refs.progressBar) return;
+
+      const safePercent = Math.max(0, Math.min(100, percent));
+      const roundedPercent = Math.round(safePercent * 100) / 100;
+
+      this.$refs.progressBar.style.width = roundedPercent + '%';
+      this.$refs.progressText.textContent = roundedPercent.toFixed(2) + '%';
     }
   },
 };
@@ -5886,5 +5925,20 @@ export default {
 <style lang="scss" >
 .pl-check.is-chk-center .v-input__slot{
   justify-content: center;
+}
+
+.progress-wrapper {
+  width: 300px;
+  height: 20px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #DD5555, #fadddd);
+  transition: width 0.4s ease;
 }
 </style>
