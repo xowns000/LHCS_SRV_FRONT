@@ -104,7 +104,7 @@
                   class="pl-form"
                   placeholder="검색어 입력"
                   v-model="SRCH_CUST_PHN_NO"
-                  @keydown.enter="getGridList()"
+                  @keydown.enter="selectList(false)"
                 />
               </div>
             </div>
@@ -410,7 +410,7 @@ export default {
       selectedData: [],      // 그리드 체크박스 값
       pagination:{
         page:1,
-        rowsPerPage: 500
+        rowsPerPage: 5000
       },
       nextDisabled: false,
       gridItems: [],
