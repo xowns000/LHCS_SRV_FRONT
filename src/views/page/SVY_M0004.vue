@@ -434,13 +434,16 @@ export default {
         , SRCH_EXL_COND_CN : this.SRCH_EXL_COND_CN
         , SRCH_SRVY_ID : this.SRCH_SRVY_NM?.value
         , SRCH_SRVY_YR : this.SRCH_SRVY_YR
+        //쿼리속도개선을 위한 자체 페이징처리
+        , ROW: this.pagination.rowsPerPage
+        , PAGE: this.pagination.page
       }
 
       let headParam = {
         head : {
-          PAGING: 'Y',
-          ROW_CNT: this.pagination.rowsPerPage,
-          PAGES_CNT: this.pagination.page
+          // PAGING: 'Y',
+          // ROW_CNT: this.pagination.rowsPerPage,
+          // PAGES_CNT: this.pagination.page
         }
       }
 
@@ -462,20 +465,24 @@ export default {
           this.gridItems = [];
           // 조회
           this.gridItems = tempDataText;
-
-          console.log("this.gridItems", this.gridItems)
         }
         // 전체 건수
         if(this.gridItems.length > 0) this.gridTotalCnt = response.DATA[0].TWB_PAGING_TOT_COUNT;
 
         // 다음검색 버튼 활성화 여부
-        if(response.HEADER.next !== null && response.HEADER.next !== undefined){
-          if(response.HEADER.next === true){
-            this.nextDisabled = false // 버튼 활성화
-          }else{
-            this.nextDisabled = true  // 버튼 비활성화
-          }
+        if(response.DATA[0].TWB_PAGING_TOT_COUNT != '0' && this.pagination.rowsPerPage*this.pagination.page < response.DATA[0].TWB_PAGING_TOT_COUNT){
+          this.nextDisabled = false // 버튼 활성화
+        } else {
+          this.nextDisabled = true  // 버튼 비활성화
         }
+
+        // if(response.HEADER.next !== null && response.HEADER.next !== undefined){
+        //   if(response.HEADER.next === true){
+        //     this.nextDisabled = false // 버튼 활성화
+        //   }else{
+        //     this.nextDisabled = true  // 버튼 비활성화
+        //   }
+        // }
 
         this.pagination.page += 1;
         // this.page=1;

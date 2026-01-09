@@ -548,13 +548,16 @@ export default {
         , SRVY_YR : this.SRVY_YR
         , SRVY_ID : this.SRVY_ID
         , CUST_PHN_NO : this.SRCH_CUST_PHN_NO
+        //쿼리속도개선을 위한 자체 페이징처리
+        , ROW: this.pagination.rowsPerPage
+        , PAGE: this.pagination.page
       }
 
       let headParam = {
         head : {
-          PAGING: 'Y',
-          ROW_CNT: this.pagination.rowsPerPage,
-          PAGES_CNT: this.pagination.page
+          // PAGING: 'Y',
+          // ROW_CNT: this.pagination.rowsPerPage,
+          // PAGES_CNT: this.pagination.page
         }
       }
 
@@ -573,12 +576,10 @@ export default {
         if(this.gridItems.length > 0) this.gridTotalCnt = response.DATA[0].TWB_PAGING_TOT_COUNT;
 
         // 다음검색 버튼 활성화 여부
-        if(response.HEADER.next !== null && response.HEADER.next !== undefined){
-          if(response.HEADER.next === true){
-            this.nextDisabled = false // 버튼 활성화
-          }else{
-            this.nextDisabled = true  // 버튼 비활성화
-          }
+        if(response.DATA[0].TWB_PAGING_TOT_COUNT != '0' && this.pagination.rowsPerPage*this.pagination.page < response.DATA[0].TWB_PAGING_TOT_COUNT){
+          this.nextDisabled = false // 버튼 활성화
+        } else {
+          this.nextDisabled = true  // 버튼 비활성화
         }
 
         this.pagination.page += 1;
