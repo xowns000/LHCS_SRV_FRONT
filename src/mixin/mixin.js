@@ -3111,10 +3111,21 @@ export const mixin = {
         for (let i = 0; i < data.length; i++) {
           binary += String.fromCharCode(data[i]);
         }
-        const workbook = XLSX.read(binary, {
-          type: 'binary',
-          cellDates: true,
-        });
+        let workbook;
+        try {
+          workbook = XLSX.read(binary, {
+            type: 'binary',
+            cellDates: true,
+          });
+        } catch (err) {
+          if (err.message && err.message.includes('password')) {
+            this.closeProgressBar();
+            this.showAlert({alertDialogToggle: true, msg: '비밀번호가 설정된 엑셀 파일입니다.', iconClass: 'is-caution', type: 'default'});
+          } else {
+            this.closeProgressBar();
+            this.showAlert({alertDialogToggle: true, msg: '엑셀파일을 확인해주세요.', iconClass: 'is-caution', type: 'default'});
+          }
+        }
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const oData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
