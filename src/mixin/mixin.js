@@ -3121,9 +3121,11 @@ export const mixin = {
           if (err.message && err.message.includes('password')) {
             this.closeProgressBar();
             this.showAlert({alertDialogToggle: true, msg: '비밀번호가 설정된 엑셀 파일입니다.', iconClass: 'is-caution', type: 'default'});
+            return false
           } else {
             this.closeProgressBar();
             this.showAlert({alertDialogToggle: true, msg: '엑셀파일을 확인해주세요.', iconClass: 'is-caution', type: 'default'});
+            return false
           }
         }
         const sheetName = workbook.SheetNames[0];
