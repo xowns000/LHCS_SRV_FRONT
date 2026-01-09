@@ -181,82 +181,91 @@
         headerTitle="제외 이력 상세"
         @hide="mixin_hideDialog('ExlHstryDtl')">
         <template slot="body">
-          <div class="pl-card">
-            <h2 class="pl-subtit pb-1">고객정보</h2>
-            <div class="pl-card is-border pt-1">
-              <div class="pl-form-inline-wrap vertical">
-                <div class="pl-form-inline">
-                  <span class="pl-label">고객명</span>
-                  <div class="pl-desc">{{ exlHstryDtl.CUST_NM }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">고객ID</span>
-                  <div class="pl-desc">{{ exlHstryDtl.CUST_ID }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">고객 전화번호</span>
-                  <div class="pl-desc">{{ exlHstryDtl.CUST_PHN_NO }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="pl-card">
-            <h2 class="pl-subtit pb-1">설문조사정보</h2>
-            <div class="pl-card is-border pt-1">
-              <div class="pl-form-inline-wrap vertical">
-                <div class="pl-form-inline">
-                  <span class="pl-label">설문연도</span>
-                  <div class="pl-desc">{{ exlHstryDtl.CUST_NM }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">계획 구분</span>
-                  <div class="pl-desc">{{ exlHstryDtl.SRVY_SE_NM }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">설문 명</span>
-                  <div class="pl-desc">{{exlHstryDtl.SRVY_NM }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="pl-card">
-            <h2 class="pl-subtit pb-1">제외조건 정보({{exlHstryDtl?.exlList?.length}}건)</h2>
-            <div class="pl-card is-border pt-1">
-              <div class="pl-form-inline-wrap vertical" v-for="(item,idx) in exlHstryDtl.exlList">
-                <div class="pl-form-inline">
-                  <span class="pl-label">조건 구분</span>
-                  <div class="pl-desc">{{ item.EXL_COND_NM+ ' ('+ item.EXL_COND_SE_CD +')' }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">제외 조건</span>
-                  <div class="pl-desc">{{ item.EXL_COND_SE_NM+ ' ('+ item.EXL_COND_CD +')' }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">조건 값</span>
-                  <div
-                    v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col LIKE (\'%str%\')'" 
-                    class="pl-desc"
-                    v-html="sanitizeContent(item.EXL_COND_LIST)"
-                  >
+          <span
+            v-if="LOADING"
+            class="mt-2"
+          >
+            조회중입니다{{ dots }}
+          </span>
+          <template v-else>
+            <div
+              class="pl-card">
+              <h2 class="pl-subtit pb-1">고객정보</h2>
+              <div class="pl-card is-border pt-1">
+                <div class="pl-form-inline-wrap vertical">
+                  <div class="pl-form-inline">
+                    <span class="pl-label">고객명</span>
+                    <div class="pl-desc">{{ exlHstryDtl.CUST_NM }}</div>
                   </div>
-                  <div
-                    v-else
-                    class="pl-desc">
-                    {{ item.EXL_COND_CN }}
+                  <div class="pl-form-inline">
+                    <span class="pl-label">고객ID</span>
+                    <div class="pl-desc">{{ exlHstryDtl.CUST_ID }}</div>
+                  </div>
+                  <div class="pl-form-inline">
+                    <span class="pl-label">고객 전화번호</span>
+                    <div class="pl-desc">{{ exlHstryDtl.CUST_PHN_NO }}</div>
                   </div>
                 </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">조건 사유</span>
-                  <div class="pl-desc">{{ item.EXL_COND_TEXT }}</div>
-                </div>
-                <div class="pl-form-inline">
-                  <span class="pl-label">등록일자</span>
-                  <div class="pl-desc">{{ convertDateForm(item.REG_DT) }}</div>
-                </div>
-                <v-divider v-if="idx+1 !== exlHstryDtl.exlList.length"/>
               </div>
             </div>
-          </div>
+            <div class="pl-card">
+              <h2 class="pl-subtit pb-1">설문조사정보</h2>
+              <div class="pl-card is-border pt-1">
+                <div class="pl-form-inline-wrap vertical">
+                  <div class="pl-form-inline">
+                    <span class="pl-label">설문연도</span>
+                    <div class="pl-desc">{{ exlHstryDtl.CUST_NM }}</div>
+                  </div>
+                  <div class="pl-form-inline">
+                    <span class="pl-label">계획 구분</span>
+                    <div class="pl-desc">{{ exlHstryDtl.SRVY_SE_NM }}</div>
+                  </div>
+                  <div class="pl-form-inline">
+                    <span class="pl-label">설문 명</span>
+                    <div class="pl-desc">{{exlHstryDtl.SRVY_NM }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pl-card">
+              <h2 class="pl-subtit pb-1">제외조건 정보({{exlHstryDtl?.exlList?.length}}건)</h2>
+              <div class="pl-card is-border pt-1">
+                <div class="pl-form-inline-wrap vertical" v-for="(item,idx) in exlHstryDtl.exlList">
+                  <div class="pl-form-inline">
+                    <span class="pl-label">조건 구분</span>
+                    <div class="pl-desc">{{ item.EXL_COND_NM+ ' ('+ item.EXL_COND_SE_CD +')' }}</div>
+                  </div>
+                  <div class="pl-form-inline">
+                    <span class="pl-label">제외 조건</span>
+                    <div class="pl-desc">{{ item.EXL_COND_SE_NM+ ' ('+ item.EXL_COND_CD +')' }}</div>
+                  </div>
+                  <div class="pl-form-inline">
+                    <span class="pl-label">조건 값</span>
+                    <div
+                      v-if="item.EXL_COND_CD == 'col IN (\'str\')'||item.EXL_COND_CD == 'col NOT IN (\'str\')'||item.EXL_COND_CD == 'col LIKE (\'%str%\')'" 
+                      class="pl-desc"
+                      v-html="sanitizeContent(item.EXL_COND_LIST)"
+                    >
+                    </div>
+                    <div
+                      v-else
+                      class="pl-desc">
+                      {{ item.EXL_COND_CN }}
+                    </div>
+                  </div>
+                  <div class="pl-form-inline">
+                    <span class="pl-label">조건 사유</span>
+                    <div class="pl-desc">{{ item.EXL_COND_TEXT }}</div>
+                  </div>
+                  <div class="pl-form-inline">
+                    <span class="pl-label">등록일자</span>
+                    <div class="pl-desc">{{ convertDateForm(item.REG_DT) }}</div>
+                  </div>
+                  <v-divider v-if="idx+1 !== exlHstryDtl.exlList.length"/>
+                </div>
+              </div>
+            </div>
+          </template>
         </template>
         <template slot="footer">
           <v-btn class="pl-btn is-sub" @click="mixin_hideDialog('ExlHstryDtl')">닫기</v-btn>
@@ -347,6 +356,10 @@ export default {
 
       dialogExlHstryDtl:false,
       exlHstryDtl : {},
+      
+      LOADING:false,
+      dots: "",
+      dotInterval: null,
     }
   },
   watch: {
@@ -474,16 +487,20 @@ export default {
     },
 
     async getExlHstryDtl(srvyExlHstry){
-      console.log("srvyExlHstryId  ", srvyExlHstry.SRVY_ID)
+      this.initDtl()
+      this.mixin_showDialog('ExlHstryDtl')
+      this.LOADING = true;
+      this.startDotAnimation();
       let sUrl = '/api/svy/exclusion/history/selectHistoryDtl';
       let postParam = {
         SRVY_ID : srvyExlHstry.SRVY_ID,
         CUST_PHN_NO : srvyExlHstry.CUST_PHN_NO,
       }
       const response = await this.common_postCall(sUrl, postParam,{head:{}})
-      console.log("response.DATA[0]",response.DATA[0])
       if(!response.HEADER.ERROR_FLAG && response.DATA[0]){
-        this.initDtl()
+        this.LOADING = false;
+        clearInterval(this.dotInterval);
+        // this.initDtl()
         this.exlHstryDtl = response.DATA[0]
         this.exlHstryDtl.exlList = response.DATA.map(item =>{
           return {
@@ -497,8 +514,10 @@ export default {
             REG_DT : item.REG_DT,
           }
         })
-        this.mixin_showDialog('ExlHstryDtl')
+        // this.mixin_showDialog('ExlHstryDtl')
       }else{
+        this.LOADING = false;
+        clearInterval(this.dotInterval);
         this.showToastCaution({msg : '조회 중 오류가 발생했습니다.'})
       }
     },
@@ -609,7 +628,23 @@ export default {
       let date = ''
       date = str.substr(0,4)+'-'+str.substr(4,2)+'-'+str.substr(6,2)+' '+str.substr(8,2)+':'+str.substr(10,2)+':'+str.substr(12,2);
       return date
-    }
+    },
+
+    startDotAnimation() {
+      // 기존 인터벌 제거
+      if (this.dotInterval) {
+        clearInterval(this.dotInterval);
+      }
+
+      // 0.1초마다 dots 생성
+      this.dotInterval = setInterval(() => {
+        if (this.dots.length >= 12) {
+          this.dots = "";
+        } else {
+          this.dots += "...";
+        }
+      }, 100);
+    },
   },
 }
 </script>
