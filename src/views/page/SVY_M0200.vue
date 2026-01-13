@@ -419,10 +419,10 @@
                   <div class="pl-form-inline-wrap">
                     <div class="pl-form-inline">
                       <div class="pl-desc">
-                        <v-select class="pl-form"
+                        <!-- <v-select class="pl-form"
                           v-model="TRGT_SRCH_TYPE"
                          :items="TRGT_SRCH_TYPE_LIST"
-                        />
+                        /> -->
                         <v-text-field class="pl-form"
                           v-model="TRGT_SRCH_KWRD"
                           placeholder="검색어 입력"
@@ -471,6 +471,7 @@
                 @click:row="rowClick"
                 @dblclick:row="mixin_showDialog('AddSomeone')"
                 :item-class="isActiveRow"
+                :search="TRGT_SRCH_KWRD_ENTER"
               >
                 <template v-slot:header.data-table-select >
                   <v-checkbox 
@@ -2084,6 +2085,7 @@ export default {
       TRGT_SRCH_TYPE: 'CUST_PHN_NO',
       //설문지 생성관리 참여자 검색어
       TRGT_SRCH_KWRD: '',
+      TRGT_SRCH_KWRD_ENTER: '',
       //원본 참여자 데이터.
       originalGridDataText: [],
 
@@ -2248,17 +2250,12 @@ export default {
 
   methods: {
     searchTrgt() {
-      
-      if(this.TRGT_SRCH_KWRD.trim() == '' && this.originalGridDataText.length > 0) {
-        this.gridDataText = this.originalGridDataText;
-        return
+      if(this.TRGT_SRCH_KWRD.trim() == ''){
+        this.TRGT_SRCH_KWRD_ENTER = '';
+        return;
+      } else {
+        this.TRGT_SRCH_KWRD_ENTER = this.TRGT_SRCH_KWRD
       }
-
-      this.originalGridDataText = _.cloneDeep(this.gridDataText);
-      if(this.TRGT_SRCH_TYPE == 'CUST_PHN_NO') {
-
-      }
-
     },
     //설문지 생성 초기화
     tab1Init(){
