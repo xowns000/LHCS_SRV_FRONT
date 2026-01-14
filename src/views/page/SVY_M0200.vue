@@ -4499,7 +4499,7 @@ export default {
       let data = sendInfo;
       let phnNo = [];
       let svyTrgt = [];
-      let contents = ["CUS_NM","LINK"];
+      let contents = ["CUS_NM","LINK","CUTT_TYPE_1"];
       if(this.srvyExpsnAttrList.length > 0) {
         this.srvyExpsnAttrList.map(expsn => {
           contents.push(expsn.EXPSN_ATTR_COL_ID)
@@ -4518,6 +4518,23 @@ export default {
         svyTrgt.push(data[i].SRVY_TRGT_ID);
         transContents.push(data[i].CUST_NM);
         transContents.push(data[i].URL_KEY);
+        if(this.SRCH_DEPT_ID == '2'){
+          transContents.push("마이홈센터");
+        } else if(this.SRCH_DEPT_ID == '3'){
+          transContents.push("바로처리센터");
+        } else if(this.SRCH_DEPT_ID == '4'){
+          transContents.push("전세임대센터");
+        } else if(this.SRCH_DEPT_ID == '5'){
+          transContents.push("공가해소센터");
+        } else if(this.SRCH_DEPT_ID == '6'){
+          transContents.push("공동주택센터");
+        } else if(this.SRCH_DEPT_ID == '7'){
+          transContents.push("렌트홈센터");
+        } else if(this.SRCH_DEPT_ID == '8'){
+          transContents.push("유스타트센터");
+        } else if(this.SRCH_DEPT_ID == '9'){
+          transContents.push("인천검단센터");
+        }
         if(this.srvyExpsnAttrList.length > 0) {
           this.srvyExpsnAttrList.map(expsn => {
             transContents.push(data[i][expsn.EXPSN_ATTR_COL_ID]);
