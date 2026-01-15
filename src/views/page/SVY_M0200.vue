@@ -2338,6 +2338,7 @@ export default {
       if(this.SRCH_DEPT_ID == '6'){
         //공동주택센터일 경우
         gridDataHeaders3 = [
+          { text: ' 처리일시',   value: 'CUTT_DATETIME',       align: 'left',         width: '200px' },
           { text: ' 상담유형(대)',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
           { text: ' 상담유형(중)',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
           { text: ' 상담유형(소)',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
@@ -2351,6 +2352,8 @@ export default {
         ];
       } else {
         gridDataHeaders3 = [
+          { text: '센터명',   value: 'CENTER',       align: 'left',         width: '200px' },
+          { text: '상담일시',   value: 'CUTT_DATETIME',       align: 'left',         width: '200px' },
           { text: '접속정보',   value: 'CUSTCO',       align: 'left',         width: '200px' },
           { text: '대분류(상담카테고리)',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
           { text: '중분류(상담카테고리)',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
@@ -4534,6 +4537,10 @@ export default {
           transContents.push("유스타트센터");
         } else if(this.SRCH_DEPT_ID == '9'){
           transContents.push("인천검단센터");
+        } else if(this.SRCH_DEPT_ID == '11'){
+          transContents.push("마이홈센터");
+        } else if(this.SRCH_DEPT_ID == '12'){
+          transContents.push("전세임대센터");
         }
         if(this.srvyExpsnAttrList.length > 0) {
           this.srvyExpsnAttrList.map(expsn => {
@@ -5885,7 +5892,7 @@ export default {
       for(let n=0;n<this.gridDataText.length;n++){
         let data = this.gridDataText[n];
         // 전세임대센터 유스타트 인천검단 구분
-        if(this.SRCH_DEPT_ID == '4'){
+        if(this.SRCH_DEPT_ID == '4' || this.SRCH_DEPT_ID == '12'){
           //전세임대
           if(data.CUSTCO == '인천검단센터' || data.CUSTCO=='유스타트센터' ){
             notCustcoList.push(data);
