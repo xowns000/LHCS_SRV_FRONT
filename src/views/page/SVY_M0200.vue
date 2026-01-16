@@ -2314,7 +2314,7 @@ export default {
           this.gridDataHeaders.push({ text: /*(expsn.ESNTL_YN == 'Y' ? '*' + expsn.EXPSN_ATTR_NM : expsn.EXPSN_ATTR_NM)*/expsn.EXPSN_ATTR_NM
             , value: expsn.EXPSN_ATTR_COL_ID
             , align: 'left'
-            , width: '100px' 
+            , width: '150px' 
           })
         })
       }
@@ -2338,7 +2338,6 @@ export default {
       if(this.SRCH_DEPT_ID == '6'){
         //공동주택센터일 경우
         gridDataHeaders3 = [
-          { text: ' 처리일시',   value: 'CUTT_DATETIME',       align: 'left',         width: '200px' },
           { text: ' 상담유형(대)',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
           { text: ' 상담유형(중)',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
           { text: ' 상담유형(소)',   value: 'CNSLT_DIV_CD_3',       align: 'left',         width: '200px' },
@@ -2352,8 +2351,6 @@ export default {
         ];
       } else {
         gridDataHeaders3 = [
-          { text: '센터명',   value: 'CENTER',       align: 'left',         width: '200px' },
-          { text: '상담일시',   value: 'CUTT_DATETIME',       align: 'left',         width: '200px' },
           { text: '접속정보',   value: 'CUSTCO',       align: 'left',         width: '200px' },
           { text: '대분류(상담카테고리)',   value: 'CNSLT_DIV_CD_1',       align: 'left',         width: '200px' },
           { text: '중분류(상담카테고리)',   value: 'CNSLT_DIV_CD_2',       align: 'left',         width: '200px' },
